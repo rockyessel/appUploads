@@ -9,7 +9,7 @@ const Logo = (props: Props) => {
   return (
     <Link to='/'>
       <motion.span className={`text-rose-800 ${props.size}`}>
-        appWri
+        app
         <motion.span className='font-extrabold underline text-rose-700 underline-offset-4'>
           Uploads
         </motion.span>

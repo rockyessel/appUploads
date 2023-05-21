@@ -11,28 +11,30 @@ const Dashboard = () => {
   const snap = useSnapshot(screenState);
   const { getUser, getAllFiles } = useAppwriteContext();
   const [loading, setLoading] = React.useState(false);
-  const [user, setUser] = React.useState({});
+  const [user, setUser] = React.useState<unknown>({});
 
   const navigate = useNavigate();
-  const getUserInfo = async () => {
+  const getUserInfo = React.useCallback(async () => {
     setLoading(true);
     const user_ = await getUser();
-    const data = await getAllFiles(`${import.meta.env.VITE_APPWRITE_BUCKET_ID}`);
-    console.log(data)
-
+    const data = await getAllFiles(
+      `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`
+    );
+    console.log(data);
 
     setUser(user_);
     setLoading(false);
-  };
+  }, [getAllFiles, getUser]);
 
   React.useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [getUserInfo]);
 
   React.useEffect(() => {
     if (!user) navigate('/');
-  }, []);
+  }, [navigate, user]);
 
+  if (loading) return;
   return (
     <Layout>
       {snap.dashboardScreen.user && <UserScreen />}

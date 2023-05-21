@@ -1,38 +1,44 @@
 import React from 'react';
 import { uniqueID, account, storage, db } from '../utils/config';
 import { formatFileSize, generateString } from '../utils/functions';
-import { defaultDocument } from '../utils/state';
+import { defaultDocument, loginForm, registerForm } from '../utils/state';
 
 interface AppWriteContextProps {
-  register: (form: any) => Promise<any>;
-  login: (form: any) => Promise<any>;
+  register: (form: typeof registerForm) => Promise<unknown>;
+  login: (form: typeof loginForm) => Promise<unknown>;
   logout: () => Promise<void>;
-  getUser: () => Promise<any>;
-  uploadFile: (file: any) => Promise<void>;
+  getUser: () => Promise<unknown>;
+  uploadFile: (file: File) => Promise<void>;
   files: File[];
-  handleFile: (event: any) => void;
+  handleFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleRemoveFile: (name: string) => void;
   handleClear: () => void;
-  getAllFiles: (bucketId: string) => Promise<any>;
+  getAllFiles: (bucketId: string) => Promise<unknown>;
   document: typeof defaultDocument;
   deleteFrom_db_bucket: (fileId: string) => Promise<void>;
   downloadFile: (fileId: string) => Promise<void>;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
-  register: (form: any) => Promise.resolve(),
-  login: (form: any) => Promise.resolve(),
+  register: () => Promise.resolve(),
+  login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   getUser: () => Promise.resolve(),
-  uploadFile: (file: any) => Promise.resolve(),
+  uploadFile: () => Promise.resolve(),
   files: [],
-  handleFile: (event: any) => {},
-  handleRemoveFile: () => {},
-  handleClear: () => {},
-  getAllFiles: (bucketId: string) => Promise.resolve(),
+  handleFile: (event: React.ChangeEvent<HTMLInputElement>) => {
+    event;
+  },
+  handleRemoveFile: (name: string) => {
+    name;
+  },
+  handleClear: () => {
+    setFiles([]);
+  },
+  getAllFiles: () => Promise.resolve(),
   document: defaultDocument,
-  deleteFrom_db_bucket: (fileId: string) => Promise.resolve(),
-  downloadFile: (fileId: string) => Promise.resolve(),
+  deleteFrom_db_bucket: () => Promise.resolve(),
+  downloadFile: () => Promise.resolve(),
 });
 
 export const AppWriteContextProvider = (props: {
@@ -42,13 +48,13 @@ export const AppWriteContextProvider = (props: {
   const [document, setDocument] =
     React.useState<typeof defaultDocument>(defaultDocument);
 
-  const register = async (form: any) => {
+  const register = async (form: typeof registerForm) => {
     await account.create(uniqueID, form.email, form.password, form.name);
 
     await account.createEmailSession(form.email, form.password);
   };
 
-  const login = async (form: any) => {
+  const login = async (form: typeof loginForm) => {
     await account.createEmailSession(form.email, form.password);
   };
 
@@ -62,10 +68,12 @@ export const AppWriteContextProvider = (props: {
     return data;
   };
 
-  const handleFile = (event: any) => {
+  const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files;
-    const arrFiles = [...selectedFile, ...files];
-    setFiles(Array.prototype.slice.call(arrFiles));
+    if (selectedFile) {
+      const arrFiles = [...selectedFile, ...files];
+      setFiles(Array.prototype.slice.call(arrFiles));
+    }
   };
 
   const handleRemoveFile = (name: string) => {
@@ -131,13 +139,13 @@ export const AppWriteContextProvider = (props: {
   };
 
   const downloadFile = async (fileId: string) => {
-    console.log('clicked')
+    console.log('clicked');
     const data = await storage.getFileDownload(
       `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,
       fileId
     );
 
-    console.log('data',data)
+    console.log('data', data);
   };
 
   const deleteFrom_db_bucket = async (fileId: string) => {

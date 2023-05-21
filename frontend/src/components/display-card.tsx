@@ -1,5 +1,5 @@
-// import React from 'react'
 import { motion } from 'framer-motion';
+import AudioPlayer from './audio';
 
 interface Props {
   extension: string;
@@ -20,14 +20,17 @@ const DisplayCard = (props: Props) => {
 
     case 'mp4':
       return (
-        <motion.div className='w-full h-[20rem] overflow-hidden rounded-lg flex items-center border-[1px]'>
+        <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center border-[1px]'>
           <video src={props?.value} />
         </motion.div>
       );
 
+    case 'mp3':
+      return <AudioPlayer value={props.value} />;
+
     case 'html':
       return (
-        <motion.div className='w-full h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
+        <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
           <video src={props?.value} />
         </motion.div>
       );

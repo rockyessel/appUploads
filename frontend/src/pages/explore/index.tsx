@@ -2,8 +2,8 @@
 
 // interface Props {}
 
-const Explore = () => {
-  return <div></div>;
+const FilesExplorer = () => {
+  return <div>FilesExplorer</div>;
 };
 
-export default Explore;
+export default FilesExplorer;

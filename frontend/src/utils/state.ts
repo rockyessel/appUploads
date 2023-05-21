@@ -30,3 +30,15 @@ export const defaultDocument = {
   updatedAt: '',
   view: '',
 };
+
+export const registerForm = {
+  name: '',
+  email: '',
+  password:''
+}
+
+
+export const loginForm = {
+  email: '',
+  password:''
+}

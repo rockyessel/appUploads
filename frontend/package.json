@@ -13,13 +13,17 @@
     "appwrite": "^11.0.0",
     "daisyui": "^2.51.6",
     "framer-motion": "^10.12.12",
+    "jsmediatags": "^3.9.7",
+    "music-metadata-browser": "^2.5.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.11.2",
+    "use-sound": "^4.0.1",
     "valtio": "^1.10.3"
   },
   "devDependencies": {
+    "@types/jsmediatags": "^3.9.3",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
