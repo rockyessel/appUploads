@@ -13,3 +13,20 @@ export const screenState = proxy({
     image: false,
   },
 });
+
+export const defaultDocument = {
+  $collectionId: '',
+  $createdAt: '',
+  $databaseId: '',
+  $id: '',
+  $permissions: '',
+  $updatedAt: '',
+  createdAt: '',
+  extension: '',
+  filename: '',
+  mimeType: '',
+  preview: '',
+  size: '',
+  updatedAt: '',
+  view: '',
+};

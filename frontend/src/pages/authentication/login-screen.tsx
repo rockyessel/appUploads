@@ -5,13 +5,14 @@ import { screenState } from '../../utils/state';
 import { useSnapshot } from 'valtio';
 import { useAppwriteContext } from '../../context/app-write';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 
 const LoginScreen = () => {
   const [selectActiveTab, setSelectActiveTab] = React.useState('login');
   const [form, setForm] = React.useState({ email: '', password: '' });
   const [loading, setLoading] = React.useState(false);
   const snap = useSnapshot(screenState);
-  const { createUser } = useAppwriteContext();
+  const { login } = useAppwriteContext();
 
   const handleFormChange = (event: any) => {
     const { target } = event;
@@ -21,20 +22,22 @@ const LoginScreen = () => {
     }));
   };
 
+  const navigate = useNavigate();
 
   const handleSubmission = async (event: React.SyntheticEvent) => {
     try {
       event.preventDefault();
       console.log('form', form);
       setLoading(true);
-      await createUser(form);
+      await login(form);
+      navigate('/dashboard');
       setLoading(false);
       console.log('Done');
     } catch (error) {
       console.log('error', error);
     } finally {
       console.log('Finally Done');
-      setForm({ email: '', password: ''});
+      setForm({ email: '', password: '' });
     }
   };
 
@@ -75,48 +78,47 @@ const LoginScreen = () => {
               </motion.ul>
             </motion.div>
 
-   
-              <form
-                onSubmit={handleSubmission}
-                className='w-full flex flex-col gap-5'
-              >
-                <div className='w-full'>
-                  <label>Email</label>
-                  <input
-                    value={form.email}
-                    onChange={handleFormChange}
-                    type='email'
-                    name='email'
-                    id='email'
-                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                    placeholder='name@company.com'
-                  />
-                </div>
-
-                <div className='w-full'>
-                  <label>Password</label>
-                  <input
-                    value={form.password}
-                    onChange={handleFormChange}
-                    type='password'
-                    name='password'
-                    id='password'
-                    className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
-                    placeholder='name@company.com'
-                  />
+            <form
+              onSubmit={handleSubmission}
+              className='w-full flex flex-col gap-5'
+            >
+              <div className='w-full'>
+                <label>Email</label>
+                <input
+                  value={form.email}
+                  onChange={handleFormChange}
+                  type='email'
+                  name='email'
+                  id='email'
+                  className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                  placeholder='name@company.com'
+                />
               </div>
-              
-                <div>
-                  <button
-                    title='Login'
-                    type='submit'
-                    className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
-                  >
-                    Login <AiOutlinePlus />
-                  </button>
-                </div>
-              </form>
-            </motion.div>
+
+              <div className='w-full'>
+                <label>Password</label>
+                <input
+                  value={form.password}
+                  onChange={handleFormChange}
+                  type='password'
+                  name='password'
+                  id='password'
+                  className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                  placeholder='name@company.com'
+                />
+              </div>
+
+              <div>
+                <button
+                  title='Login'
+                  type='submit'
+                  className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
+                >
+                  Login <AiOutlinePlus />
+                </button>
+              </div>
+            </form>
+          </motion.div>
         </motion.section>
       )}
     </AnimatePresence>

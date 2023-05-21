@@ -7,10 +7,47 @@ import { FaCopy } from 'react-icons/fa';
 import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
+import { useAppwriteContext } from '../../context/app-write';
+import { downloadFile, hasNoValue } from '../../utils/functions';
+import { useNavigate } from 'react-router-dom';
+import { DisplayCard } from '../../components';
 
 const FileScreen = () => {
   const [selectActiveTab, setSelectActiveTab] = React.useState('link');
+  const [svgContent, setSvgContent] = React.useState('');
   const snap = useSnapshot(screenState);
+  const { document, deleteFrom_db_bucket } = useAppwriteContext();
+  const navigate = useNavigate();
+
+  console.log('document', document);
+  console.log('svgContent', svgContent);
+
+  const handleDelete = async () => {
+    await deleteFrom_db_bucket(`${document?.$id}`);
+    navigate(0);
+  };
+  const getSVGElement = React.useCallback(async () => {
+    const fetchSVG = await fetch(`${document?.view}`);
+
+    if (fetchSVG.ok) {
+      const svgData = await fetchSVG.text();
+      setSvgContent(svgData);
+    }
+  }, [document?.view]);
+
+  React.useEffect(() => {
+    if (document?.extension === 'svg') {
+      getSVGElement();
+    }
+  }, [document, getSVGElement]);
+
+  React.useEffect(() => {
+    const state = hasNoValue(document);
+    if (!state) {
+      screenState.loadingScreen = true;
+      screenState.filesScreen = false;
+    }
+  }, [document]);
 
   const RenderActiveTab = () => {
     switch (selectActiveTab) {
@@ -19,7 +56,7 @@ const FileScreen = () => {
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
               <motion.pre className='overflow-x-auto'>
-                <motion.code>https://imgbox.com/ibO9WDCc</motion.code>
+                <motion.code>{document?.view}</motion.code>
               </motion.pre>
               <FaCopy className='absolute top-3 z-[6] right-3 shadow-lg shadow-black' />
             </motion.div>
@@ -30,7 +67,7 @@ const FileScreen = () => {
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
               <motion.pre className='overflow-x-auto'>
-                <motion.code>{`<a href="https://imgbox.com/ibO9WDCc" target="_blank"><img src="https://thumbs2.imgbox.com/31/91/ibO9WDCc_t.png" alt="image host"/></a>`}</motion.code>
+                <motion.code>{`<a href=${document?.view} target="_blank"><img src=${document?.view} alt=${document?.filename}/></a>`}</motion.code>
               </motion.pre>
               <FaCopy className='absolute top-3 z-[6] right-3 shadow-lg shadow-black' />
             </motion.div>
@@ -43,7 +80,7 @@ const FileScreen = () => {
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
               <motion.pre className='overflow-x-auto'>
                 <motion.code>
-                  [URL=https://imgbox.com/ibO9WDCc][IMG]https://thumbs2.imgbox.com/31/91/ibO9WDCc_t.png[/IMG][/URL]
+                  {`[URL=${document?.$id}][IMG]${document?.view}[/IMG][/URL]`}
                 </motion.code>
               </motion.pre>
               <FaCopy className='absolute top-3 z-[6] right-3 shadow-lg shadow-black' />
@@ -58,30 +95,40 @@ const FileScreen = () => {
       {snap.filesScreen && (
         <motion.section
           {...slideAnimation('up')}
-          className='w-full bg-white absolute top-0 left-0 z-[6] flex items-center justify-center'
+          className='w-full bg-white absolute top-0 left-0 z-[6] flex items-center justify-center px-4'
         >
           <motion.div className='flex flex-col gap-10 items-center justify-center w-[40rem] min-h-screen'>
-            <motion.div className='w-full h-[20rem] overflow-hidden rounded-lg'>
-              <img
-                className='w-full object-cover object-center'
-                src='https://images.unsplash.com/photo-1684437310642-c3660c463cf1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=754&q=80'
-                alt=''
+            {document?.extension === 'svg' ? (
+              <DisplayCard extension={document.extension} value={svgContent} />
+            ) : (
+              <DisplayCard
+                extension={document.extension}
+                value={document.view}
               />
-            </motion.div>
-
+            )}
             <motion.div className='w-full inline-flex items-center justify-between text-sm'>
               <span className='inline-flex items-center gap-2'>
-                <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
-                  View Image <AiOutlineUpload />
-                </span>
+                <a target='_blank' rel='noopener' href={document?.view}>
+                  <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                    View File <AiOutlineUpload />
+                  </span>
+                </a>
                 <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
                   Share <AiOutlinePlus />
                 </span>
-                <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                <span
+                  onClick={() =>
+                    downloadFile(document?.view, document?.filename)
+                  }
+                  className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
+                >
                   Download <AiOutlinePlus />
                 </span>
               </span>
-              <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+              <span
+                onClick={handleDelete}
+                className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
+              >
                 Delete <GiTimeDynamite className='text-red-500' />
               </span>
             </motion.div>
@@ -121,7 +168,11 @@ const FileScreen = () => {
 
             <p className='w-full border-[1px] border-rose-300/30 bg-rose-50 px-4 py-2 rounded-lg'>
               Everyone with your file URL can delete it. For limited access
-              <Link to='/authenticate' className='font-bold text-rose-500'> register</Link>.
+              <Link to='/authenticate' className='font-bold text-rose-500'>
+                {' '}
+                register
+              </Link>
+              .
             </p>
           </motion.div>
         </motion.section>

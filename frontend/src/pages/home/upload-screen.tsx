@@ -5,25 +5,28 @@ import { ImUpload } from 'react-icons/im';
 import { useSnapshot } from 'valtio';
 import { screenState } from '../../utils/state';
 import Logo from '../../components/logo';
+import { useAppwriteContext } from '../../context/app-write';
 
 const UploadScreen = () => {
-  const [clicked, setClicked] = React.useState(true);
+  const snap = useSnapshot(screenState);
+  const { files, handleFile } = useAppwriteContext();
+
+  console.log('files', files);
 
   React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setClicked(true);
-    }, 5000);
-    return () => clearTimeout(timeout);
-  }, [clicked]);
-
-  const snap = useSnapshot(screenState);
+    if (files.length === 0) return
+    else {
+      screenState.defaultScreen = false;
+      screenState.loadingScreen = true;
+    }
+  }, [files]);
 
   return (
     <AnimatePresence>
       {snap.defaultScreen && (
         <motion.section
           {...slideAnimation('left')}
-          className='flex items-center justify-center min-h-screen w-full overflow-hidden'
+          className='flex items-center justify-center min-h-screen w-full overflow-hidden mb-10'
         >
           <motion.div className='flex flex-col gap-10 items-center justify-center w-[20rem]'>
             <motion.div>
@@ -32,7 +35,7 @@ const UploadScreen = () => {
 
             <motion.div className='bg-gray-50 rounded-lg border-dashed border-2 border-gray-900/50 flex flex-col items-center justify-center p-5'>
               <label className='flex flex-col items-center justify-center'>
-                <input type='file' className='w-0 h-0' />
+                <input type='file' onChange={handleFile} className='w-0 h-0' />
                 <ImUpload className='text-7xl' />
                 <motion.p className='text-xs text-center mt-5'>
                   Host JPG, GIF and PNG images up to 10MB each. (or Drag and
@@ -55,7 +58,7 @@ const UploadScreen = () => {
               </motion.p>
             </motion.div>
 
-            <motion.div className='w-full bg-gray-200 rounded-lg'>
+            {/* <motion.div className='w-full bg-gray-200 rounded-lg'>
               <motion.button
                 onClick={() => {
                   screenState.defaultScreen = false;
@@ -65,7 +68,7 @@ const UploadScreen = () => {
               >
                 Upload Now
               </motion.button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </motion.section>
       )}

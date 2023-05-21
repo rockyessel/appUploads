@@ -7,34 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const shuffleString = (input) => {
-  const shuffleRatio = Math.random() * 0.8;
-  let characters = input.split('');
-  characters = characters.sort(() => Math.random() - shuffleRatio);
-  return characters.join('');
-};
 
-const generateString = () => {
-  const characters = shuffleString(
-    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  );
-  const length = Math.floor(Math.random() * 6) + 5;
-  const usedChars = [];
-  let result = '';
-
-  for (let i = 0; i < length; i++) {
-    let index;
-
-    do {
-      index = Math.floor(Math.random() * characters.length);
-    } while (usedChars.includes(characters[index]));
-
-    result += characters[index];
-    usedChars.push(characters[index]);
-  }
-
-  return result;
-};
 
 const getBucket = async () => {
   try {

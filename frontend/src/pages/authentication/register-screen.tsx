@@ -12,7 +12,7 @@ const RegisterScreen = () => {
   const [form, setForm] = React.useState({ email: '', password: '', name: '' });
   const [loading, setLoading] = React.useState(false);
   const snap = useSnapshot(screenState);
-  const { createUser } = useAppwriteContext();
+  const { register } = useAppwriteContext();
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const RegisterScreen = () => {
       event.preventDefault();
       console.log('form', form);
       setLoading(true);
-      await createUser(form);
+      await register(form);
       navigate('/dashboard');
       setLoading(false);
       console.log('Done');

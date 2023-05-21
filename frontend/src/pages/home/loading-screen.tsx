@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { slideAnimation } from '../../utils/motion';
 import { useSnapshot } from 'valtio';
@@ -7,9 +8,35 @@ import { FaTimes } from 'react-icons/fa';
 import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
 import Logo from '../../components/logo';
+import { useAppwriteContext } from '../../context/app-write';
+import { formatFileSize, hasNoValue } from '../../utils/functions';
 
 const LoadingScreen = () => {
   const snap = useSnapshot(screenState);
+  const [state, setState] = React.useState(true);
+  const {
+    files,
+    handleRemoveFile,
+    handleClear,
+    handleFile,
+    uploadFile,
+    document,
+  } = useAppwriteContext();
+
+  const handleFileUpload = async () => {
+    const data = await uploadFile(files[0]);
+    console.log('file upload', data);
+  };
+
+  React.useEffect(() => {
+    setState(hasNoValue(document));
+    if (state) return;
+    else {
+      screenState.loadingScreen = false;
+      screenState.filesScreen = true;
+    }
+  }, [document, state, snap.loadingScreen]);
+
   return (
     <AnimatePresence>
       {snap.loadingScreen && (
@@ -28,45 +55,60 @@ const LoadingScreen = () => {
             <motion.div className='flex flex-col gap-4 items-center justify-center w-full bg-gray-50 border-[1px] rounded-lg px-4 py-2'>
               <motion.div className='w-full inline-flex items-center justify-between text-sm'>
                 <span className='inline-flex items-center gap-2'>
-                  <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                  <span
+                    onClick={handleFileUpload}
+                    className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
+                  >
                     Start <AiOutlineUpload />
                   </span>
-                  <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
-                    Add more <AiOutlinePlus />
-                  </span>
+                  <label>
+                    <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                      Add more <AiOutlinePlus />
+                      <input
+                        type='file'
+                        name='file'
+                        id='uploader'
+                        className='w-0 h-0'
+                        onChange={handleFile}
+                        multiple
+                      />
+                    </span>
+                  </label>
                 </span>
-                <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
-                  Cancel <GiTimeDynamite className='text-red-500' />
+                <span
+                  onClick={handleClear}
+                  className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
+                >
+                  Clear <GiTimeDynamite className='text-red-500' />
                 </span>
               </motion.div>
-
               <motion.div className='w-full flex flex-col gap-2'>
-                <motion.div className='w-full bg-white border-[1px] rounded-lg flex items-center justify-between p-3'>
-                  <span className='font-medium'>
-                    rust-lanaguage-things-developer-should-know...
-                  </span>
-                  <span className='inline-flex items-center gap-3'>
-                    <span>2.63 MB</span>
-                    <span className='border-[1px] p-2 rounded-lg bg-gray-50 hover:bg-rose-500 hover:text-gray-200 cursor-pointer active:ring-2 active:ring-rose-600 active:bg-rose-600 active:border-2 transition-all ease-in-out active:border-white active:text-black'>
-                      <FaTimes />
+                {files?.map((file, index) => (
+                  <motion.div
+                    key={index}
+                    className='w-full bg-white border-[1px] rounded-lg flex items-center justify-between p-3'
+                  >
+                    <span className='font-medium'>{file.name}</span>
+                    <span className='inline-flex items-center gap-3'>
+                      <span>{formatFileSize(file.size)}</span>
+                      <span
+                        onClick={() => handleRemoveFile(file.name)}
+                        className='border-[1px] p-2 rounded-lg bg-gray-50 hover:bg-rose-500 hover:text-gray-200 cursor-pointer active:ring-2 active:ring-rose-600 active:bg-rose-600 active:border-2 transition-all ease-in-out active:border-white active:text-black'
+                      >
+                        <FaTimes />
+                      </span>
                     </span>
-                  </span>
-                </motion.div>
+                  </motion.div>
+                ))}
 
-                <motion.div className='w-full bg-white border-[1px] rounded-lg flex items-center justify-between p-3'>
-                  <span className='font-medium'>
-                    rust-lanaguage-things-developer-should-know...
-                  </span>
-                  <span className='inline-flex items-center gap-3'>
-                    <span>2.63 MB</span>
-                    <span className='border-[1px] p-2 rounded-lg bg-gray-50 hover:bg-rose-500 hover:text-gray-200 cursor-pointer active:ring-2 active:ring-rose-600 active:bg-rose-600 active:border-2 transition-all ease-in-out active:border-white active:text-black'>
-                      <FaTimes />
-                    </span>
-                  </span>
-                </motion.div>
+                {files.length === 0 && (
+                  <p className='w-full bg-white border-[1px] rounded-lg flex items-center justify-between p-3'>
+                    Add files to start uploading
+                  </p>
+                )}
               </motion.div>
             </motion.div>
-
+            {/* 
             <motion.div className='w-full bg-gray-200 rounded-lg'>
               <motion.button
                 onClick={() => {
@@ -77,7 +119,7 @@ const LoadingScreen = () => {
               >
                 Upload Now
               </motion.button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </motion.section>
       )}
