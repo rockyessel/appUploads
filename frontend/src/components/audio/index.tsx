@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Metadata } from '../../interface';
 import { CgMusicNote } from 'react-icons/cg';
 import { VscPlay, VscDebugPause } from 'react-icons/vsc';
-import { read } from 'jsmediatags/build2/BlobFileReader';
+import * as jsmediatags from 'jsmediatags';
+import { jsmediatagsError } from 'jsmediatags/types';
 
 interface Props {
   value: string;
@@ -22,11 +23,11 @@ const AudioPlayer = (props: Props) => {
         const response = await fetch(`${props?.value}`);
         const data = await response.blob();
 
-        read(data, {
+        jsmediatags.read(data, {
           onSuccess: (tags: { type: string; tags: any }) => {
             setMetadata(tags.tags);
           },
-          onError: (error: Error) => {
+          onError: (error: jsmediatagsError) => {
             console.log(error);
           },
         });

@@ -3,6 +3,7 @@
     "Appwrite",
     "daisyui",
     "jsmediatags",
+    "progressbar",
     "tailwindcss",
     "valtio"
   ]
