@@ -14,7 +14,7 @@ const LoginScreen = () => {
   const snap = useSnapshot(screenState);
   const { login } = useAppwriteContext();
 
-  const handleFormChange = (event: any) => {
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setForm((prevFormData) => ({
       ...prevFormData,
@@ -41,6 +41,7 @@ const LoginScreen = () => {
     }
   };
 
+  if (loading) return <p>Loading</p>;
   return (
     <AnimatePresence>
       {snap.authenticationScreen.login && (

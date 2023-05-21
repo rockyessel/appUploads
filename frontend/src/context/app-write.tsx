@@ -8,7 +8,7 @@ interface AppWriteContextProps {
   login: (form: typeof loginForm) => Promise<unknown>;
   logout: () => Promise<void>;
   getUser: () => Promise<unknown>;
-  uploadFile: (file: File) => Promise<void>;
+  uploadFile: (file: File) => Promise<typeof defaultDocument>;
   files: File[];
   handleFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleRemoveFile: (name: string) => void;
@@ -24,7 +24,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   getUser: () => Promise.resolve(),
-  uploadFile: () => Promise.resolve(),
+  uploadFile: () => Promise.resolve(defaultDocument),
   files: [],
   handleFile: (event: React.ChangeEvent<HTMLInputElement>) => {
     event;
@@ -32,9 +32,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   handleRemoveFile: (name: string) => {
     name;
   },
-  handleClear: () => {
-    setFiles([]);
-  },
+  handleClear: () => {},
   getAllFiles: () => Promise.resolve(),
   document: defaultDocument,
   deleteFrom_db_bucket: () => Promise.resolve(),

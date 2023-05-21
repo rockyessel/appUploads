@@ -16,7 +16,7 @@ const RegisterScreen = () => {
 
   const navigate = useNavigate();
 
-  const handleFormChange = (event: any) => {
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setForm((prevFormData) => ({
       ...prevFormData,
@@ -40,6 +40,8 @@ const RegisterScreen = () => {
       setForm({ email: '', password: '', name: '' });
     }
   };
+
+  if(loading) return <p>Loading</p>
 
   return (
     <AnimatePresence>
