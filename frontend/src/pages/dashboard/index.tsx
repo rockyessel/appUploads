@@ -7,7 +7,7 @@ import { useAppwriteContext } from '../../context/app-write';
 import ImageScreen from './image-screen';
 import { useNavigate } from 'react-router-dom';
 
-const Dashboard = () => {
+const Dashboard = ():JSX.Element => {
   const snap = useSnapshot(screenState);
   const { getUser, getAllFiles } = useAppwriteContext();
   const [loading, setLoading] = React.useState(false);
@@ -34,7 +34,7 @@ const Dashboard = () => {
     if (!user) navigate('/');
   }, [navigate, user]);
 
-  if (loading) return;
+  if (loading) return <p>Loading</p>;
   return (
     <Layout>
       {snap.dashboardScreen.user && <UserScreen />}
