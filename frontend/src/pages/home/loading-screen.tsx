@@ -30,6 +30,7 @@ const LoadingScreen = () => {
 
   React.useEffect(() => {
     setState(hasNoValue(document));
+    console.log('state', state)
     if (state) return;
     else {
       screenState.loadingScreen = false;

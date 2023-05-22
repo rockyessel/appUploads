@@ -45,12 +45,16 @@ export const generateString = (): string => {
 // Check if the object has no value
 export const hasNoValue = (obj: Record<string, any>): boolean => {
   for (const prop in obj) {
-    if (obj[prop] !== null && obj[prop] !== '') {
-      return false;
+    if (Array.isArray(obj[prop]) && obj[prop].length > 0) {
+      return false; // Array is not empty
+    }
+
+    if (typeof obj[prop] === 'string' && obj[prop].trim() !== '') {
+      return false; // String is not empty
     }
   }
-  return true;
-}
+  return true; // Object has no values
+};
 
 export const downloadFile = async (url: string, name: string): Promise<void> => {
   try {

@@ -14,10 +14,12 @@ const UploadScreen = () => {
   console.log('files', files);
 
   React.useEffect(() => {
-    if (files.length === 0) return
-    else {
+    if (files.length > 0) {
       screenState.defaultScreen = false;
       screenState.loadingScreen = true;
+    } else {
+      screenState.defaultScreen = true;
+      screenState.loadingScreen = false;
     }
   }, [files]);
 

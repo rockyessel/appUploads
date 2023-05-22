@@ -43,7 +43,7 @@ const FileScreen = () => {
 
   React.useEffect(() => {
     const state = hasNoValue(document);
-    if (!state) {
+    if (state) {
       screenState.loadingScreen = true;
       screenState.filesScreen = false;
     }
