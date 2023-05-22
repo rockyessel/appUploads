@@ -13,13 +13,22 @@ const UploadScreen = () => {
 
   console.log('files', files);
 
+  
+  // @desc This effect is responsible for screen change
   React.useEffect(() => {
-    if (files.length > 0) {
+    const hasFiles = files.length > 0;
+    const hasNoFiles = files.length === 0;
+
+    if (hasFiles) {
       screenState.defaultScreen = false;
       screenState.loadingScreen = true;
-    } else {
+      screenState.filesScreen = false;
+    }
+
+    if (hasNoFiles) {
       screenState.defaultScreen = true;
       screenState.loadingScreen = false;
+      screenState.filesScreen = false;
     }
   }, [files]);
 

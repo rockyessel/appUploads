@@ -1,4 +1,4 @@
-import { proxy } from 'valtio';
+import { proxy, set } from 'valtio';
 import { Document } from '../interface';
 
 export const screenState = proxy({

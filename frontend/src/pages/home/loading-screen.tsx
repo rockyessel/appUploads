@@ -13,7 +13,7 @@ import { formatFileSize, hasNoValue } from '../../utils/functions';
 
 const LoadingScreen = () => {
   const snap = useSnapshot(screenState);
-  const [state, setState] = React.useState(true);
+  const [state, setState] = React.useState<boolean>();
   const {
     files,
     handleRemoveFile,
@@ -28,15 +28,22 @@ const LoadingScreen = () => {
     console.log('file upload', data);
   };
 
+  // @desc This effect is responsible for screen change
   React.useEffect(() => {
-    setState(hasNoValue(document));
-    console.log('state', state)
-    if (state) return;
-    else {
+    const hasEmptyDocument = hasNoValue(document);
+    const hasFiles = files.length > 0;
+    const hasNoFiles = files.length === 0;
+
+    if (hasNoFiles) {
+      screenState.defaultScreen = true;
       screenState.loadingScreen = false;
-      screenState.filesScreen = true;
+      screenState.filesScreen = false;
     }
-  }, [document, state, snap.loadingScreen]);
+
+    setState(hasEmptyDocument);
+
+    screenState.filesScreen = !hasEmptyDocument && hasFiles;
+  }, [document, files.length, state]);
 
   return (
     <AnimatePresence>

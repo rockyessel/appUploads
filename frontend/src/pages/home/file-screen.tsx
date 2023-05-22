@@ -14,9 +14,10 @@ import { DisplayCard } from '../../components';
 
 const FileScreen = () => {
   const [selectActiveTab, setSelectActiveTab] = React.useState('link');
+  const [state, setState] = React.useState<boolean>();
   const [svgContent, setSvgContent] = React.useState('');
   const snap = useSnapshot(screenState);
-  const { document, deleteFrom_db_bucket } = useAppwriteContext();
+  const { document, deleteFrom_db_bucket, files } = useAppwriteContext();
   const navigate = useNavigate();
 
   console.log('document', document);
@@ -41,13 +42,19 @@ const FileScreen = () => {
     }
   }, [document, getSVGElement]);
 
+  // @desc This effect is responsible for screen change
   React.useEffect(() => {
-    const state = hasNoValue(document);
-    if (state) {
-      screenState.loadingScreen = true;
+    const hasEmptyDocument = hasNoValue(document);
+    const hasNoFiles = files.length === 0;
+
+    if (hasEmptyDocument && hasNoFiles) {
+      screenState.loadingScreen = false;
+      screenState.defaultScreen = true;
       screenState.filesScreen = false;
     }
-  }, [document]);
+
+    setState(hasEmptyDocument);
+  }, [document, files.length, state]);
 
   const RenderActiveTab = () => {
     switch (selectActiveTab) {
