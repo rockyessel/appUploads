@@ -17,6 +17,7 @@ interface AppWriteContextProps {
   document: typeof defaultDocument;
   deleteFrom_db_bucket: (fileId: string) => Promise<void>;
   downloadFile: (fileId: string) => Promise<void>;
+  getDocumentFrom_db: () => Promise<void>;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -38,6 +39,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   document: defaultDocument,
   deleteFrom_db_bucket: () => Promise.resolve(),
   downloadFile: () => Promise.resolve(),
+  getDocumentFrom_db: () => Promise.resolve(),
 });
 
 export const AppWriteContextProvider = (props: {
@@ -81,7 +83,6 @@ export const AppWriteContextProvider = (props: {
   };
 
   const handleClear = () => setFiles([]);
-
 
   const uploadFile = async (file: File): Promise<typeof defaultDocument> => {
     // @desc Generate unique ID
@@ -162,6 +163,15 @@ export const AppWriteContextProvider = (props: {
     console.log('db_', db_);
   };
 
+  const getDocumentFrom_db = async () => {
+    const data = await db.listDocuments(
+      `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
+      `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`
+    );
+
+    return data;
+  };
+
   const value = {
     register,
     login,
@@ -176,6 +186,7 @@ export const AppWriteContextProvider = (props: {
     document,
     deleteFrom_db_bucket,
     downloadFile,
+    getDocumentFrom_db,
   };
 
   return (

@@ -10,8 +10,8 @@ export const screenState = proxy({
     login: false,
   },
   dashboardScreen: {
-    user: true,
-    image: false,
+    user: false,
+    image: true,
   },
 });
 

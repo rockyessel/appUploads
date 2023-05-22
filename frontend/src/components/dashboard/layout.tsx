@@ -11,12 +11,16 @@ interface Props {
 const Layout = (props: Props) => {
   return (
     <React.Fragment>
-      <Navbar />
-      <motion.main className='transition-all ease-in'>
+      <motion.main className='w-full h-full transition-all ease-in overflow-hidden'>
+        <Navbar />
         <motion.section {...fadeAnimation} className=''>
-          <motion.div className=''>
-            <SideBar />
-            <AnimatePresence>{props.children}</AnimatePresence>
+          <motion.div className='w-full h-full flex'>
+            <div className='w-280px'>
+              <SideBar />
+            </div>
+            <div className='w-full h-[94vh] flex-1'>
+              <AnimatePresence>{props.children}</AnimatePresence>
+            </div>
           </motion.div>
         </motion.section>
       </motion.main>

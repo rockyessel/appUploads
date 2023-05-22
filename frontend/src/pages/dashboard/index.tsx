@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = ():JSX.Element => {
   const snap = useSnapshot(screenState);
-  const { getUser, getAllFiles } = useAppwriteContext();
+  const { getUser, getDocumentFrom_db } = useAppwriteContext();
   const [loading, setLoading] = React.useState(false);
   const [user, setUser] = React.useState<unknown>({});
 
@@ -17,14 +17,14 @@ const Dashboard = ():JSX.Element => {
   const getUserInfo = React.useCallback(async () => {
     setLoading(true);
     const user_ = await getUser();
-    const data = await getAllFiles(
-      `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`
-    );
-    console.log(data);
 
+
+    const getAllDocuments = await getDocumentFrom_db()
+    console.log('getAllDocuments', getAllDocuments);
+    
     setUser(user_);
     setLoading(false);
-  }, [getAllFiles, getUser]);
+  }, [getDocumentFrom_db, getUser]);
 
   React.useEffect(() => {
     getUserInfo();
