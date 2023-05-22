@@ -15,6 +15,20 @@ export interface Document {
   view: string;
 }
 
+
+interface APIC {
+  data: {
+    format: string;
+    type: string;
+    description: string;
+    data: number[];
+  };
+  description: string;
+  id: string;
+  size: number;
+}
+
+
 interface COMM {
   data: {
     language: string;

@@ -1,4 +1,5 @@
 import { proxy } from 'valtio';
+import { Document } from '../interface';
 
 export const screenState = proxy({
   defaultScreen: true,
@@ -14,12 +15,12 @@ export const screenState = proxy({
   },
 });
 
-export const defaultDocument = {
+export const defaultDocument: Document = {
   $collectionId: '',
   $createdAt: '',
   $databaseId: '',
   $id: '',
-  $permissions: '',
+  $permissions: [],
   $updatedAt: '',
   createdAt: '',
   extension: '',

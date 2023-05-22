@@ -24,6 +24,7 @@ const AudioPlayer = (props: Props) => {
         const data = await response.blob();
 
         jsmediatags.read(data, {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onSuccess: (tags: { type: string; tags: any }) => {
             setMetadata(tags.tags);
           },

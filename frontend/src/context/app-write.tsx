@@ -32,6 +32,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   handleRemoveFile: (name: string) => {
     name;
   },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleClear: () => {},
   getAllFiles: () => Promise.resolve(),
   document: defaultDocument,
@@ -79,9 +80,8 @@ export const AppWriteContextProvider = (props: {
     setFiles(removed_file);
   };
 
-  const handleClear = () => {
-    setFiles([]);
-  };
+  const handleClear = () => setFiles([]);
+
 
   const uploadFile = async (file: File) => {
     // @desc Generate unique ID
