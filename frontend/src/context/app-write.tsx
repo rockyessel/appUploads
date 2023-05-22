@@ -83,7 +83,7 @@ export const AppWriteContextProvider = (props: {
   const handleClear = () => setFiles([]);
 
 
-  const uploadFile = async (file: File) => {
+  const uploadFile = async (file: File): Promise<typeof defaultDocument> => {
     // @desc Generate unique ID
     const documentId = generateString();
 
