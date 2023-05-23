@@ -42,12 +42,9 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   getDocumentFrom_db: () => Promise.resolve(),
 });
 
-export const AppWriteContextProvider = (props: {
-  children: React.ReactNode;
-}) => {
+export const AppWriteContextProvider = (props: { children: React.ReactNode }) => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [document, setDocument] =
-    React.useState<typeof defaultDocument>(defaultDocument);
+  const [document, setDocument] = React.useState<typeof defaultDocument>(defaultDocument);
 
   const register = async (form: typeof registerForm) => {
     await account.create(uniqueID, form.email, form.password, form.name);

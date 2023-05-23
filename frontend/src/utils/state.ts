@@ -11,6 +11,12 @@ export const screenState = proxy({
   },
   dashboardScreen: {
     user: false,
+    music: false,
+    document: false,
+    application: false,
+    generative: false,
+    settings: false,
+    video: false,
     image: true,
   },
 });

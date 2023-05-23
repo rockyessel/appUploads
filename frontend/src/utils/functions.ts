@@ -1,3 +1,46 @@
+import { Document } from '../interface';
+import { screenState } from './state';
+import mimetype from 'mimetype';
+
+type FileCategory =
+  | 'image'
+  | 'video'
+  | 'audio'
+  | 'application'
+  | 'document'
+  | 'unknown';
+
+export const getFileCategory = async (
+  fileUrl: string
+): Promise<FileCategory> => {
+  try {
+    const response = await fetch(fileUrl);
+    if (response.ok) {
+      const contentType = response.headers.get('content-type');
+      if (contentType) {
+        if (contentType.startsWith('image/')) {
+          return 'image';
+        } else if (contentType.startsWith('video/')) {
+          return 'video';
+        } else if (contentType.startsWith('audio/')) {
+          return 'audio';
+        } else if (
+          contentType === 'application/pdf' ||
+          contentType === 'text/html'
+        ) {
+          return 'document';
+        } else if (contentType.startsWith('application/')) {
+          return 'application';
+        }
+      }
+    }
+    return 'unknown';
+  } catch (error) {
+    console.error('Error fetching file:', error);
+    return 'unknown';
+  }
+};
+
 export const formatFileSize = (size: number): string => {
   const units = ['B', 'KB', 'MB', 'GB'];
   let formattedSize = size;
@@ -41,7 +84,6 @@ export const generateString = (): string => {
   return result;
 };
 
-
 // Check if the object has no value
 export const hasNoValue = (obj: Record<string, any>): boolean => {
   for (const prop in obj) {
@@ -56,14 +98,19 @@ export const hasNoValue = (obj: Record<string, any>): boolean => {
   return true; // Object has no values
 };
 
-export const downloadFile = async (url: string, name: string): Promise<void> => {
+export const downloadFile = async (
+  url: string,
+  name: string
+): Promise<void> => {
   try {
     // Fetch the file from the URL
     const response = await fetch(url);
     const data = await response.blob();
 
     // Create a URL object with the downloaded data
-    const blob = new Blob([data], { type: response.headers.get('Content-Type') || undefined });
+    const blob = new Blob([data], {
+      type: response.headers.get('Content-Type') || undefined,
+    });
     const blobUrl = URL.createObjectURL(blob);
 
     // Create a temporary anchor element with the URL and trigger the download
@@ -78,4 +125,93 @@ export const downloadFile = async (url: string, name: string): Promise<void> => 
   } catch (error) {
     console.error('Failed to download file:', error);
   }
+};
+
+export const handleScreenChange = (screen: string) => {
+  switch (screen) {
+    case 'music':
+      screenState.dashboardScreen.music = true;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.settings = false;
+      screenState.dashboardScreen.video = false;
+      break;
+    case 'image':
+      screenState.dashboardScreen.image = true;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.settings = false;
+      screenState.dashboardScreen.video = false;
+      break;
+    case 'video':
+      screenState.dashboardScreen.video = true;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.settings = false;
+      break;
+    case 'application':
+      screenState.dashboardScreen.application = true;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.settings = false;
+      screenState.dashboardScreen.video = false;
+      break;
+    case 'document':
+      screenState.dashboardScreen.document = true;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.settings = false;
+      screenState.dashboardScreen.video = false;
+      break;
+    case 'generative':
+      screenState.dashboardScreen.generative = true;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.settings = false;
+      screenState.dashboardScreen.video = false;
+      break;
+    case 'settings':
+      screenState.dashboardScreen.settings = true;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.video = false;
+      break;
+    default:
+      screenState.dashboardScreen.settings = false;
+      screenState.dashboardScreen.music = false;
+      screenState.dashboardScreen.application = false;
+      screenState.dashboardScreen.document = false;
+      screenState.dashboardScreen.generative = false;
+      screenState.dashboardScreen.image = false;
+      screenState.dashboardScreen.video = false;
+      break;
+  }
+};
+
+export const filteredData = (data: Document[], type:string) => {
+  const filtered = data.filter((obj) => {
+    const mimeType = obj.mimeType.toLowerCase();
+    return (
+      mimeType.startsWith(`${type}`)
+      
+    );
+  });
+
+  console.log('filtered data', filtered);
 };
