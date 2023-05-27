@@ -7,6 +7,7 @@ const App = () => {
       <Route path='/' element={<Home />} />
       <Route path='/authenticate' element={<Authentication />} />
       <Route path='/dashboard' element={<Dashboard />} />
+      <Route path='/dashboard/:fileId' element={<Dashboard />} />
       <Route path='/files' element={<FilesExplorer />} />
       <Route path='/files/:fileId' element={<FileDetailPage />} />
     </Routes>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { slideAnimation } from '../../utils/motion';
+import { slideAnimation } from '../../../utils/motion';
 import { ImUpload } from 'react-icons/im';
 import { useSnapshot } from 'valtio';
-import { screenState } from '../../utils/state';
-import Logo from '../../components/logo';
-import { useAppwriteContext } from '../../context/app-write';
+import { screenState } from '../../../utils/state';
+import Logo from '../../../components/logo';
+import { useAppwriteContext } from '../../../context/app-write';
 
 const UploadScreen = () => {
   const snap = useSnapshot(screenState);

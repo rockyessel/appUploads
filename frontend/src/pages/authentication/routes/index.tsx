@@ -1,7 +1,7 @@
 import React from 'react';
-import RegisterScreen from './register-screen';
-import LoginScreen from './login-screen';
-import { Footer, Navbar, Tag } from '../../components';
+import RegisterScreen from '../screens/register-screen';
+import LoginScreen from '../screens/login-screen';
+import { Footer, Navbar, Tag } from '../../../components';
 
 const Authentication = () => {
   return (

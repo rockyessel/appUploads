@@ -1,5 +1,5 @@
 import { proxy } from 'valtio';
-import { Document } from '../interface';
+import { UserDocumentProps } from '../interface';
 
 export const screenState = proxy({
   defaultScreen: true,
@@ -21,7 +21,7 @@ export const screenState = proxy({
   },
 });
 
-export const defaultDocument: Document = {
+export const defaultDocument: UserDocumentProps = {
   $collectionId: '',
   $createdAt: '',
   $databaseId: '',
@@ -36,6 +36,21 @@ export const defaultDocument: Document = {
   size: '',
   updatedAt: '',
   view: '',
+};
+
+export const defaultUser = {
+  $id:'',
+  $createdAt:'',
+  $updatedAt:'',
+  name:'',
+  registration:'',
+  status: false,
+  passwordUpdate:'',
+  email:'',
+  phone:'',
+  emailVerification: false,
+  phoneVerification: false,
+  prefs: {},
 };
 
 export const registerForm = {

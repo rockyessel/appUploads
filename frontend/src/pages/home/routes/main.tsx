@@ -1,8 +1,8 @@
 import React from 'react';
-import UploadScreen from './upload-screen';
-import LoadingScreen from './loading-screen';
-import FileScreen from './file-screen';
-import { Footer, Navbar, Tag } from '../../components';
+import LoadingScreen from '../screens/loading-screen';
+import FileScreen from '../screens/file-screen';
+import { Footer, Navbar, Tag } from '../../../components';
+import UploadScreen from '../screens/upload-screen';
 
 const Home = () => {
   return (

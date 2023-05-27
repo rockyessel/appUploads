@@ -1,4 +1,4 @@
-export interface Document {
+export interface UserDocumentProps {
   $collectionId: string;
   $createdAt: string;
   $databaseId: string;
@@ -13,6 +13,21 @@ export interface Document {
   size: string;
   updatedAt: string;
   view: string;
+}
+
+export interface UserProps {
+  $id: string;
+  $createdAt: string;
+  $updatedAt: string;
+  name: string;
+  registration: string;
+  status: boolean;
+  passwordUpdate: string;
+  email: string;
+  phone: string;
+  emailVerification: boolean;
+  phoneVerification: boolean;
+  prefs: Record<string, string>;
 }
 
 

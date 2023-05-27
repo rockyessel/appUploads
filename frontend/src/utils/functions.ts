@@ -1,6 +1,5 @@
-import { Document } from '../interface';
+import { UserDocumentProps } from '../interface';
 import { screenState } from './state';
-import mimetype from 'mimetype';
 
 type FileCategory =
   | 'image'
@@ -85,17 +84,25 @@ export const generateString = (): string => {
 };
 
 // Check if the object has no value
-export const hasNoValue = (obj: Record<string, any>): boolean => {
-  for (const prop in obj) {
-    if (Array.isArray(obj[prop]) && obj[prop].length > 0) {
-      return false; // Array is not empty
-    }
-
-    if (typeof obj[prop] === 'string' && obj[prop].trim() !== '') {
-      return false; // String is not empty
-    }
+export const hasNoValue = (obj: any): boolean => {
+  if (Array.isArray(obj)) {
+    return obj.length === 0; // Check if the array is empty
   }
-  return true; // Object has no values
+
+  if (typeof obj === 'object' && obj !== null) {
+    for (const prop in obj) {
+      if (!hasNoValue(obj[prop])) {
+        return false; // Object property has a value
+      }
+    }
+    return true; // All object properties have no values
+  }
+
+  if (typeof obj === 'string' && obj.trim() !== '') {
+    return false; // String is not empty
+  }
+
+  return true; // Other types (number, boolean, null, undefined) have no values
 };
 
 export const downloadFile = async (
@@ -204,14 +211,15 @@ export const handleScreenChange = (screen: string) => {
   }
 };
 
-export const filteredData = (data: Document[], type:string) => {
-  const filtered = data.filter((obj) => {
+export const filteredData = (
+  data: UserDocumentProps[],
+  type: string
+): UserDocumentProps[] => {
+  const filtered = data?.filter((obj) => {
     const mimeType = obj.mimeType.toLowerCase();
-    return (
-      mimeType.startsWith(`${type}`)
-      
-    );
+    return mimeType.startsWith(`${type}`);
   });
-
   console.log('filtered data', filtered);
+
+  return filtered;
 };

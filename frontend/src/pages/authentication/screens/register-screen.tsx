@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { screenState } from '../../utils/state';
+import { screenState } from '../../../utils/state';
 import { useSnapshot } from 'valtio';
-import { slideAnimation } from '../../utils/motion';
+import { slideAnimation } from '../../../utils/motion';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { useAppwriteContext } from '../../context/app-write';
+import { useAppwriteContext } from '../../../context/app-write';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterScreen = () => {

@@ -1,50 +1,51 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSnapshot } from 'valtio';
-import { screenState } from '../../utils/state';
-import { slideAnimation } from '../../utils/motion';
+import { screenState } from '../../../utils/state';
+import { slideAnimation } from '../../../utils/motion';
 import { FaCopy } from 'react-icons/fa';
 import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
-import { useAppwriteContext } from '../../context/app-write';
-import { downloadFile, hasNoValue } from '../../utils/functions';
+import { useAppwriteContext } from '../../../context/app-write';
+import { downloadFile, hasNoValue } from '../../../utils/functions';
 import { useNavigate } from 'react-router-dom';
-import { DisplayCard } from '../../components';
+import { DisplayCard } from '../../../components';
 
 const FileScreen = () => {
   const [selectActiveTab, setSelectActiveTab] = React.useState('link');
+  const [imageIndex, setImageIndex] = React.useState(0);
   const [state, setState] = React.useState<boolean>();
   const [svgContent, setSvgContent] = React.useState('');
   const snap = useSnapshot(screenState);
-  const { document, deleteFrom_db_bucket, files } = useAppwriteContext();
+  const { documents, deleteFrom_db_bucket, files } = useAppwriteContext();
   const navigate = useNavigate();
 
-  console.log('document', document);
+  console.log('documents', documents);
   console.log('svgContent', svgContent);
 
   const handleDelete = async () => {
-    await deleteFrom_db_bucket(`${document?.$id}`);
+    // await deleteFrom_db_bucket(`${documents?.$id}`);
     navigate(0);
   };
-  const getSVGElement = React.useCallback(async () => {
-    const fetchSVG = await fetch(`${document?.view}`);
+  // const getSVGElement = React.useCallback(async () => {
+  // const fetchSVG = await fetch(`${documents?.view}`);
 
-    if (fetchSVG.ok) {
-      const svgData = await fetchSVG.text();
-      setSvgContent(svgData);
-    }
-  }, [document?.view]);
+  // if (fetchSVG.ok) {
+  //   const svgData = await fetchSVG.text();
+  //   setSvgContent(svgData);
+  // }
+  // }, [documents?.view]);
 
-  React.useEffect(() => {
-    if (document?.extension === 'svg') {
-      getSVGElement();
-    }
-  }, [document, getSVGElement]);
+  // React.useEffect(() => {
+  // if (documents?.extension === 'svg') {
+  //   getSVGElement();
+  // }
+  // , [documents, getSVGElement]);
 
   // @desc This effect is responsible for screen change
   React.useEffect(() => {
-    const hasEmptyDocument = hasNoValue(document);
+    const hasEmptyDocument = hasNoValue(documents);
     const hasNoFiles = files.length === 0;
 
     if (hasEmptyDocument && hasNoFiles) {
@@ -54,7 +55,7 @@ const FileScreen = () => {
     }
 
     setState(hasEmptyDocument);
-  }, [document, files.length, state]);
+  }, [documents, documents?.length, files.length, state]);
 
   const RenderActiveTab = () => {
     switch (selectActiveTab) {
@@ -62,8 +63,10 @@ const FileScreen = () => {
         return (
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
-              <motion.pre className='overflow-x-auto'>
-                <motion.code>{document?.view}</motion.code>
+              <motion.pre className='overflow-x-auto flex flex-col'>
+                {documents?.map((document, index) => (
+                  <motion.code key={index}>{document?.view}</motion.code>
+                ))}
               </motion.pre>
               <FaCopy className='absolute top-3 z-[6] right-3 shadow-lg shadow-black' />
             </motion.div>
@@ -73,8 +76,12 @@ const FileScreen = () => {
         return (
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
-              <motion.pre className='overflow-x-auto'>
-                <motion.code>{`<a href=${document?.view} target="_blank"><img src=${document?.view} alt=${document?.filename}/></a>`}</motion.code>
+              <motion.pre className='overflow-x-auto flex flex-col'>
+                {documents?.map((document, index) => (
+                  <motion.code
+                    key={index}
+                  >{`<a href=${document?.view} target="_blank"><img src=${document?.view} alt=${document?.filename}/></a>`}</motion.code>
+                ))}
               </motion.pre>
               <FaCopy className='absolute top-3 z-[6] right-3 shadow-lg shadow-black' />
             </motion.div>
@@ -85,10 +92,12 @@ const FileScreen = () => {
         return (
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
-              <motion.pre className='overflow-x-auto'>
-                <motion.code>
-                  {`[URL=${document?.$id}][IMG]${document?.view}[/IMG][/URL]`}
-                </motion.code>
+              <motion.pre className='overflow-x-auto flex flex-col'>
+                {documents?.map((document, index) => (
+                  <motion.code key={index}>
+                    {`[URL=${document?.$id}][IMG]${document?.view}[/IMG][/URL]`}
+                  </motion.code>
+                ))}
               </motion.pre>
               <FaCopy className='absolute top-3 z-[6] right-3 shadow-lg shadow-black' />
             </motion.div>
@@ -105,17 +114,42 @@ const FileScreen = () => {
           className='w-full bg-white absolute top-0 left-0 z-[6] flex items-center justify-center px-4'
         >
           <motion.div className='flex flex-col gap-10 items-center justify-center w-[40rem] min-h-screen'>
-            {document?.extension === 'svg' ? (
-              <DisplayCard extension={document.extension} value={svgContent} />
-            ) : (
-              <DisplayCard
-                extension={document.extension}
-                value={document.view}
-              />
+            {documents?.map((document, index) =>
+              document?.extension === 'svg' ? (
+                <DisplayCard
+                  key={index}
+                  extension={document.extension}
+                  value={svgContent}
+                />
+              ) : (
+                <DisplayCard
+                  key={index}
+                  extension={document.extension}
+                  value={document.view}
+                />
+              )
             )}
+
+            <div className={`flex gap-2 px-5`}>
+              {documents &&
+                documents?.map((document, index) => (
+                  <div
+                    className={`sbp:w-[4rem] w-[5rem] shadow shadow-gray-600 ${
+                      imageIndex === index ? 'li shadow-blue-500' : null
+                    }`}
+                    key={index}
+                  >
+                    <img
+                      title={document?.filename}
+                      src={document && document.view}
+                      className={`shadow-md shadow-gray-600 `}
+                    />
+                  </div>
+                ))}
+            </div>
             <motion.div className='w-full inline-flex items-center justify-between text-sm'>
               <span className='inline-flex items-center gap-2'>
-                <a target='_blank' rel='noopener' href={document?.view}>
+                <a target='_blank' rel='noopener'>
                   <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
                     View File <AiOutlineUpload />
                   </span>
@@ -124,9 +158,9 @@ const FileScreen = () => {
                   Share <AiOutlinePlus />
                 </span>
                 <span
-                  onClick={() =>
-                    downloadFile(document?.view, document?.filename)
-                  }
+                  // onClick={() =>
+                  //   downloadFile(document?.view, document?.filename)
+                  // }
                   className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
                 >
                   Download <AiOutlinePlus />

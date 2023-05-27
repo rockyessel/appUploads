@@ -2,7 +2,7 @@
 
 // interface Props {}
 import { motion } from 'framer-motion';
-import { headContainerAnimation } from '../../utils/motion';
+import { headContainerAnimation } from '../../../utils/motion';
 import {
   BsImageFill,
   BsPlayCircle,
@@ -11,12 +11,12 @@ import {
 } from 'react-icons/bs';
 
 import { AiOutlineAppstoreAdd } from 'react-icons/ai';
+import MediaCard from '../../../components/media-card';
+import { useAppwriteContext } from '../../../context/app-write';
 
 const ImageScreen = () => {
-
-
-  
-
+  const { globalDocumentData } = useAppwriteContext();
+  // console.log('globalDocumentData', globalDocumentData);
 
   return (
     <motion.div
@@ -53,6 +53,14 @@ const ImageScreen = () => {
           <AiOutlineAppstoreAdd className='text-xl' />
         </motion.div>
       </motion.div>
+      {globalDocumentData?.map((data, index) => (
+        <MediaCard
+          data={data}
+          key={index}
+          extension={`${data?.mimeType?.split('/').shift()} ${data?.extension}`}
+          value={''}
+        />
+      ))}
     </motion.div>
   );
 };

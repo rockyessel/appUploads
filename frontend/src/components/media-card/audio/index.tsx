@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Metadata } from '../../interface';
+import { Metadata } from '../../../interface';
 import { CgMusicNote } from 'react-icons/cg';
 import { VscPlay, VscDebugPause } from 'react-icons/vsc';
 import * as jsmediatags from 'jsmediatags';

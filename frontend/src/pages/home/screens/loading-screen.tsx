@@ -1,15 +1,15 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { slideAnimation } from '../../utils/motion';
+import { slideAnimation } from '../../../utils/motion';
 import { useSnapshot } from 'valtio';
-import { screenState } from '../../utils/state';
-import { CircleProgressbar } from '../../components';
+import { screenState } from '../../../utils/state';
+import { CircleProgressbar } from '../../../components';
 import { FaTimes } from 'react-icons/fa';
 import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
-import Logo from '../../components/logo';
-import { useAppwriteContext } from '../../context/app-write';
-import { formatFileSize, hasNoValue } from '../../utils/functions';
+import Logo from '../../../components/logo';
+import { useAppwriteContext } from '../../../context/app-write';
+import { formatFileSize, hasNoValue } from '../../../utils/functions';
 
 const LoadingScreen = () => {
   const snap = useSnapshot(screenState);
@@ -20,17 +20,18 @@ const LoadingScreen = () => {
     handleClear,
     handleFile,
     uploadFile,
-    document,
+    documents,
   } = useAppwriteContext();
 
   const handleFileUpload = async () => {
-    const data = await uploadFile(files[0]);
-    console.log('file upload', data);
+    const uploadPromises = files.map((file) => uploadFile(file));
+    const uploadResults = await Promise.all(uploadPromises);
+    console.log('file uploads', uploadResults);
   };
 
   // @desc This effect is responsible for screen change
   React.useEffect(() => {
-    const hasEmptyDocument = hasNoValue(document);
+    const hasEmptyDocument = hasNoValue(documents);
     const hasFiles = files.length > 0;
     const hasNoFiles = files.length === 0;
 
@@ -43,7 +44,7 @@ const LoadingScreen = () => {
     setState(hasEmptyDocument);
 
     screenState.filesScreen = !hasEmptyDocument && hasFiles;
-  }, [document, files.length, state]);
+  }, [documents, files.length, state]);
 
   return (
     <AnimatePresence>
