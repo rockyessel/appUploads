@@ -4,8 +4,6 @@ import { screenState } from '../../../utils/state';
 import { motion } from 'framer-motion';
 import { fadeAnimation } from '../../../utils/motion';
 
-interface Props {}
-
 const DashboardFileDetails = () => {
   React.useEffect(() => {
     screenState.dashboardScreen.settings = false;

@@ -1,9 +1,7 @@
-import React from 'react';
+// import React from 'react'
 
-interface FileProps {}
-
-const File: React.FC<FileProps> = (props: FileProps) => {
-  return <div>File</div>;
+const FileCard = () => {
+  return <div>FileCard</div>;
 };
 
-export default File;
+export default FileCard;

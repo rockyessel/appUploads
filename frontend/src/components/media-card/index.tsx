@@ -1,5 +1,5 @@
 // import React from 'react'
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import VideoCard from './video';
 import AudioPlayer from './audio';
 import ImageCard from './image';
@@ -19,7 +19,7 @@ const MediaCard = (props: Props) => {
   switch (props?.extension) {
     // @desc mimeType extension
     case 'image svg':
-      return <SvgCard extension={props?.extension} />;
+      return <SvgCard documentData={props?.data} />;
 
     // @desc mimeType extension
     case 'video mp4':

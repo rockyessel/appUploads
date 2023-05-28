@@ -8,7 +8,7 @@ import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
 import { useAppwriteContext } from '../../../context/app-write';
-import { downloadFile, hasNoValue } from '../../../utils/functions';
+import { hasNoValue } from '../../../utils/functions';
 import { useNavigate } from 'react-router-dom';
 import { DisplayCard } from '../../../components';
 import SvgCard from '../../../components/media-card/svg';
@@ -18,7 +18,7 @@ const FileScreen = () => {
   const [currentSlider, setCurrentSlider] = React.useState(0);
   const [state, setState] = React.useState<boolean>();
   const snap = useSnapshot(screenState);
-  const { documentsData, deleteFrom_db_bucket, files } = useAppwriteContext();
+  const { documentsData, files } = useAppwriteContext();
   const navigate = useNavigate();
 
   console.log('documentsData', documentsData);
@@ -117,6 +117,7 @@ const FileScreen = () => {
                       {document.$id === documentsData[currentSlider].$id && (
                         <div>
                           <DisplayCard
+                            data={document}
                             key={index}
                             extension={document.extension}
                             value={document.view}
@@ -135,6 +136,7 @@ const FileScreen = () => {
                       {document.$id === documentsData[currentSlider].$id && (
                         <div>
                           <DisplayCard
+                            data={document}
                             key={index}
                             extension={document.extension}
                             value={document.view}

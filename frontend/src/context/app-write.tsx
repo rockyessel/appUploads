@@ -15,7 +15,7 @@ interface AppWriteContextProps {
   login: (form: typeof loginForm) => Promise<unknown>;
   logout: () => Promise<void>;
   getUser: () => Promise<UserProps>;
-  uploadFile: (file: File) => Promise<typeof defaultDocument>;
+  uploadFile: (file: File) => Promise<UserDocumentProps[] | []>;
   files: File[];
   handleFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleRemoveFile: (name: string) => void;
@@ -23,14 +23,15 @@ interface AppWriteContextProps {
   getAllFiles: (bucketId: string) => Promise<unknown>;
   documentsData: (typeof defaultDocument)[] | [];
   deleteFrom_db_bucket: (fileId: string) => Promise<void>;
-  getDocumentFrom_db: () => Promise<void>;
+  // getDocumentFrom_db: () => Promise<void>;
   getCurrentUserDocuments: (
     userId: string
   ) => Promise<{ total: number; documents: UserDocumentProps[] | [] }>;
-  globalDocumentData: [typeof defaultDocument] | [];
+  globalDocumentData: UserDocumentProps[] | [];
   setGlobalDocumentData: React.Dispatch<
-    React.SetStateAction<UserDocumentProps[]>
+    React.SetStateAction<UserDocumentProps[] | []>
   >;
+  getDocument: ($id: string) => Promise<UserDocumentProps | undefined>;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -38,7 +39,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   getUser: () => Promise.resolve(defaultUser),
-  uploadFile: () => Promise.resolve(defaultDocument),
+  uploadFile: () => Promise.resolve([]),
   files: [],
   handleFile: (event: React.ChangeEvent<HTMLInputElement>) => {
     event;
@@ -51,22 +52,23 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   getAllFiles: () => Promise.resolve(),
   documentsData: [],
   deleteFrom_db_bucket: () => Promise.resolve(),
-  getDocumentFrom_db: () => Promise.resolve(),
+  // getDocumentFrom_db: () => Promise.resolve(),
   getCurrentUserDocuments: () => Promise.resolve({ total: 0, documents: [] }),
   globalDocumentData: [],
   setGlobalDocumentData: () => [],
+  getDocument: () => Promise.resolve(defaultDocument),
 });
 
 export const AppWriteContextProvider = (props: {
   children: React.ReactNode;
 }) => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [documentsData, setDocumentsData] = React.useState<
-    (typeof defaultDocument)[] | []
-  >([]);
+  const [documentsData, setDocumentsData] = React.useState<UserDocumentProps[]>(
+    []
+  ); // Updated initial state
   const [globalDocumentData, setGlobalDocumentData] = React.useState<
-    (typeof defaultDocument)[]
-  >([]);
+    UserDocumentProps[]
+  >([]); // Updated initial state
 
   const register = async (form: typeof registerForm) => {
     await account.create(uniqueID, form.email, form.password, form.name);
@@ -101,9 +103,7 @@ export const AppWriteContextProvider = (props: {
 
   const handleClear = () => setFiles([]);
 
-  const uploadFile = async (
-    file: File
-  ): Promise<(typeof defaultDocument)[]> => {
+  const uploadFile = async (file: File): Promise<UserDocumentProps[] | []> => {
     // @desc Generate unique ID
     const documentId = generateString();
 
@@ -153,27 +153,27 @@ export const AppWriteContextProvider = (props: {
     }
 
     console.log('documentsData', documentsData);
-    return documentsData;
+    return documentsData as UserDocumentProps[];
   };
 
   const getCurrentUserDocuments = async (userId: string) => {
-    if (userId) {
-      const data = await db.listDocuments(
-        `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
-        `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
-        [Query.equal('userId', [`${userId}`])]
-      );
-      return data;
-    }
+    // if (userId) {
+    const data = (await db.listDocuments(
+      `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
+      `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
+      [Query.equal('userId', [`${userId}`])]
+    )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
+    return data;
+    // }
   };
 
   const getDocument = async ($id: string) => {
     if ($id) {
-      const data = await db.listDocuments(
+      const data = (await db.listDocuments(
         `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
         `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
         [Query.equal('documentId', [`${$id}`])]
-      );
+      )) as unknown as UserDocumentProps;
       return data;
     }
   };
@@ -195,13 +195,13 @@ export const AppWriteContextProvider = (props: {
     );
   };
 
-  const getDocumentFrom_db = async () => {
-    const data = await db.listDocuments(
-      `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
-      `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`
-    );
-    return data;
-  };
+  // const getDocumentFrom_db = async () => {
+  //   const data = await db.listDocuments(
+  //     `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
+  //     `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`
+  //   );
+  //   return data;
+  // };
 
   const value = {
     register,
@@ -216,10 +216,11 @@ export const AppWriteContextProvider = (props: {
     getAllFiles,
     documentsData,
     deleteFrom_db_bucket,
-    getDocumentFrom_db,
+    // getDocumentFrom_db,
     getCurrentUserDocuments,
     globalDocumentData,
     setGlobalDocumentData,
+    getDocument,
   };
 
   return (

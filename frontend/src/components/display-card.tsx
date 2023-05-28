@@ -5,8 +5,8 @@ import SvgCard from './media-card/svg';
 
 interface Props {
   extension: string;
-  value?: string;
-  data?: UserDocumentProps;
+  value: string;
+  data: UserDocumentProps;
 }
 
 const DisplayCard = (props: Props) => {
