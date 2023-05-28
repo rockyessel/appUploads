@@ -8,13 +8,13 @@ const Home = () => {
   return (
     <React.Fragment>
       <Navbar />
-      <main className='app transition-all ease-in'>
+      <main className='app transition-all ease-in overflow-y-auto'>
         <UploadScreen />
         <LoadingScreen />
         <FileScreen />
         <Tag />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </React.Fragment>
   );
 };

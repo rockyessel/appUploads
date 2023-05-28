@@ -1,31 +1,40 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { UserDocumentProps } from '../../interface';
 
-interface Props {}
+interface Props {
+  documentData?: UserDocumentProps;
+}
 
-const SvgCard = (props) => {
+const SvgCard = (props: Props) => {
   const [svgContent, setSvgContent] = React.useState('');
 
+  console.log('SVGCard', props);
+
   const getSVGElement = React.useCallback(async () => {
-    const fetchSVG = await fetch(`${props?.view}`);
+    const fetchSVG = await fetch(`${props?.documentData?.view}`);
 
     if (fetchSVG.ok) {
       const svgData = await fetchSVG.text();
       setSvgContent(svgData);
     }
-  }, [props?.view]);
+  }, [props?.documentData?.view]);
 
   React.useEffect(() => {
-    if (props?.document?.extension === 'svg') {
+    if (props?.documentData?.extension === 'svg') {
       getSVGElement();
     }
-  }, [props?.document, getSVGElement]);
+  }, [props?.documentData, getSVGElement]);
   return (
-    <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
-      <span
-        className='w-full'
-        dangerouslySetInnerHTML={{ __html: svgContent }}
-      ></span>
+    <motion.div className='w-[50rem] text-7xl bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
+      {svgContent ? (
+        <span
+          className='w-full'
+          dangerouslySetInnerHTML={{ __html: svgContent }}
+        ></span>
+      ) : (
+        'fjfjfjfjfjfjfjjfjfjfjfjfjf'
+      )}
     </motion.div>
   );
 };

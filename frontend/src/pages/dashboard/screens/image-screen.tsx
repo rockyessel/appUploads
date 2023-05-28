@@ -1,4 +1,4 @@
-// import React from 'react'
+import React from 'react';
 
 // interface Props {}
 import { motion } from 'framer-motion';
@@ -13,17 +13,68 @@ import {
 import { AiOutlineAppstoreAdd } from 'react-icons/ai';
 import MediaCard from '../../../components/media-card';
 import { useAppwriteContext } from '../../../context/app-write';
+import { useSnapshot } from 'valtio';
+import { defaultUser, screenState } from '../../../utils/state';
+import { UserProps } from '../../../interface';
+import { filteredData } from '../../../utils/functions';
+import { useNavigate } from 'react-router-dom';
 
 const ImageScreen = () => {
-  const { globalDocumentData } = useAppwriteContext();
-  // console.log('globalDocumentData', globalDocumentData);
+  const snap = useSnapshot(screenState);
+  const {
+    getUser,
+    getCurrentUserDocuments,
+    setGlobalDocumentData,
+    globalDocumentData,
+  } = useAppwriteContext();
+  const [loading, setLoading] = React.useState(false);
+  // const [getAllUserDocuments, setGetAllUserDocuments] = React.useState<{
+  //   total: number;
+  //   documents: UserDocumentProps[] | [];
+  // }>([]);
+  const [user, setUser] = React.useState<UserProps>(defaultUser);
+
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!user) navigate('/');
+  }, [navigate, user]);
+
+  const getLoginUserInfo = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      const user_ = await getUser();
+      setUser(user_);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [getUser]);
+
+  React.useEffect(() => {
+    getLoginUserInfo();
+  }, []);
+
+  React.useEffect(() => {
+    const getAllUserDocuments = async () => {
+      if (user) {
+        const allCurrentUserDocuments = await getCurrentUserDocuments(
+          user?.$id
+        );
+        setGlobalDocumentData(
+          filteredData(allCurrentUserDocuments?.documents, 'image')
+        );
+      }
+    };
+    getAllUserDocuments();
+  }, [user]);
 
   return (
     <motion.div
       {...headContainerAnimation}
-      className='bg-gray-50 w-full h-full overflow-y-auto  p-3'
+      className='bg-gray-50 w-full h-full overflow-y-auto p-3'
     >
-      <motion.div className='flex flex-wrap gap-2'>
+      {/* <motion.div className='flex flex-wrap gap-2'>
         <motion.div className='border-[1px] border-gray-300 w-fit h-fit gap-4'>
           <img
             className='w-40 h-30 object-cover object-center'
@@ -52,15 +103,20 @@ const ImageScreen = () => {
         <motion.div className='bg-white border-[1px] border-gray-300 gap-4 w-40 h-30 inline-flex items-center justify-center'>
           <AiOutlineAppstoreAdd className='text-xl' />
         </motion.div>
+      </motion.div> */}
+      <motion.div className='flex flex-wrap gap-2'>
+        {globalDocumentData?.map((data, index) => (
+          <MediaCard
+            data={data}
+            key={index}
+            extension={`${data?.mimeType?.split('/').shift()} ${
+              data?.extension
+            }`}
+            value={''}
+            svgElementContent={''}
+          />
+        ))}
       </motion.div>
-      {globalDocumentData?.map((data, index) => (
-        <MediaCard
-          data={data}
-          key={index}
-          extension={`${data?.mimeType?.split('/').shift()} ${data?.extension}`}
-          value={''}
-        />
-      ))}
     </motion.div>
   );
 };

@@ -21,7 +21,7 @@ interface AppWriteContextProps {
   handleRemoveFile: (name: string) => void;
   handleClear: () => void;
   getAllFiles: (bucketId: string) => Promise<unknown>;
-  documents: typeof defaultDocument[] | [];
+  documentsData: (typeof defaultDocument)[] | [];
   deleteFrom_db_bucket: (fileId: string) => Promise<void>;
   getDocumentFrom_db: () => Promise<void>;
   getCurrentUserDocuments: (
@@ -49,7 +49,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleClear: () => {},
   getAllFiles: () => Promise.resolve(),
-  documents: [],
+  documentsData: [],
   deleteFrom_db_bucket: () => Promise.resolve(),
   getDocumentFrom_db: () => Promise.resolve(),
   getCurrentUserDocuments: () => Promise.resolve({ total: 0, documents: [] }),
@@ -61,7 +61,9 @@ export const AppWriteContextProvider = (props: {
   children: React.ReactNode;
 }) => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [documents, setDocuments] = React.useState<(typeof defaultDocument)[] | []>([]);
+  const [documentsData, setDocumentsData] = React.useState<
+    (typeof defaultDocument)[] | []
+  >([]);
   const [globalDocumentData, setGlobalDocumentData] = React.useState<
     (typeof defaultDocument)[]
   >([]);
@@ -99,7 +101,9 @@ export const AppWriteContextProvider = (props: {
 
   const handleClear = () => setFiles([]);
 
-  const uploadFile = async (file: File): Promise<typeof defaultDocument[]> => {
+  const uploadFile = async (
+    file: File
+  ): Promise<(typeof defaultDocument)[]> => {
     // @desc Generate unique ID
     const documentId = generateString();
 
@@ -110,6 +114,7 @@ export const AppWriteContextProvider = (props: {
     );
 
     const currentUser = await getUser();
+    console.log('currentUser', currentUser);
 
     if (data) {
       // @desc Get information from file and data.
@@ -144,11 +149,11 @@ export const AppWriteContextProvider = (props: {
         `${documentId}`,
         dbSchemaData
       );
-      setDocuments((previousDoc) => [...previousDoc, createdDocument]);
+      setDocumentsData((previousDoc) => [...previousDoc, createdDocument]);
     }
 
-    console.log('documents', documents);
-    return documents;
+    console.log('documentsData', documentsData);
+    return documentsData;
   };
 
   const getCurrentUserDocuments = async (userId: string) => {
@@ -157,6 +162,17 @@ export const AppWriteContextProvider = (props: {
         `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
         `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
         [Query.equal('userId', [`${userId}`])]
+      );
+      return data;
+    }
+  };
+
+  const getDocument = async ($id: string) => {
+    if ($id) {
+      const data = await db.listDocuments(
+        `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
+        `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
+        [Query.equal('documentId', [`${$id}`])]
       );
       return data;
     }
@@ -198,7 +214,7 @@ export const AppWriteContextProvider = (props: {
     handleRemoveFile,
     handleClear,
     getAllFiles,
-    documents,
+    documentsData,
     deleteFrom_db_bucket,
     getDocumentFrom_db,
     getCurrentUserDocuments,

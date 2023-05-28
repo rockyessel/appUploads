@@ -1,23 +1,19 @@
 import { motion } from 'framer-motion';
 import AudioPlayer from './media-card/audio';
+import { UserDocumentProps } from '../interface';
+import SvgCard from './media-card/svg';
 
 interface Props {
   extension: string;
-  value: string;
+  value?: string;
+  data?: UserDocumentProps;
 }
 
 const DisplayCard = (props: Props) => {
   switch (props.extension) {
     // @desc mimeType extension
-    case 'image svg':
-      return (
-        <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
-          <span
-            className='w-full'
-            dangerouslySetInnerHTML={{ __html: props?.value }}
-          ></span>
-        </motion.div>
-      );
+    case 'svg':
+      return <SvgCard documentData={props.data} />;
 
     // @desc mimeType extension
     case 'video mp4':
@@ -44,7 +40,7 @@ const DisplayCard = (props: Props) => {
       );
 
     // @desc mimeType extension
-    case 'audio mp3':
+    case 'mp3':
       return <AudioPlayer value={props.value} />;
 
     // @desc mimeType extension
@@ -60,7 +56,7 @@ const DisplayCard = (props: Props) => {
         <motion.div className='w-full h-[20rem] overflow-hidden rounded-lg flex items-center border-[1px]'>
           <img
             className='w-full h-full object-cover object-center'
-            src={props.value}
+            src={props?.value}
             alt=''
           />
         </motion.div>

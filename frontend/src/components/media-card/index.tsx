@@ -9,7 +9,8 @@ import SvgCard from './svg';
 interface Props {
   data: UserDocumentProps;
   extension: string;
-  value: string | TrustedHTML;
+  value: string;
+  svgElementContent: string | TrustedHTML;
 }
 
 const MediaCard = (props: Props) => {
@@ -38,19 +39,20 @@ const MediaCard = (props: Props) => {
     case 'video asf':
     case 'video wmv':
     case 'video webm':
-      return <VideoCard />;
+      return <VideoCard value={props.data?.view} />;
 
-    // @desc mimeType extension
+    // // @desc mimeType extension
     case 'audio mp3':
+    case 'audio mpeg':
       return <AudioPlayer value={props.value} />;
 
-    // @desc mimeType extension
-    case 'text html':
-      return (
-        <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
-          <video src={props?.value} />
-        </motion.div>
-      );
+    /// // @desc mimeType extension
+    // case 'text html':
+    //   return (
+    //     <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
+    //       <video src={props?.value} />
+    //     </motion.div>
+    //   );
 
     default:
       return <ImageCard value={props?.data?.view} />;

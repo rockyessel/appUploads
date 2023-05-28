@@ -1,12 +1,16 @@
-import React from 'react';
+// import React from 'react';
 import { motion } from 'framer-motion';
 
-const ImageCard = (props) => {
+interface Props {
+  value: string;
+}
+
+const ImageCard = (props: Props) => {
   return (
-    <motion.div className='w-full h-[20rem] overflow-hidden rounded-lg flex items-center border-[1px]'>
+    <motion.div className='border-[1px] border-gray-300 gap-4 w-40 h-32 overflow-hidden'>
       <img
         className='w-full h-full object-cover object-center'
-        src={props.value}
+        src={props?.value}
         alt=''
       />
     </motion.div>

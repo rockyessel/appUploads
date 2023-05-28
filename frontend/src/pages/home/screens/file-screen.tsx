@@ -11,41 +11,28 @@ import { useAppwriteContext } from '../../../context/app-write';
 import { downloadFile, hasNoValue } from '../../../utils/functions';
 import { useNavigate } from 'react-router-dom';
 import { DisplayCard } from '../../../components';
+import SvgCard from '../../../components/media-card/svg';
 
 const FileScreen = () => {
   const [selectActiveTab, setSelectActiveTab] = React.useState('link');
-  const [imageIndex, setImageIndex] = React.useState(0);
+  const [currentSlider, setCurrentSlider] = React.useState(0);
   const [state, setState] = React.useState<boolean>();
-  const [svgContent, setSvgContent] = React.useState('');
   const snap = useSnapshot(screenState);
-  const { documents, deleteFrom_db_bucket, files } = useAppwriteContext();
+  const { documentsData, deleteFrom_db_bucket, files } = useAppwriteContext();
   const navigate = useNavigate();
 
-  console.log('documents', documents);
-  console.log('svgContent', svgContent);
+  console.log('documentsData', documentsData);
+
+  const imageLength = documentsData.length;
 
   const handleDelete = async () => {
-    // await deleteFrom_db_bucket(`${documents?.$id}`);
+    // await deleteFrom_db_bucket(`${documentsData?.$id}`);
     navigate(0);
   };
-  // const getSVGElement = React.useCallback(async () => {
-  // const fetchSVG = await fetch(`${documents?.view}`);
-
-  // if (fetchSVG.ok) {
-  //   const svgData = await fetchSVG.text();
-  //   setSvgContent(svgData);
-  // }
-  // }, [documents?.view]);
-
-  // React.useEffect(() => {
-  // if (documents?.extension === 'svg') {
-  //   getSVGElement();
-  // }
-  // , [documents, getSVGElement]);
 
   // @desc This effect is responsible for screen change
   React.useEffect(() => {
-    const hasEmptyDocument = hasNoValue(documents);
+    const hasEmptyDocument = hasNoValue(documentsData);
     const hasNoFiles = files.length === 0;
 
     if (hasEmptyDocument && hasNoFiles) {
@@ -55,7 +42,14 @@ const FileScreen = () => {
     }
 
     setState(hasEmptyDocument);
-  }, [documents, documents?.length, files.length, state]);
+  }, [documentsData, documentsData?.length, files.length, state]);
+
+  const handleMoveDot = (index: number) => {
+    setCurrentSlider(index);
+    console.log('index', index);
+  };
+
+  console.log('######docv', document);
 
   const RenderActiveTab = () => {
     switch (selectActiveTab) {
@@ -64,7 +58,7 @@ const FileScreen = () => {
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
               <motion.pre className='overflow-x-auto flex flex-col'>
-                {documents?.map((document, index) => (
+                {documentsData?.map((document, index) => (
                   <motion.code key={index}>{document?.view}</motion.code>
                 ))}
               </motion.pre>
@@ -77,7 +71,7 @@ const FileScreen = () => {
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
               <motion.pre className='overflow-x-auto flex flex-col'>
-                {documents?.map((document, index) => (
+                {documentsData?.map((document, index) => (
                   <motion.code
                     key={index}
                   >{`<a href=${document?.view} target="_blank"><img src=${document?.view} alt=${document?.filename}/></a>`}</motion.code>
@@ -93,7 +87,7 @@ const FileScreen = () => {
           <AnimatePresence>
             <motion.div className='w-full border-[1px] relative bg-black px-5 py-4 rounded-lg text-gray-50/70'>
               <motion.pre className='overflow-x-auto flex flex-col'>
-                {documents?.map((document, index) => (
+                {documentsData?.map((document, index) => (
                   <motion.code key={index}>
                     {`[URL=${document?.$id}][IMG]${document?.view}[/IMG][/URL]`}
                   </motion.code>
@@ -114,38 +108,78 @@ const FileScreen = () => {
           className='w-full bg-white absolute top-0 left-0 z-[6] flex items-center justify-center px-4'
         >
           <motion.div className='flex flex-col gap-10 items-center justify-center w-[40rem] min-h-screen'>
-            {documents?.map((document, index) =>
-              document?.extension === 'svg' ? (
-                <DisplayCard
-                  key={index}
-                  extension={document.extension}
-                  value={svgContent}
-                />
-              ) : (
-                <DisplayCard
-                  key={index}
-                  extension={document.extension}
-                  value={document.view}
-                />
-              )
-            )}
+            <div>
+              {documentsData.map(
+                (document, index) =>
+                  document.mimeType.startsWith('image') &&
+                  !document.mimeType.includes('svg+xml') && (
+                    <div key={index}>
+                      {document.$id === documentsData[currentSlider].$id && (
+                        <div>
+                          <DisplayCard
+                            key={index}
+                            extension={document.extension}
+                            value={document.view}
+                          />
+                          <span>hello {document?.filename}</span>
+                        </div>
+                      )}
+                    </div>
+                  )
+              )}
 
-            <div className={`flex gap-2 px-5`}>
-              {documents &&
-                documents?.map((document, index) => (
+              {documentsData.map(
+                (document, index) =>
+                  document.mimeType.startsWith('audio') && (
+                    <div key={index}>
+                      {document.$id === documentsData[currentSlider].$id && (
+                        <div>
+                          <DisplayCard
+                            key={index}
+                            extension={document.extension}
+                            value={document.view}
+                          />
+                          <span>hello {document?.filename}</span>
+                        </div>
+                      )}
+                    </div>
+                  )
+              )}
+
+              {documentsData.map(
+                (document, index) =>
+                  document.mimeType.startsWith('image') &&
+                  document.mimeType.includes('svg') && (
+                    <div key={index}>
+                      {document.$id === documentsData[currentSlider].$id && (
+                        <div>
+                          <span>Hello Wworld</span>
+                          {document ? (
+                            <SvgCard documentData={document} />
+                          ) : (
+                            'fdfdfdfdfdfdfdf'
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+              )}
+            </div>
+
+            <div className={'flex justify-center gap-3 relative bottom-[2rem]'}>
+              {Array.from({ length: imageLength }).map((_, index: number) => {
+                return (
                   <div
-                    className={`sbp:w-[4rem] w-[5rem] shadow shadow-gray-600 ${
-                      imageIndex === index ? 'li shadow-blue-500' : null
-                    }`}
                     key={index}
-                  >
-                    <img
-                      title={document?.filename}
-                      src={document && document.view}
-                      className={`shadow-md shadow-gray-600 `}
-                    />
-                  </div>
-                ))}
+                    onClick={() => handleMoveDot(index)}
+                    className={`${
+                      currentSlider === index
+                        ? 'w-[3rem] h-2  bg-blue-500 transition-all duration-500 ease-in-out '
+                        : 'w-[1rem] h-2'
+                    } rounded-md  bg-gray-200`}
+                  ></div>
+                );
+              })}
             </div>
             <motion.div className='w-full inline-flex items-center justify-between text-sm'>
               <span className='inline-flex items-center gap-2'>

@@ -20,7 +20,7 @@ const LoadingScreen = () => {
     handleClear,
     handleFile,
     uploadFile,
-    documents,
+    documentsData,
   } = useAppwriteContext();
 
   const handleFileUpload = async () => {
@@ -29,9 +29,9 @@ const LoadingScreen = () => {
     console.log('file uploads', uploadResults);
   };
 
-  // @desc This effect is responsible for screen change
+  // @desc This effect is responsible for screen changes
   React.useEffect(() => {
-    const hasEmptyDocument = hasNoValue(documents);
+    const hasEmptyDocument = hasNoValue(documentsData);
     const hasFiles = files.length > 0;
     const hasNoFiles = files.length === 0;
 
@@ -44,7 +44,7 @@ const LoadingScreen = () => {
     setState(hasEmptyDocument);
 
     screenState.filesScreen = !hasEmptyDocument && hasFiles;
-  }, [documents, files.length, state]);
+  }, [documentsData, files.length, state]);
 
   return (
     <AnimatePresence>
