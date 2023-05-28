@@ -1,9 +1,9 @@
-import React from 'react'
+// import React from 'react'
 
-interface Props {}
+// interface Props {}
 
-const theme = () => {
+const  Theme = () => {
   return <div></div>
 }
 
-export default theme
+export default Theme;

@@ -1,18 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeAnimation } from '../../../utils/motion';
-import { BsPlayCircle } from 'react-icons/bs';
+// import { BsPlayCircle } from 'react-icons/bs';
 import { useAppwriteContext } from '../../../context/app-write';
 import MediaCard from '../../../components/media-card';
 import { filteredData } from '../../../utils/functions';
-import { defaultUser, screenState } from '../../../utils/state';
-import { useSnapshot } from 'valtio';
+import { defaultUser} from '../../../utils/state';
+// import { useSnapshot } from 'valtio';
 import { useNavigate } from 'react-router-dom';
 import { UserProps } from '../../../interface';
 // interface Props {}
 
 const VideoScreen = () => {
-  const snap = useSnapshot(screenState);
+  // const snap = useSnapshot(screenState);
   const {
     getUser,
     getCurrentUserDocuments,
@@ -45,6 +45,7 @@ const VideoScreen = () => {
 
   React.useEffect(() => {
     getLoginUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -61,6 +62,7 @@ const VideoScreen = () => {
       }
     };
     getAllUserDocuments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
@@ -68,6 +70,7 @@ const VideoScreen = () => {
       {...fadeAnimation}
       className='bg-gray-50 w-full h-full overflow-y-auto p-3'
     >
+      {loading && 'getting user data'}
       <motion.div className='flex flex-wrap gap-2'>
         {globalDocumentData?.map((data, index) => (
           <MediaCard

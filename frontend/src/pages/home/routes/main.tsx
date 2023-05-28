@@ -14,7 +14,7 @@ const Home = () => {
         <FileScreen />
         <Tag />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </React.Fragment>
   );
 };

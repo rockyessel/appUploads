@@ -3,24 +3,24 @@ import React from 'react';
 // interface Props {}
 import { motion } from 'framer-motion';
 import { headContainerAnimation } from '../../../utils/motion';
-import {
-  BsImageFill,
-  BsPlayCircle,
-  BsFillFileSpreadsheetFill,
-  BsMusicNoteList,
-} from 'react-icons/bs';
+// import {
+//   BsImageFill,
+//   BsPlayCircle,
+//   BsFillFileSpreadsheetFill,
+//   BsMusicNoteList,
+// } from 'react-icons/bs';
 
-import { AiOutlineAppstoreAdd } from 'react-icons/ai';
+// import { AiOutlineAppstoreAdd } from 'react-icons/ai';
 import MediaCard from '../../../components/media-card';
 import { useAppwriteContext } from '../../../context/app-write';
-import { useSnapshot } from 'valtio';
-import { defaultUser, screenState } from '../../../utils/state';
+// import { useSnapshot } from 'valtio';
+import { defaultUser } from '../../../utils/state';
 import { UserProps } from '../../../interface';
 import { filteredData } from '../../../utils/functions';
 import { useNavigate } from 'react-router-dom';
 
 const ImageScreen = () => {
-  const snap = useSnapshot(screenState);
+  // const snap = useSnapshot(screenState);
   const {
     getUser,
     getCurrentUserDocuments,
@@ -53,6 +53,7 @@ const ImageScreen = () => {
 
   React.useEffect(() => {
     getLoginUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -67,6 +68,7 @@ const ImageScreen = () => {
       }
     };
     getAllUserDocuments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
@@ -104,6 +106,7 @@ const ImageScreen = () => {
           <AiOutlineAppstoreAdd className='text-xl' />
         </motion.div>
       </motion.div> */}
+      {loading && 'getting user data'}
       <motion.div className='flex flex-wrap gap-2'>
         {globalDocumentData?.map((data, index) => (
           <MediaCard

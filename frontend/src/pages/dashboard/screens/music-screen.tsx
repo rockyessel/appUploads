@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { fadeAnimation } from '../../../utils/motion';
-import { useSnapshot } from 'valtio';
-import { defaultUser, screenState } from '../../../utils/state';
+// import { useSnapshot } from 'valtio';
+import { defaultUser} from '../../../utils/state';
 import { useAppwriteContext } from '../../../context/app-write';
 import { UserProps } from '../../../interface';
 import { filteredData } from '../../../utils/functions';
@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 const MusicScreen = () => {
   const [clicked, setClicked] = React.useState(false);
-  const snap = useSnapshot(screenState);
+  // const snap = useSnapshot(screenState);
   const {
     getUser,
     getCurrentUserDocuments,
@@ -49,6 +49,7 @@ const MusicScreen = () => {
 
   React.useEffect(() => {
     getLoginUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -65,6 +66,7 @@ const MusicScreen = () => {
       }
     };
     getAllUserDocuments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const audioTitle = 'Audio title can be very long'.slice(0, 18).concat('...');
@@ -74,6 +76,7 @@ const MusicScreen = () => {
       {...fadeAnimation}
       className='bg-gray-50 w-full h-full overflow-y-auto p-3'
     >
+      {loading && 'getting user data'}
       <Link to={`/dashboard/sdj943UBIhgi_9hj`}>
         <motion.div className='flex flex-wrap gap-2'>
           <motion.div className='relative flex-col rounded-lg bg-white border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
