@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { slideAnimation } from '../../../utils/motion';
 import { useSnapshot } from 'valtio';
 import { screenState } from '../../../utils/state';
-import { CircleProgressbar } from '../../../components';
+import { Button, CircleProgressbar } from '../../../components';
 import { FaTimes } from 'react-icons/fa';
 import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
@@ -64,14 +64,15 @@ const LoadingScreen = () => {
             <motion.div className='flex flex-col gap-4 items-center justify-center w-full bg-gray-50 border-[1px] rounded-lg px-4 py-2'>
               <motion.div className='w-full inline-flex items-center justify-between text-sm'>
                 <span className='inline-flex items-center gap-2'>
-                  <span
-                    onClick={handleFileUpload}
-                    className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
+                  <Button
+                    styles={''}
+                    title={'Start'}
+                    handleClick={handleFileUpload}
                   >
                     Start <AiOutlineUpload />
-                  </span>
+                  </Button>
                   <label>
-                    <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                    <Button styles={''} title={'Add more'}>
                       Add more <AiOutlinePlus />
                       <input
                         type='file'
@@ -81,15 +82,12 @@ const LoadingScreen = () => {
                         onChange={handleFile}
                         multiple
                       />
-                    </span>
+                    </Button>
                   </label>
                 </span>
-                <span
-                  onClick={handleClear}
-                  className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
-                >
+                <Button styles={''} title={'Clear'} handleClick={handleClear}>
                   Clear <GiTimeDynamite className='text-red-500' />
-                </span>
+                </Button>
               </motion.div>
               <motion.div className='w-full flex flex-col gap-2'>
                 {files?.map((file, index) => (
@@ -100,12 +98,15 @@ const LoadingScreen = () => {
                     <span className='font-medium'>{file.name}</span>
                     <span className='inline-flex items-center gap-3'>
                       <span>{formatFileSize(file.size)}</span>
-                      <span
-                        onClick={() => handleRemoveFile(file.name)}
-                        className='border-[1px] p-2 rounded-lg bg-gray-50 hover:bg-rose-500 hover:text-gray-200 cursor-pointer active:ring-2 active:ring-rose-600 active:bg-rose-600 active:border-2 transition-all ease-in-out active:border-white active:text-black'
+                      <Button
+                        styles={
+                          'border-[1px] p-2 rounded-lg bg-gray-50 hover:bg-rose-500 hover:text-gray-200 cursor-pointer active:ring-2 active:ring-rose-600 active:bg-rose-600 active:border-2 transition-all ease-in-out active:border-white active:text-black'
+                        }
+                        title={'Clear'}
+                        handleClick={() => handleRemoveFile(file.name)}
                       >
                         <FaTimes />
-                      </span>
+                      </Button>
                     </span>
                   </motion.div>
                 ))}

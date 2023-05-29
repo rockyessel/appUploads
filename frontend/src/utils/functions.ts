@@ -1,5 +1,7 @@
-import { UserDocumentProps } from '../interface';
+import { Metadata, UserDocumentProps } from '../interface';
 import { screenState } from './state';
+import * as jsmediatags from 'jsmediatags';
+import { jsmediatagsError } from 'jsmediatags/types';
 
 type FileCategory =
   | 'image'
@@ -222,4 +224,31 @@ export const filteredData = (
   console.log('filtered data', filtered);
 
   return filtered;
+};
+
+export const formatTime = (time: number) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  return `${minutes}:${formattedSeconds}`;
+};
+
+
+export const fetchAudioData = async (audioURL: string, setMetadata: React.Dispatch<React.SetStateAction<Metadata | undefined>>) => {
+  try {
+    const response = await fetch(`${audioURL}`);
+    const data = await response.blob();
+
+    jsmediatags.read(data, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onSuccess: (tags: { type: string; tags: any }) => {
+        setMetadata(tags.tags);
+      },
+      onError: (error: jsmediatagsError) => {
+        console.log(error);
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

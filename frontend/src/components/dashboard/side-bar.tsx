@@ -1,4 +1,4 @@
-// import React from 'react'
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   GrMusic,
@@ -14,18 +14,29 @@ import { useAppwriteContext } from '../../context/app-write';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { slideAnimation } from '../../utils/motion';
 import { handleScreenChange } from '../../utils/functions';
+import { toast } from 'react-toastify';
 
 const SideBar = () => {
   const { logout } = useAppwriteContext();
+  const [loading, setLoading] = React.useState(false);
+
+  console.log('loading', loading);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = async () => {
+    setLoading(true);
     await logout();
+    setLoading(false);
     if (location.pathname === '/dashboard') navigate('/authenticate');
   };
 
+  React.useEffect(() => {
+    if (loading) {
+      toast.info('Logging out...');
+    }
+  }, [loading]);
 
   return (
     <AnimatePresence>
@@ -38,42 +49,60 @@ const SideBar = () => {
         </span>
         <motion.ul className='w-full flex flex-col justify-center gap-4'>
           <motion.li
-            onClick={() => handleScreenChange('music')}
+            onClick={() => {
+              handleScreenChange('music');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white text-center rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <GrMusic className='text-xl' />
             <span className='hidden md:block'>Music</span>
           </motion.li>
           <motion.li
-            onClick={() => handleScreenChange('video')}
+            onClick={() => {
+              handleScreenChange('video');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <GrVideo className='text-xl' />
             <span className='hidden md:block'>Videos</span>
           </motion.li>
           <motion.li
-            onClick={() => handleScreenChange('image')}
+            onClick={() => {
+              handleScreenChange('image');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <GrImage className='text-xl' />
             <span className='hidden md:block'>Images</span>
           </motion.li>
           <motion.li
-            onClick={() => handleScreenChange('document')}
+            onClick={() => {
+              handleScreenChange('document');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <GrDocumentVerified className='text-xl' />
             <span className='hidden md:block'>Documents</span>
           </motion.li>
           <motion.li
-            onClick={() => handleScreenChange('application')}
+            onClick={() => {
+              handleScreenChange('application');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <GrSettingsOption className='text-xl' />
             <span className='hidden md:block'>Applications</span>
           </motion.li>
           <motion.li
-            onClick={() => handleScreenChange('generative')}
+            onClick={() => {
+              handleScreenChange('generative');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <GiArtificialHive className='text-xl' />
@@ -82,7 +111,10 @@ const SideBar = () => {
         </motion.ul>
         <motion.ul className='w-full flex flex-col justify-center gap-4'>
           <motion.li
-            onClick={() => handleScreenChange('settings')}
+            onClick={() => {
+              handleScreenChange('settings');
+              navigate('/dashboard');
+            }}
             className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
           >
             <MdOutlineSettings className='text-xl' />

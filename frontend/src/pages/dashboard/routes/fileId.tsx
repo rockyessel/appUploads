@@ -21,7 +21,21 @@ const DashboardFileDetails = () => {
         {...fadeAnimation}
         className='bg-gray-50 w-full h-full overflow-y-auto p-3'
       >
-        Hello, motherufucker
+        <div className='w-full h-[25rem] rounded-lg shadow-lg bg-gray-500'></div>
+        <div className='flex flex-col gap-2'>
+          <p className='flex flex-col'>
+            <span>Filename</span>
+            <span>the-girl-who-die-on.mp4</span>
+          </p>
+          <p className='flex flex-col'>
+            <span>File Extension</span>
+            <span>MP4</span>
+          </p>
+          <p className='flex flex-col'>
+            <span>File Size</span>
+            <span>324.43MB</span>
+          </p>
+        </div>
       </motion.div>
     </Layout>
   );

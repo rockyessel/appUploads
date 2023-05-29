@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { useAppwriteContext } from '../../../context/app-write';
 import { hasNoValue } from '../../../utils/functions';
 import { useNavigate } from 'react-router-dom';
-import { DisplayCard } from '../../../components';
+import { Button, DisplayCard } from '../../../components';
 import SvgCard from '../../../components/media-card/svg';
 
 const FileScreen = () => {
@@ -184,30 +184,22 @@ const FileScreen = () => {
               })}
             </div>
             <motion.div className='w-full inline-flex items-center justify-between text-sm'>
-              <span className='inline-flex items-center gap-2'>
+              <div className='inline-flex items-center gap-2'>
                 <a target='_blank' rel='noopener'>
-                  <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                  <Button styles={''} title={'View file'}>
                     View File <AiOutlineUpload />
-                  </span>
+                  </Button>
                 </a>
-                <span className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'>
+                <Button styles={''} title={'Share'}>
                   Share <AiOutlinePlus />
-                </span>
-                <span
-                  // onClick={() =>
-                  //   downloadFile(document?.view, document?.filename)
-                  // }
-                  className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
-                >
+                </Button>
+                <Button styles={''} title={'Download'}>
                   Download <AiOutlinePlus />
-                </span>
-              </span>
-              <span
-                onClick={handleDelete}
-                className='inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2'
-              >
+                </Button>
+              </div>
+              <Button styles={''} title={'Share'} handleClick={handleDelete}>
                 Delete <GiTimeDynamite className='text-red-500' />
-              </span>
+              </Button>
             </motion.div>
 
             <motion.div className='w-full flex flex-col gap-4'>

@@ -3,8 +3,20 @@ import LoadingScreen from '../screens/loading-screen';
 import FileScreen from '../screens/file-screen';
 import { Footer, Navbar, Tag } from '../../../components';
 import UploadScreen from '../screens/upload-screen';
+import { useNavigate } from 'react-router-dom';
+import { UserProps } from '../../../interface';
 
 const Home = () => {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    const getUserFromLocalStorage = window.localStorage.getItem('user');
+    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
+
+    if (user !== null) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+
   return (
     <React.Fragment>
       <Navbar />

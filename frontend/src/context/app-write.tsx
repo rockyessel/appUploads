@@ -9,6 +9,7 @@ import {
 } from '../utils/state';
 import { Query } from 'appwrite';
 import { UserDocumentProps, UserProps } from '../interface';
+import { FaSlidersH } from 'react-icons/fa';
 
 interface AppWriteContextProps {
   register: (form: typeof registerForm) => Promise<unknown>;
@@ -32,6 +33,8 @@ interface AppWriteContextProps {
     React.SetStateAction<UserDocumentProps[] | []>
   >;
   getDocument: ($id: string) => Promise<UserDocumentProps | undefined>;
+  uploadUserProfile: (file: File) => Promise<string>;
+  triggerEffect: boolean;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -48,15 +51,19 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
     name;
   },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  handleClear: () => {},
+  handleClear: () => {
+    return;
+  },
   getAllFiles: () => Promise.resolve(),
   documentsData: [],
   deleteFrom_db_bucket: () => Promise.resolve(),
   // getDocumentFrom_db: () => Promise.resolve(),
   getCurrentUserDocuments: () => Promise.resolve({ total: 0, documents: [] }),
   globalDocumentData: [],
+  triggerEffect: false,
   setGlobalDocumentData: () => [],
   getDocument: () => Promise.resolve(defaultDocument),
+  uploadUserProfile: () => Promise.resolve(''),
 });
 
 export const AppWriteContextProvider = (props: {
@@ -65,10 +72,11 @@ export const AppWriteContextProvider = (props: {
   const [files, setFiles] = React.useState<File[]>([]);
   const [documentsData, setDocumentsData] = React.useState<UserDocumentProps[]>(
     []
-  ); // Updated initial state
+  );
   const [globalDocumentData, setGlobalDocumentData] = React.useState<
     UserDocumentProps[]
-  >([]); // Updated initial state
+  >([]);
+  const [triggerEffect, setTriggerEffect] = React.useState(false);
 
   const register = async (form: typeof registerForm) => {
     await account.create(uniqueID, form.email, form.password, form.name);
@@ -80,13 +88,54 @@ export const AppWriteContextProvider = (props: {
   };
 
   const logout = async () => {
-    await account.deleteSession('current');
+    const data = await account.deleteSession('current');
+    window.localStorage.removeItem('user');
+    console.log('logout',data)
   };
+
+  const verifyUser = React.useCallback(async () => {
+    try {
+      setTriggerEffect((prev) => !prev);
+      const currentUser = await account.get();
+      const getUserFromLocalStorage = window.localStorage.getItem('user');
+      const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
+
+      if (user === null) {
+        window.localStorage.setItem('user', JSON.stringify(currentUser));
+      } else if (user !== null) {
+        const currentUserId = currentUser.$id;
+        const savedUserId = user.$id; //647200b7f40247e76178
+        if (savedUserId !== currentUserId) {
+          await account.deleteSession('current');
+          window.localStorage.removeItem('user');
+          window.location.replace('/authenticate');
+        } else {
+          console.log('verified');
+        }
+      }
+    } catch (error) {
+      const location = window.location.pathname;
+      if (location === '/dashboard') {
+        window.location.replace('/authenticate');
+      }
+      console.log('something went wrong');
+    }
+  }, []);
 
   const getUser = async (): Promise<UserProps> => {
     const data = await account.get();
+    verifyUser();
+
     return data;
   };
+
+  React.useEffect(() => {
+    const timeout = setInterval(() => {
+      verifyUser();
+    }, 10000);
+
+    return () => clearInterval(timeout);
+  }, [verifyUser]);
 
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files;
@@ -124,7 +173,7 @@ export const AppWriteContextProvider = (props: {
       const size = formatFileSize(data?.sizeOriginal);
       const preview = await storage.getFilePreview(data?.bucketId, data?.$id)
         ?.href;
-      const mimeType = data?.mimeType;
+      const mimeType = file?.type;
       const createdAt = data?.$createdAt;
       const updatedAt = data?.$updatedAt;
       const userId = currentUser?.$id;
@@ -157,14 +206,12 @@ export const AppWriteContextProvider = (props: {
   };
 
   const getCurrentUserDocuments = async (userId: string) => {
-    // if (userId) {
     const data = (await db.listDocuments(
       `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
       `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
       [Query.equal('userId', [`${userId}`])]
     )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
     return data;
-    // }
   };
 
   const getDocument = async ($id: string) => {
@@ -195,6 +242,27 @@ export const AppWriteContextProvider = (props: {
     );
   };
 
+  const uploadUserProfile = async (file: File): Promise<string> => {
+    // @desc Generate unique ID
+    const documentId = generateString();
+
+    const data = await storage.createFile(
+      `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,
+      documentId,
+      file
+    );
+
+    const view = await storage.getFileView(data?.bucketId, data?.$id)?.href;
+
+    // const currentUser = await getUser();
+    const profile = { profile: view };
+
+    const user = await account.updatePrefs({ profile });
+    window.localStorage.setItem('user', JSON.stringify(user));
+
+    return view;
+  };
+
   // const getDocumentFrom_db = async () => {
   //   const data = await db.listDocuments(
   //     `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
@@ -202,6 +270,10 @@ export const AppWriteContextProvider = (props: {
   //   );
   //   return data;
   // };
+
+  React.useEffect(() => {
+    getUser();
+  }, []);
 
   const value = {
     register,
@@ -221,6 +293,8 @@ export const AppWriteContextProvider = (props: {
     globalDocumentData,
     setGlobalDocumentData,
     getDocument,
+    uploadUserProfile,
+    triggerEffect,
   };
 
   return (

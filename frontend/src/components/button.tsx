@@ -1,9 +1,28 @@
-// import React from 'react'
+import React from 'react';
 
-// interface Props {}
+type ButtonType = 'button' | 'submit' | 'reset' | undefined;
 
-const Button = () => {
-  return <div></div>
+interface Props {
+  children: React.ReactNode;
+  handleClick?: () => void;
+  styles: string;
+  type?: ButtonType;
+  title: string;
+  disabled?: boolean;
 }
 
-export default Button
+const Button = (props: Props) => {
+  return (
+    <button
+      className={`${props.styles} inline-flex items-center gap-2 border-[1px] rounded-lg px-4 py-2`}
+      type={props?.type}
+      title={props.title}
+      disabled={props.disabled}
+      onClick={props?.handleClick}
+    >
+      {props.children}
+    </button>
+  );
+};
+
+export default Button;

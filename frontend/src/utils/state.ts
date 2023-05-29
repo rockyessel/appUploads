@@ -64,3 +64,7 @@ export const loginForm = {
   email: '',
   password:''
 }
+
+export const sidebarList = {
+  
+}

@@ -14,7 +14,7 @@ interface Props {
 }
 
 const MediaCard = (props: Props) => {
-  console.log('props', props);
+  // console.log('props', props);
 
   switch (props?.extension) {
     // @desc mimeType extension
@@ -44,7 +44,8 @@ const MediaCard = (props: Props) => {
     // // @desc mimeType extension
     case 'audio mp3':
     case 'audio mpeg':
-      return <AudioPlayer value={props.value} />;
+    case 'audio wma':
+      return <AudioPlayer documentData={props.data} />;
 
     /// // @desc mimeType extension
     // case 'text html':

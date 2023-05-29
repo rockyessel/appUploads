@@ -4,28 +4,15 @@ import { Link } from 'react-router-dom';
 import Logo from './logo';
 import { BsSun, BsMoon } from 'react-icons/bs';
 import { slideAnimation } from '../utils/motion';
-import { useAppwriteContext } from '../context/app-write';
-import { UserProps } from '../interface';
+import { UserProps } from '../interface'
 
 const Navbar = () => {
   const [user, setUser] = React.useState<UserProps>();
-  const [loading, setLoading] = React.useState(false);
-  const { getUser } = useAppwriteContext();
-
-  const getCurrentUser = React.useCallback(async () => {
-    try {
-      setLoading(true);
-      const user_ = await getUser();
-      setUser(user_);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [getUser]);
 
   React.useEffect(() => {
-    getCurrentUser();
+    const userInfo = window.localStorage.getItem('user');
+    const parseUserInfo = userInfo ? JSON.parse(userInfo) : {};
+    setUser(parseUserInfo);
   }, []);
 
   return (
@@ -37,11 +24,7 @@ const Navbar = () => {
         <Logo size='text-2xl' />
 
         <motion.ul className='flex items-center gap-5 font-medium'>
-          {loading ? (
-            <motion.li className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
-              Loading
-            </motion.li>
-          ) : user ? (
+          {user?.status ? (
             <Link to='/dashboard'>
               <motion.li className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
                 Profile
