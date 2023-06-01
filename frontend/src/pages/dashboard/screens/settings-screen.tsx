@@ -6,8 +6,6 @@ import { UserProps } from '../../../interface';
 import { RiUploadCloud2Fill } from 'react-icons/ri';
 import { Input } from '../../../components';
 
-
-
 const SettingsScreen = () => {
   const [fileInput, setFileInput] = React.useState<File>();
   const [profileURL, setProfileURL] = React.useState('');
@@ -21,7 +19,6 @@ const SettingsScreen = () => {
       setFileInput(selectedFile[0]);
     }
   };
-
 
   const handleProfileUpload = React.useMemo(
     () => async () => {
@@ -45,7 +42,7 @@ const SettingsScreen = () => {
   return (
     <motion.div
       {...slideAnimation('up')}
-      className='bg-gray-50 w-full h-full overflow-y-auto p-3 flex flex-col gap-10'
+      className='bg-transparent w-full h-full overflow-y-auto p-3 flex flex-col gap-10'
     >
       <div className='flex flex-col gap-5'>
         <div>
@@ -135,7 +132,7 @@ const SettingsScreen = () => {
               type='email'
               name='email'
               id='email'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
+              className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
               placeholder='John Do...'
             />
           </div>
@@ -147,7 +144,7 @@ const SettingsScreen = () => {
               type='text'
               name='Phone'
               id='phone'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
+              className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
               placeholder='John Do...'
             />
           </div>

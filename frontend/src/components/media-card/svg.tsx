@@ -26,7 +26,7 @@ const SvgCard = (props: Props) => {
     }
   }, [props?.documentData, getSVGElement]);
   return (
-    <motion.div className='w-40 h-32 bg-gray-50 overflow-hidden rounded-lg flex items-center justify-center border-[1px]'>
+    <motion.div className='w-40 h-32 bg-transparent overflow-hidden rounded-lg flex items-center justify-center border-[1px]'>
       {svgContent ? (
         <motion.div
           className='w-full h-full inline-flex items-center justify-center'

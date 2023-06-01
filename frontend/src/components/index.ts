@@ -7,3 +7,4 @@ export { default as UserCard } from './user-card';
 export { default as DisplayCard } from './display-card';
 export { default as Input } from './input';
 export { default as Button } from './button';
+export { default as TabComponentCard } from './tab/index';

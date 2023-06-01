@@ -13,7 +13,6 @@ const UploadScreen = () => {
 
   console.log('files', files);
 
-  
   // @desc This effect is responsible for screen change
   React.useEffect(() => {
     const hasFiles = files.length > 0;
@@ -37,14 +36,14 @@ const UploadScreen = () => {
       {snap.defaultScreen && (
         <motion.section
           {...slideAnimation('left')}
-          className='flex items-center justify-center min-h-screen w-full overflow-hidden mb-10'
+          // className='flex items-center justify-center min-h-screen w-full overflow-hidden mb-10'
         >
           <motion.div className='flex flex-col gap-10 items-center justify-center w-[20rem]'>
             <motion.div>
               <Logo size='text-2xl' />
             </motion.div>
 
-            <motion.div className='bg-gray-50 rounded-lg border-dashed border-2 border-gray-900/50 flex flex-col items-center justify-center p-5'>
+            <motion.div className='bg-transparent rounded-lg border-dashed border-2 border-gray-900/50 flex flex-col items-center justify-center p-5'>
               <label className='flex flex-col items-center justify-center'>
                 <input type='file' onChange={handleFile} className='w-0 h-0' />
                 <ImUpload className='text-7xl' />
@@ -55,7 +54,7 @@ const UploadScreen = () => {
               </label>
             </motion.div>
 
-            <motion.div className='bg-gray-50 rounded-lg text-sm font-medium border-2 border-gray-900/50 flex flex-col items-center justify-center p-5'>
+            <motion.div className=' rounded-lg text-sm font-medium flex flex-col items-center justify-center p-5'>
               <motion.p>
                 is a free service with more than 7 years of history, empowering
                 people to upload, share and enjoy images online. Hosting
@@ -69,7 +68,7 @@ const UploadScreen = () => {
               </motion.p>
             </motion.div>
 
-            {/* <motion.div className='w-full bg-gray-200 rounded-lg'>
+            {/* <motion.div className='w-full bg-transparent-200 rounded-lg'>
               <motion.button
                 onClick={() => {
                   screenState.defaultScreen = false;

@@ -5,6 +5,9 @@ import AudioPlayer from './audio';
 import ImageCard from './image';
 import { UserDocumentProps } from '../../interface';
 import SvgCard from './svg';
+import ApplicationCard from './applications';
+import DefaultCard from './applications/default-card';
+import DocumentCard from './documents';
 
 interface Props {
   data: UserDocumentProps;
@@ -39,7 +42,7 @@ const MediaCard = (props: Props) => {
     case 'video asf':
     case 'video wmv':
     case 'video webm':
-      return <VideoCard value={props.data?.view} />;
+      return <VideoCard documentData={props.data} />;
 
     // // @desc mimeType extension
     case 'audio mp3':
@@ -47,16 +50,77 @@ const MediaCard = (props: Props) => {
     case 'audio wma':
       return <AudioPlayer documentData={props.data} />;
 
+    // @desc mimeType extension
+    case 'image png':
+    case 'image webp':
+    case 'image jpg':
+    case 'image jpeg':
+      return <ImageCard documentData={props.data} />;
+
+    // @desc mimeType extension
+    case 'application exe':
+    case 'application msi':
+    case 'application app':
+    case 'application deb':
+    case 'application rpm':
+    case 'application apk':
+    case 'application ipa':
+    case 'application dmg':
+      return (
+        <ApplicationCard
+          extension={props.extension}
+          documentData={props.data}
+        />
+      );
+
+    // @desc mimeType extension
+    case 'text txt':
+    case 'text csv':
+    case 'text html':
+    case 'text cs':
+    case 'text cpp':
+    case 'text h':
+    case 'text hpp':
+    case 'text rs':
+    case 'text java':
+    case 'text ts':
+    case 'application js':
+    case 'application pdf':
+    case 'application docx':
+    case 'application xlsx':
+    case 'application pptx':
+    case 'application zip':
+    case 'application ttf':
+    case 'application otf':
+    case 'font woff2':
+    case 'font woff':
+    case 'application eot':
+    case 'application dfont':
+    case 'application pfa':
+    case 'application pfb':
+    case 'application dotx':
+    case 'application xlts':
+    case 'application potx':
+    case 'application doc':
+    case 'application xls':
+    case 'application ppt':
+    case 'application dot':
+    case 'application xlt':
+    case 'application pot':
+      return (
+        <DocumentCard extension={props.extension} documentData={props.data} />
+      );
+
     /// // @desc mimeType extension
     // case 'text html':
     //   return (
-    //     <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
+    //     <motion.div className='w-full bg-transparent h-32 overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
     //       <video src={props?.value} />
     //     </motion.div>
     //   );
 
     default:
-      return <ImageCard value={props?.data?.view} />;
+      return <DefaultCard documentData={props.data} />;
   }
 };
 

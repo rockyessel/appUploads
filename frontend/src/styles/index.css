@@ -1,42 +1,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,600;1,900&display=swap');
 @import url('https://rsms.me/inter/inter.css');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 html {
   font-family: 'Inter', sans-serif;
 }
 
+/* body {
+  background: linear-gradient(
+    90deg,
+    #ffff00 6%,
+    #ffa500 25%,
+    #f14444 45%,
+    #d53567 55%,
+    #9a109a 94%
+  );
+  background-image: url('/bg.jpg');
+} */
+
+body {
+  background-image: radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%),
+radial-gradient(at 80% 0%, rgb(255, 46, 31) 0px, transparent 50%),
+radial-gradient(at 0% 50%, rgb(161, 87, 116) 0px, transparent 50%),
+radial-gradient(at 80% 50%, rgba(184, 41, 89, 0.726) 0px, transparent 50%),
+radial-gradient(at 0% 100%, rgb(165, 60, 0) 0px, transparent 50%),
+radial-gradient(at 80% 100%, rgb(38, 33, 175) 0px, transparent 50%),
+radial-gradient(at 0% 0%, rgba(52, 65, 52, 0.582) 0px, transparent 50%);
+}
+
 @supports (font-variation-settings: normal) {
   html {
-    font-family: 'Inter var', sans-serif;
+    font-family:'Poppins', 'Inter var', sans-serif;
   }
 }
 
 /* width */
-pre::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 5px;
   height: 3px;
+  margin-left: 5px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent !important; 
+  background: transparent !important;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
+/* body {
+  background-image: url('/bg.jpg');
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(10px) !important;
+} */
 
 .app {
   @apply relative w-full h-screen overflow-hidden;

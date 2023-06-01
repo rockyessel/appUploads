@@ -41,16 +41,16 @@ const RegisterScreen = () => {
     }
   };
 
-  if(loading) return <p>Loading</p>
+  if (loading) return <p>Loading</p>;
 
   return (
     <AnimatePresence>
       {snap.authenticationScreen.register && (
         <motion.section
           {...slideAnimation('down')}
-          className='w-full bg-white absolute top-0 left-0 z-[6] flex items-center justify-center px-2'
+          className='w-full  absolute top-0 left-0 z-[6] flex items-center justify-center px-2'
         >
-          <motion.div className='flex flex-col gap-10 items-center justify-center w-[40rem] min-h-screen'>
+          <motion.div className='flex flex-col gap-10 items-center justify-center backdrop-blur-lg w-[40rem] min-h-screen'>
             <motion.div className='w-full flex flex-col gap-4'>
               <motion.ul className='tabs text-medium'>
                 <motion.li
@@ -91,7 +91,7 @@ const RegisterScreen = () => {
                   type='text'
                   name='name'
                   id='name'
-                  className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                  className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                   placeholder='name@company.com'
                 />
               </div>
@@ -103,7 +103,7 @@ const RegisterScreen = () => {
                   type='email'
                   name='email'
                   id='email'
-                  className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                  className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                   placeholder='name@company.com'
                 />
               </div>
@@ -116,7 +116,7 @@ const RegisterScreen = () => {
                   type='password'
                   name='password'
                   id='password'
-                  className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
+                  className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5'
                   placeholder='name@company.com'
                 />
               </div>

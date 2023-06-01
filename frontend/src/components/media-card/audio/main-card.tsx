@@ -17,6 +17,7 @@ interface Props {
 
 const MainAudioCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
+  const [showTitle, setShowTitle] = React.useState(false);
   const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [duration, setDuration] = React.useState(0);
@@ -56,7 +57,11 @@ const MainAudioCard = (props: Props) => {
   };
 
   return (
-    <motion.div className='relative flex-col rounded-lg bg-white border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
+    <motion.div
+      onMouseLeave={() => setShowTitle(false)}
+      onMouseEnter={() => setShowTitle(true)}
+      className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg  border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'
+    >
       <img
         className='w-full h-full object-cover object-center rounded-lg'
         src={props?.audioData?.image}
@@ -64,7 +69,7 @@ const MainAudioCard = (props: Props) => {
       />
       <span className='absolute top-1 right-1 inline-flex items-center justify-center rounded-lg text-sm p-1'>
         <span
-          className='z-20 bg-slate-800 text-gray-50/70 border-[1px] p-1 rounded-lg'
+          className='z-20 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg text-gray-50/70 border-[1px] p-1 rounded-lg'
           onClick={() => setClicked((prev) => !prev)}
         >
           {clicked ? (
@@ -74,9 +79,9 @@ const MainAudioCard = (props: Props) => {
           )}
         </span>
         {clicked && (
-          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-gray-50'>
+          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
             <Link
-              to={`/dashboard/${props?.documentData?.$id}`}
+              to={`/dashboard/music/${props?.documentData?.$id}`}
               className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'
             >
               <span>View</span>
@@ -104,9 +109,13 @@ const MainAudioCard = (props: Props) => {
           <motion.span>{formatTime(duration)}</motion.span>
         </motion.div>
       </motion.div>
-      <span className='absolute top-2 left-1 rounded-lg bg-slate-800 text-gray-50/70 text-sm px-2 py-1'>
-        {props?.audioData?.title}
-      </span>
+      {showTitle && (
+        <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
+          {props?.audioData?.title
+            ?.slice(0, 12)
+            .concat(`...${props?.documentData?.extension}`)}
+        </span>
+      )}
     </motion.div>
   );
 };

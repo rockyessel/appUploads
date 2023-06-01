@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Logo from './logo';
 import { BsSun, BsMoon } from 'react-icons/bs';
 import { slideAnimation } from '../utils/motion';
-import { UserProps } from '../interface'
+import { UserProps } from '../interface';
 
 const Navbar = () => {
   const [user, setUser] = React.useState<UserProps>();
@@ -17,7 +17,7 @@ const Navbar = () => {
 
   return (
     <motion.header
-      className={`bg-gray-50 border-[1px] fixed w-full py-2 px-5 z-[100]`}
+      className={`bg-[rgb(255,255,255,0.4)]  backdrop-blur-md border-[1px] fixed w-full py-2 px-5 z-[100]`}
       {...slideAnimation('down')}
     >
       <motion.nav className='w-full h-full m-0 p-0 flex items-center justify-between'>

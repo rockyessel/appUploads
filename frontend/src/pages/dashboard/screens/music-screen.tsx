@@ -31,7 +31,7 @@ const MusicScreen = () => {
   return (
     <motion.div
       {...fadeAnimation}
-      className='bg-gray-50 w-full h-full overflow-y-auto p-3'
+      className='bg-transparent w-full h-full overflow-y-auto p-3'
     >
       <motion.div className='flex flex-wrap gap-2'>
         {globalDocumentData?.map((data, index) => (

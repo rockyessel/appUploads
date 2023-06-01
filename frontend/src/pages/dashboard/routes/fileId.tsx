@@ -19,9 +19,9 @@ const DashboardFileDetails = () => {
     <Layout>
       <motion.div
         {...fadeAnimation}
-        className='bg-gray-50 w-full h-full overflow-y-auto p-3'
+        className='bg-transparent w-full h-full overflow-y-auto p-3'
       >
-        <div className='w-full h-[25rem] rounded-lg shadow-lg bg-gray-500'></div>
+        <div className='w-full h-[25rem] rounded-lg shadow-lg bg-transparent-500'></div>
         <div className='flex flex-col gap-2'>
           <p className='flex flex-col'>
             <span>Filename</span>

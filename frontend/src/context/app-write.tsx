@@ -1,6 +1,10 @@
 import React from 'react';
 import { uniqueID, account, storage, db } from '../utils/config';
-import { formatFileSize, generateString } from '../utils/functions';
+import {
+  fileMimeTypeSetter,
+  formatFileSize,
+  generateString,
+} from '../utils/functions';
 import {
   defaultDocument,
   defaultUser,
@@ -90,7 +94,7 @@ export const AppWriteContextProvider = (props: {
   const logout = async () => {
     const data = await account.deleteSession('current');
     window.localStorage.removeItem('user');
-    console.log('logout',data)
+    console.log('logout', data);
   };
 
   const verifyUser = React.useCallback(async () => {
@@ -156,10 +160,12 @@ export const AppWriteContextProvider = (props: {
     // @desc Generate unique ID
     const documentId = generateString();
 
+    const updatedFile = fileMimeTypeSetter(file);
+
     const data = await storage.createFile(
       `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,
       documentId,
-      file
+      updatedFile
     );
 
     const currentUser = await getUser();
@@ -168,15 +174,19 @@ export const AppWriteContextProvider = (props: {
     if (data) {
       // @desc Get information from file and data.
       const view = await storage.getFileView(data?.bucketId, data?.$id)?.href;
-      const filename = file?.name?.toLowerCase();
-      const extension = file?.name?.toLowerCase()?.split('.').pop();
+      const filename = updatedFile?.name?.toLowerCase();
+      const extension = updatedFile.name.toLowerCase().split('.').pop();
       const size = formatFileSize(data?.sizeOriginal);
       const preview = await storage.getFilePreview(data?.bucketId, data?.$id)
         ?.href;
-      const mimeType = file?.type;
+
+      const mimeType = updatedFile.type;
       const createdAt = data?.$createdAt;
       const updatedAt = data?.$updatedAt;
       const userId = currentUser?.$id;
+      // const unique_extension = `${updatedFile.type
+      //   .split('/')
+      //   .shift()} ${extension}`;
 
       // @desc db model schema
       const dbSchemaData = {
@@ -189,6 +199,7 @@ export const AppWriteContextProvider = (props: {
         createdAt,
         updatedAt,
         userId,
+        // unique_extension,
       };
 
       // @desc Creating document.
@@ -205,11 +216,18 @@ export const AppWriteContextProvider = (props: {
     return documentsData as UserDocumentProps[];
   };
 
-  const getCurrentUserDocuments = async (userId: string) => {
+  const getCurrentUserDocuments = async (
+    userId: string
+    // unique_extension: string
+  ) => {
     const data = (await db.listDocuments(
       `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
       `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
-      [Query.equal('userId', [`${userId}`])]
+      [
+        Query.equal('userId', [`${userId}`]),
+        // Query.equal('unique_extension', [`${unique_extension}`]),
+        Query.limit(100),
+      ]
     )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
     return data;
   };

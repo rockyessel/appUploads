@@ -4,7 +4,10 @@ import { slideAnimation } from '../utils/motion';
 const Tag = () => {
   return (
     <AnimatePresence>
-      <motion.section {...slideAnimation('right')} className='fixed flex flex-col items-center justify-center group bottom-10 right-10 border-red-500 border-2 rounded-lg w-fit p-3 hover:cursor-pointer hover:bg-gray-50 hover:shadow-md z-[100]'>
+      <motion.section
+        {...slideAnimation('right')}
+        className='fixed flex flex-col items-center justify-center group bottom-10 right-10 border-red-500 border-2 rounded-lg w-fit p-3 hover:cursor-pointer hover:bg-transparent hover:shadow-md z-[100]'
+      >
         <motion.span className='relative flex'>
           <img
             src='/appwrite.svg'

@@ -217,10 +217,13 @@ export const filteredData = (
   data: UserDocumentProps[],
   type: string
 ): UserDocumentProps[] => {
+  console.log('original data', data);
+
   const filtered = data?.filter((obj) => {
     const mimeType = obj.mimeType.toLowerCase();
     return mimeType.startsWith(`${type}`);
   });
+
   console.log('filtered data', filtered);
 
   return filtered;
@@ -233,8 +236,10 @@ export const formatTime = (time: number) => {
   return `${minutes}:${formattedSeconds}`;
 };
 
-
-export const fetchAudioData = async (audioURL: string, setMetadata: React.Dispatch<React.SetStateAction<Metadata | undefined>>) => {
+export const fetchAudioData = async (
+  audioURL: string,
+  setMetadata: React.Dispatch<React.SetStateAction<Metadata | undefined>>
+) => {
   try {
     const response = await fetch(`${audioURL}`);
     const data = await response.blob();
@@ -251,4 +256,29 @@ export const fetchAudioData = async (audioURL: string, setMetadata: React.Dispat
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fileMimeTypeSetter = (file: File): File => {
+  // @desc Some files don't have mimeType
+  const mimeTypes = ['deb', 'rpm', 'app', 'ipa', 'dmg', 'msi'];
+  const assignedMimeTypes: { [key: string]: string } = {
+    deb: 'application/vnd.debian.binary-package',
+    rpm: 'application/x-rpm',
+    app: 'application/octet-stream',
+    ipa: 'application/octet-stream',
+    dmg: 'application/x-apple-diskimage',
+    msi: 'application/x-msdownload',
+  };
+
+  if (file && file.type === '') {
+    const extension = file.name.toLowerCase().split('.').pop();
+    const isMimeTypePresentInArr = mimeTypes?.includes(`${extension}`);
+    if (isMimeTypePresentInArr) {
+      const updatedFile = new File([file], file.name, {
+        type: assignedMimeTypes[`${extension}`],
+      });
+      return updatedFile;
+    }
+  }
+  return file;
 };

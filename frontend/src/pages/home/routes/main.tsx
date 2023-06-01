@@ -20,7 +20,10 @@ const Home = () => {
   return (
     <React.Fragment>
       <Navbar />
-      <main className='app transition-all ease-in overflow-y-auto'>
+      <main
+        className='w-full h-screen flex items-center justify-center bg-[rgb(255,255,255,0.1)] backdrop:blur-lg shadow-lg'
+        // className='app transition-all ease-in overflow-y-auto'
+      >
         <UploadScreen />
         <LoadingScreen />
         <FileScreen />

@@ -34,19 +34,19 @@ const DisplayCard = (props: Props) => {
     case 'video wmv':
     case 'video webm':
       return (
-        <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center border-[1px]'>
+        <motion.div className='w-full bg-transparent h-[20rem] overflow-hidden rounded-lg flex items-center border-[1px]'>
           <video src={props?.value} />
         </motion.div>
       );
 
     // @desc mimeType extension
     case 'mp3':
-      return <AudioPlayer value={props.value} />;
+      return <AudioPlayer documentData={props.data} />;
 
     // @desc mimeType extension
     case 'text html':
       return (
-        <motion.div className='w-full bg-gray-50 h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
+        <motion.div className='w-full bg-transparent h-[20rem] overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
           <video src={props?.value} />
         </motion.div>
       );

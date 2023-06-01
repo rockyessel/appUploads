@@ -39,15 +39,15 @@ export const defaultDocument: UserDocumentProps = {
 };
 
 export const defaultUser = {
-  $id:'',
-  $createdAt:'',
-  $updatedAt:'',
-  name:'',
-  registration:'',
+  $id: '',
+  $createdAt: '',
+  $updatedAt: '',
+  name: '',
+  registration: '',
   status: false,
-  passwordUpdate:'',
-  email:'',
-  phone:'',
+  passwordUpdate: '',
+  email: '',
+  phone: '',
   emailVerification: false,
   phoneVerification: false,
   prefs: {},
@@ -56,15 +56,24 @@ export const defaultUser = {
 export const registerForm = {
   name: '',
   email: '',
-  password:''
-}
-
+  password: '',
+};
 
 export const loginForm = {
   email: '',
-  password:''
-}
+  password: '',
+};
 
-export const sidebarList = {
-  
-}
+export const sidebarList = {};
+
+export const styles = {
+  backgroundImage: "url('/bg.jpg')",
+  backgroundColor: 'rgba(255,255,255, 0.5)',
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  backgroundRepeat: 'no-repeat',
+  backdropFilter: 'blur(10px)',
+  width: '100%',
+  height: '100vh',
+};
+
