@@ -55,6 +55,7 @@ const MediaCard = (props: Props) => {
     case 'image webp':
     case 'image jpg':
     case 'image jpeg':
+    case 'image jfif':
       return <ImageCard documentData={props.data} />;
 
     // @desc mimeType extension
@@ -84,7 +85,7 @@ const MediaCard = (props: Props) => {
     case 'text rs':
     case 'text java':
     case 'text ts':
-    case 'application js':
+    case 'text js':
     case 'application pdf':
     case 'application docx':
     case 'application xlsx':

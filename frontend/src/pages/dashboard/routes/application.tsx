@@ -4,21 +4,25 @@ import { fadeAnimation } from '../../../utils/motion';
 import { useAppwriteContext } from '../../../context/app-write';
 import { filteredData } from '../../../utils/functions';
 import MediaCard from '../../../components/media-card';
-import { UserProps } from '../../../interface';
+import { UserDocumentProps, UserProps } from '../../../interface';
 import Layout from '../../../components/dashboard/layout';
-// interface Props {}
 
 const DashboardApplicationFiles = () => {
-  const { getCurrentUserDocuments, setGlobalDocumentData, globalDocumentData } =
-    useAppwriteContext();
+  const { getCurrentUserDocuments } = useAppwriteContext();
+  const [applicationData, setApplicationData] = React.useState<
+    UserDocumentProps[] | []
+  >([]);
+  const [loading, setLoading] = React.useState(false);
 
   const getAllUserDocuments = React.useCallback(async (userId: string) => {
     if (userId) {
+      setLoading(true);
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
       console.log('allCurrentUserDocuments', allCurrentUserDocuments);
-      setGlobalDocumentData(
+      setApplicationData(
         filteredData(allCurrentUserDocuments?.documents, 'application')
       );
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -37,19 +41,23 @@ const DashboardApplicationFiles = () => {
         {...fadeAnimation}
         className='bg-[rgb(255,255,255,0.1)]  backdrop-blur-sm w-full h-full overflow-y-auto p-3'
       >
-        <motion.div className='flex flex-wrap gap-2'>
-          {globalDocumentData?.map((data, index) => (
-            <MediaCard
-              svgElementContent={''}
-              data={data}
-              key={index}
-              extension={`${data?.mimeType?.split('/').shift()} ${
-                data?.extension
-              }`}
-              value={''}
-            />
-          ))}
-        </motion.div>
+        {loading ? (
+          <p>Loading applications</p>
+        ) : (
+          <motion.div className='flex flex-wrap gap-2'>
+            {applicationData?.map((data, index) => (
+              <MediaCard
+                svgElementContent={''}
+                data={data}
+                key={index}
+                extension={`${data?.mimeType?.split('/').shift()} ${
+                  data?.extension
+                }`}
+                value={''}
+              />
+            ))}
+          </motion.div>
+        )}
       </motion.div>
     </Layout>
   );

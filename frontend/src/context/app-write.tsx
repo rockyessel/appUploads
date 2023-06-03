@@ -36,7 +36,7 @@ interface AppWriteContextProps {
   setGlobalDocumentData: React.Dispatch<
     React.SetStateAction<UserDocumentProps[] | []>
   >;
-  getDocument: ($id: string) => Promise<UserDocumentProps | undefined>;
+  getDocumentById: ($id: string) => Promise<UserDocumentProps | undefined>;
   uploadUserProfile: (file: File) => Promise<string>;
   triggerEffect: boolean;
 }
@@ -66,7 +66,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   globalDocumentData: [],
   triggerEffect: false,
   setGlobalDocumentData: () => [],
-  getDocument: () => Promise.resolve(defaultDocument),
+  getDocumentById: () => Promise.resolve(defaultDocument),
   uploadUserProfile: () => Promise.resolve(''),
 });
 
@@ -133,13 +133,13 @@ export const AppWriteContextProvider = (props: {
     return data;
   };
 
-  React.useEffect(() => {
-    const timeout = setInterval(() => {
-      verifyUser();
-    }, 10000);
+  // React.useEffect(() => {
+  //   const timeout = setInterval(() => {
+  //     verifyUser();
+  //   }, 10000);
 
-    return () => clearInterval(timeout);
-  }, [verifyUser]);
+  //   return () => clearInterval(timeout);
+  // }, [verifyUser]);
 
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files;
@@ -232,12 +232,13 @@ export const AppWriteContextProvider = (props: {
     return data;
   };
 
-  const getDocument = async ($id: string) => {
+  const getDocumentById = async ($id: string) => {
     if ($id) {
-      const data = (await db.listDocuments(
+      console.log('appwite',$id)
+      const data = (await db.getDocument(
         `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
         `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
-        [Query.equal('documentId', [`${$id}`])]
+        `${$id}`
       )) as unknown as UserDocumentProps;
       return data;
     }
@@ -310,7 +311,7 @@ export const AppWriteContextProvider = (props: {
     getCurrentUserDocuments,
     globalDocumentData,
     setGlobalDocumentData,
-    getDocument,
+    getDocumentById,
     uploadUserProfile,
     triggerEffect,
   };

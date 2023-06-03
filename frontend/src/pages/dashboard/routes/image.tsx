@@ -3,21 +3,24 @@ import { motion } from 'framer-motion';
 import { headContainerAnimation } from '../../../utils/motion';
 import MediaCard from '../../../components/media-card';
 import { useAppwriteContext } from '../../../context/app-write';
-import { UserProps } from '../../../interface';
+import { UserDocumentProps, UserProps } from '../../../interface';
 import { filteredData } from '../../../utils/functions';
 import Layout from '../../../components/dashboard/layout';
 
 const DashboardImageFiles = () => {
-  const { getCurrentUserDocuments, setGlobalDocumentData, globalDocumentData } =
-    useAppwriteContext();
+  const { getCurrentUserDocuments } = useAppwriteContext();
+  const [imageData, setImageData] = React.useState<UserDocumentProps[] | []>(
+    []
+  );
+  const [loading, setLoading] = React.useState(false);
 
   const getAllUserDocuments = React.useCallback(async (userId: string) => {
     if (userId) {
+      setLoading(true);
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
       console.log('allCurrentUserDocuments', allCurrentUserDocuments);
-      setGlobalDocumentData(
-        filteredData(allCurrentUserDocuments?.documents, 'image')
-      );
+      setImageData(filteredData(allCurrentUserDocuments?.documents, 'image'));
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -36,19 +39,23 @@ const DashboardImageFiles = () => {
         {...headContainerAnimation}
         className='bg-[rgb(255,255,255,0.2)]  backdrop-blur-md w-full h-full overflow-y-auto p-3'
       >
-        <motion.div className='flex flex-wrap gap-2'>
-          {globalDocumentData?.map((data, index) => (
-            <MediaCard
-              data={data}
-              key={index}
-              extension={`${data?.mimeType?.split('/').shift()} ${
-                data?.extension
-              }`}
-              value={''}
-              svgElementContent={''}
-            />
-          ))}
-        </motion.div>
+        {loading ? (
+          <p>Loading images</p>
+        ) : (
+          <motion.div className='flex flex-wrap gap-2'>
+            {imageData?.map((data, index) => (
+              <MediaCard
+                data={data}
+                key={index}
+                extension={`${data?.mimeType?.split('/').shift()} ${
+                  data?.extension
+                }`}
+                value={''}
+                svgElementContent={''}
+              />
+            ))}
+          </motion.div>
+        )}
       </motion.div>
     </Layout>
   );

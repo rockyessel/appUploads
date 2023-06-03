@@ -1,5 +1,6 @@
 // import React from 'react';
 import { UserDocumentProps } from '../../../interface';
+import CodeCard from './code';
 import MicrosoftCard from './ms';
 
 interface Props {
@@ -21,6 +22,19 @@ const DocumentCard = (props: Props) => {
     case 'application xlsx':
     case 'application pptx':
       return <MicrosoftCard documentData={props.documentData} />;
+
+    case 'text txt':
+    case 'text csv':
+    case 'text html':
+    case 'text cs':
+    case 'text cpp':
+    case 'text h':
+    case 'text hpp':
+    case 'text rs':
+    case 'text java':
+    case 'text ts':
+    case 'text js':
+      return <CodeCard documentData={props.documentData} />;
 
     default:
       return <p>Helo</p>;
