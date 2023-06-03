@@ -2,6 +2,17 @@ import { Metadata, UserDocumentProps } from '../interface';
 import { screenState } from './state';
 import * as jsmediatags from 'jsmediatags';
 import { jsmediatagsError } from 'jsmediatags/types';
+import {
+  startOfDay,
+  startOfWeek,
+  startOfMonth,
+  startOfYear,
+  addDays,
+  addWeeks,
+  addMonths,
+  addYears,
+  format,
+} from 'date-fns';
 
 type FileCategory =
   | 'image'
@@ -281,4 +292,58 @@ export const fileMimeTypeSetter = (file: File): File => {
     }
   }
   return file;
+};
+
+export const groupDocumentDataByInterval = (
+  documentData: UserDocumentProps[],
+  interval: string
+) => {
+  const groups: { [intervalKey: string]: UserDocumentProps[] } = {};
+
+  const getStartOfInterval = (date: Date) => {
+    switch (interval) {
+      case 'day':
+        return startOfDay(date);
+      case 'week':
+        return startOfWeek(date);
+      case 'month':
+        return startOfMonth(date);
+      case 'year':
+        return startOfYear(date);
+      default:
+        return date;
+    }
+  };
+
+  const addInterval = (date: Date) => {
+    switch (interval) {
+      case 'day':
+        return addDays(date, 1);
+      case 'week':
+        return addWeeks(date, 1);
+      case 'month':
+        return addMonths(date, 1);
+      case 'year':
+        return addYears(date, 1);
+      default:
+        return date;
+    }
+  };
+
+  documentData.forEach((file) => {
+    const createdAt = new Date(file.createdAt);
+    let currentDate = getStartOfInterval(createdAt);
+    const intervalKey = format(currentDate, 'yyyy-MM-dd');
+
+    if (groups[intervalKey]) {
+      groups[intervalKey].push(file);
+    } else {
+      groups[intervalKey] = [file];
+    }
+
+    // Increment the current date by the specified interval
+    currentDate = addInterval(currentDate);
+  });
+
+  return groups;
 };

@@ -63,15 +63,11 @@ const DashboardFileDetails = () => {
     <Layout>
       <motion.div
         {...fadeAnimation}
-        className='bg-transparent w-full h-full overflow-y-auto p-3'
+        className='bg-transparent w-full h-full overflow-y-auto p-3 relative'
       >
-        <div className='w-full h-40 p-1 rounded-lg shadow-lg bg-transparent-500'>
+        <div className=''>
           <video className='player' ref={videoRef} controls>
-            <source
-          
-              src={documentData?.view}
-              type={documentData?.mimeType}
-            />
+            <source src={documentData?.view} type={documentData?.mimeType} />
           </video>
         </div>
         <div className='flex flex-col gap-2'>

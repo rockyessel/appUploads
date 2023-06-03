@@ -11,9 +11,11 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "@vercel/analytics": "^1.0.1",
     "appwrite": "^11.0.0",
     "daisyui": "^2.51.6",
+    "date-fns": "^2.30.0",
     "file-type": "^18.4.0",
     "framer-motion": "^10.12.12",
     "jsmediatags": "^3.9.7",

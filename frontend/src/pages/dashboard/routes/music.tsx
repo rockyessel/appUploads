@@ -8,8 +8,7 @@ import MediaCard from '../../../components/media-card';
 import Layout from '../../../components/dashboard/layout';
 
 const DashboardMusicFiles = () => {
-  const { getCurrentUserDocuments, setGlobalDocumentData, globalDocumentData } =
-    useAppwriteContext();
+  const { getCurrentUserDocuments } = useAppwriteContext();
   const [musicData, setMusicData] = React.useState<UserDocumentProps[] | []>(
     []
   );

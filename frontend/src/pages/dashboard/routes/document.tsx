@@ -20,7 +20,7 @@ const DashboardDocumentFiles = () => {
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
       console.log('allCurrentUserDocuments', allCurrentUserDocuments);
       setDocumentData(
-        filteredData(allCurrentUserDocuments?.documents, 'application')
+        filteredData(allCurrentUserDocuments?.documents, 'text')
       );
       setLoading(false);
     }
@@ -49,9 +49,7 @@ const DashboardDocumentFiles = () => {
               <MediaCard
                 data={data}
                 key={index}
-                extension={`${data?.mimeType?.split('/').shift()} ${
-                  data?.extension
-                }`}
+                extension={data?.extension}
                 value={''}
                 svgElementContent={''}
               />

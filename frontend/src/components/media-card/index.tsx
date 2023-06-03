@@ -75,39 +75,39 @@ const MediaCard = (props: Props) => {
       );
 
     // @desc mimeType extension
-    case 'text txt':
-    case 'text csv':
-    case 'text html':
-    case 'text cs':
-    case 'text cpp':
-    case 'text h':
-    case 'text hpp':
-    case 'text rs':
-    case 'text java':
-    case 'text ts':
-    case 'text js':
-    case 'application pdf':
-    case 'application docx':
-    case 'application xlsx':
-    case 'application pptx':
-    case 'application zip':
-    case 'application ttf':
-    case 'application otf':
-    case 'font woff2':
-    case 'font woff':
-    case 'application eot':
-    case 'application dfont':
-    case 'application pfa':
-    case 'application pfb':
-    case 'application dotx':
-    case 'application xlts':
-    case 'application potx':
-    case 'application doc':
-    case 'application xls':
-    case 'application ppt':
-    case 'application dot':
-    case 'application xlt':
-    case 'application pot':
+    case 'txt':
+    case 'csv':
+    case 'html':
+    case 'cs':
+    case 'cpp':
+    case 'h':
+    case 'hpp':
+    case 'rs':
+    case 'java':
+    case 'ts':
+    case 'js':
+    case 'pdf':
+    case 'docx':
+    case 'xlsx':
+    case 'pptx':
+    case 'zip':
+    case 'ttf':
+    case 'otf':
+    case 'woff2':
+    case 'woff':
+    case 'eot':
+    case 'dfont':
+    case 'pfa':
+    case 'pfb':
+    case 'dotx':
+    case 'xlts':
+    case 'potx':
+    case 'doc':
+    case 'xls':
+    case 'ppt':
+    case 'dot':
+    case 'xlt':
+    case 'pot':
       return (
         <DocumentCard extension={props.extension} documentData={props.data} />
       );
