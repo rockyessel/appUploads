@@ -4,20 +4,21 @@ import { UserDocumentProps } from '../../../interface';
 import { CiCircleMore } from 'react-icons/ci';
 import { RiCloseLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { AiFillCode } from 'react-icons/ai';
 
 interface Props {
   documentData: UserDocumentProps;
 }
 
-const MicrosoftCard = (props: Props) => {
+const CodeCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
 
-    const title =
-      props?.documentData?.filename.length > 12
-        ? props?.documentData?.filename
-            ?.slice(0, 12)
-            .concat(`...${props?.documentData?.extension}`)
-        : props?.documentData?.filename;
+  const title =
+    props?.documentData?.filename.length > 12
+      ? props?.documentData?.filename
+          ?.slice(0, 12)
+          .concat(`...${props?.documentData?.extension}`)
+      : props?.documentData?.filename;
 
   return (
     <motion.div
@@ -52,17 +53,15 @@ const MicrosoftCard = (props: Props) => {
         )}
       </span>
       <div>
-        <img
-          title={props.documentData.filename}
-          className='w-20 h-20'
-          src={'/word.png'}
-        />
+        <AiFillCode className='text-4xl' />
       </div>
+ 
         <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
           {title}
         </span>
+
     </motion.div>
   );
 };
 
-export default MicrosoftCard;
+export default CodeCard;

@@ -47,7 +47,7 @@ const LoginScreen = () => {
       {snap.authenticationScreen.login && (
         <motion.section
           {...slideAnimation('up')}
-          className='w-full bg-white absolute top-0 left-0 z-[6] flex items-center justify-center'
+          className='w-full absolute top-0 left-0 z-[6] flex items-center justify-center'
         >
           <motion.div className='flex flex-col gap-10 items-center justify-center w-[40rem] min-h-screen'>
             <motion.div className='w-full flex flex-col gap-4'>

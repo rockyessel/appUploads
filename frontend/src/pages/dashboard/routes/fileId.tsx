@@ -5,34 +5,34 @@ import { motion } from 'framer-motion';
 import { fadeAnimation } from '../../../utils/motion';
 import { useAppwriteContext } from '../../../context/app-write';
 import { useParams } from 'react-router-dom';
-import Plyr from 'plyr';
-import 'plyr/dist/plyr.css';
 import { UserDocumentProps } from '../../../interface';
+import { TabComponentCard } from '../../../components';
+import FileAction from '../../../components/file-action';
+import { useSnapshot } from 'valtio';
+import { format } from 'date-fns';
+import MediaViewerCard from '../../../components/media-viewer-card';
+import AudioPlayer from '../../../components/media-viewer-card/audio/AudioPlayer';
 
 const DashboardFileDetails = () => {
   const [documentData, setDocumentData] = React.useState<UserDocumentProps>();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  // const snap = useSnapshot(screenState);
 
   React.useEffect(() => {
-    screenState.dashboardScreen.settings = false;
-    screenState.dashboardScreen.music = false;
-    screenState.dashboardScreen.application = false;
-    screenState.dashboardScreen.document = false;
-    screenState.dashboardScreen.generative = false;
-    screenState.dashboardScreen.image = false;
-    screenState.dashboardScreen.video = false;
+    screenState.dashboardScreen.default = false;
   }, []);
 
+  console.log('loading', loading);
+
   const router = useParams();
-  const videoRef = React.useRef<HTMLVideoElement | null>(null);
-  const playerRef = React.useRef<Plyr | null>(null);
+  const fileCategory = router.fileCategory;
+  console.log('router', router);
   const documentId = router.fileId;
 
   const { getDocumentById } = useAppwriteContext();
 
   const getDocumentDataById = React.useMemo(
     () => async () => {
-      setLoading(true);
       const data = await getDocumentById(`${documentId}`);
       setDocumentData(data);
       setLoading(false);
@@ -40,49 +40,94 @@ const DashboardFileDetails = () => {
     [documentId, getDocumentById]
   );
 
+  const formattedCreatedAt = documentData?.createdAt
+    ? format(new Date(documentData.createdAt), 'do MMMM Y')
+    : '';
+
   console.log('documentData', documentData);
 
   React.useEffect(() => {
     getDocumentDataById();
   }, [getDocumentDataById]);
 
-  React.useEffect(() => {
-    if (videoRef.current && documentData !== undefined) {
-      playerRef.current = new Plyr(videoRef.current);
-    }
-
-    return () => {
-      if (playerRef.current && documentData !== undefined) {
-        playerRef.current.pause();
-        playerRef.current.muted;
-      }
-    };
-  }, [loading]);
-
   return (
     <Layout>
-      <motion.div
-        {...fadeAnimation}
-        className='bg-transparent w-full h-full overflow-y-auto p-3 relative'
-      >
-        <div className=''>
-          <video className='player' ref={videoRef} controls>
-            <source src={documentData?.view} type={documentData?.mimeType} />
-          </video>
-        </div>
-        <div className='flex flex-col gap-2'>
-          <p className='flex flex-col'>
-            <span>Filename</span>
-            <span>the-girl-who-die-on.mp4</span>
-          </p>
-          <p className='flex flex-col'>
-            <span>File Extension</span>
-            <span>MP4</span>
-          </p>
-          <p className='flex flex-col'>
-            <span>File Size</span>
-            <span>324.43MB</span>
-          </p>
+      <motion.div {...fadeAnimation} className='w-full file'>
+        <div className='w-full flex flex-col gap-10 items-center justify-center sm:w-[30rem] md:w-[35rem] lg:w-full px-4'>
+          {loading ? (
+            <p>Loading</p>
+          ) : documentData !== undefined ? (
+            <>
+              <div className='mt-4'>
+                <MediaViewerCard
+                  fileCategory={fileCategory}
+                  documentData={documentData}
+                />
+              </div>
+
+              <AudioPlayer />
+
+              <div className='w-full'>
+                <div>
+                  <p className='font-bold text-3xl'>File information</p>
+                </div>
+                <div className='flex flex-wrap justify-start gap-10 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+                  <p className='flex flex-col'>
+                    <span className='font-bold'>Filename</span>
+                    <span className=''>{documentData?.filename}</span>
+                  </p>
+                  <p className='flex flex-col'>
+                    <span className='font-bold'>File Extension</span>
+                    <span>{documentData?.extension}</span>
+                  </p>
+                  <p className='flex flex-col'>
+                    <span className='font-bold'>File Size</span>
+                    <span>{documentData?.size}</span>
+                  </p>
+                  <p className='flex flex-col'>
+                    <span className='font-bold'>Uploaded on</span>
+                    <span>{formattedCreatedAt}</span>
+                  </p>
+                  <p className='flex flex-col'>
+                    <span className='font-bold'>Mimetype on</span>
+                    <span>{documentData?.mimeType}</span>
+                  </p>
+                </div>
+              </div>
+              <div className='w-full overflow-hidden relative flex flex-col gap-4 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+                <FileAction documentData={documentData} />
+                <TabComponentCard
+                  documentData={documentData ? [documentData] : []}
+                />
+              </div>
+            </>
+          ) : (
+            <p>Data is not available</p>
+          )}
+          {documentData && (
+            <div className='mt-4'>
+              <MediaViewerCard
+                fileCategory={fileCategory}
+                documentData={documentData}
+              />
+            </div>
+          )}
+         
+          {/* {documentData?.mimeType.includes('video') && (
+            <div className='relative w-full  bg-transparent'>
+              <PlyrVideoCard url={documentData.view} />
+            </div>
+          )} */}
+          {/* {documentData && (
+            <div className='w-full'>
+              <DocumentView url={documentData.view} />
+            </div>
+          )} */}
+          {/* {documentData && (
+          <div className='text-sm w-full'>
+            <CodeViewer url={documentData.view} />
+          </div>
+        )} */}
         </div>
       </motion.div>
     </Layout>

@@ -12,17 +12,16 @@ interface Props {
 
 const DefaultAudioCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
-  const [showTitle, setShowTitle] = React.useState(false);
 
-  const audioTitle = props?.documentData?.filename
-    ?.slice(0, 12)
-    .concat(`...${props?.documentData?.extension}`);
+  const title =
+    props?.documentData?.filename.length > 12
+      ? props?.documentData?.filename
+          ?.slice(0, 12)
+          .concat(`...${props?.documentData?.extension}`)
+      : props?.documentData?.filename;
+
   return (
-    <motion.div
-      onMouseLeave={() => setShowTitle(false)}
-      onMouseEnter={() => setShowTitle(true)}
-      className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'
-    >
+    <motion.div className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
       <span className='absolute top-2 right-1 inline-flex items-center justify-center rounded-lg text-sm p-1'>
         <span
           className='z-20 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] p-1 rounded-lg'
@@ -54,11 +53,9 @@ const DefaultAudioCard = (props: Props) => {
       <div>
         <BsMusicNoteList className='text-xl' />
       </div>
-      {showTitle && (
-        <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
-          {audioTitle}
-        </span>
-      )}
+      <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
+        {title}
+      </span>
     </motion.div>
   );
 };

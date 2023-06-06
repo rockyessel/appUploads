@@ -19,7 +19,7 @@ const DashboardImageFiles = () => {
       setLoading(true);
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
       console.log('allCurrentUserDocuments', allCurrentUserDocuments);
-      setImageData(filteredData(allCurrentUserDocuments?.documents, 'image'));
+      setImageData(filteredData(allCurrentUserDocuments?.documents, ['image']));
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

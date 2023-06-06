@@ -9,7 +9,7 @@ interface Props {
 
 const TabMenu = (props: Props) => {
   return (
-    <motion.ul className='tabs text-medium'>
+    <motion.ul className='w-full tabs text-medium'>
       {tabMenu.map((menu, index) => (
         <motion.li
           key={index}

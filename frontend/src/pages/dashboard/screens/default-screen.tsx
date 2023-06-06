@@ -2,7 +2,7 @@
 import { motion } from 'framer-motion';
 import { fadeAnimation } from '../../../utils/motion';
 
-const VideoScreen = () => {
+const DefaultScreen = () => {
   return (
     <motion.div
       {...fadeAnimation}
@@ -14,44 +14,44 @@ const VideoScreen = () => {
           Environment
         </p>
 
-        <div>
+        <div className='prose'>
           <ul>
             <li>
-              File Size Limit: Please note that the maximum file size allowed
+              <strong>File Size Limit</strong>: Please note that the maximum file size allowed
               for upload is 1GB. We recommend compressing large files or using
               alternative methods for sharing larger files.
             </li>
 
             <li>
-              Content Policy: We have a strict policy against the upload and
+              <strong>Content Policy</strong>: We have a strict policy against the upload and
               sharing of explicit adult content, including pornography, in any
               form. This service is used by a diverse user base, and we aim to
               maintain a respectful and inclusive environment for all users.
             </li>
 
             <li>
-              Spread the Word: Help us grow! If you find our service useful, we
+              <strong>Spread the Word</strong>: Help us grow! If you find our service useful, we
               encourage you to share it with your friends, colleagues, and
               networks. Your support in spreading the word is greatly
               appreciated.
             </li>
 
             <li>
-              Open-source Contributions: This project is open-source, and we
+              <strong>Open-source Contributions</strong>: This project is open-source, and we
               welcome contributions from developers. If you're interested in
               contributing to the project, please visit our GitHub repository
               [insert link] and follow the contribution guidelines.
             </li>
 
             <li>
-              Respect and Collaboration: Let's maintain a respectful and
+              <strong>Respect and Collaboration</strong>: Let's maintain a respectful and
               collaborative atmosphere. If you encounter any issues or have
               suggestions for improvement, please reach out to us. We appreciate
               your feedback, and together we can make this service even better.
             </li>
 
             <li>
-              Connect with the Developer: This project was developed by me as a
+              <strong>Connect with the Developer</strong>: This project was developed by me as a
               solo developer, but I'm open to collaboration and connecting with
               others. You can find me on Google, Facebook, Twitter, LinkedIn,
               and Instagram as Rocky Essel. Feel free to reach out and connect.
@@ -63,4 +63,4 @@ const VideoScreen = () => {
   );
 };
 
-export default VideoScreen;
+export default DefaultScreen;

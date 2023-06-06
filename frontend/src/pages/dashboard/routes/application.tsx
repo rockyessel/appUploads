@@ -20,7 +20,13 @@ const DashboardApplicationFiles = () => {
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
       console.log('allCurrentUserDocuments', allCurrentUserDocuments);
       setApplicationData(
-        filteredData(allCurrentUserDocuments?.documents, 'application')
+        filteredData(allCurrentUserDocuments?.documents, [
+          'application/vnd.debian.binary-package',
+          'application/x-apple-diskimage',
+          'application/octet-stream',
+          'application/x-msdownload',
+          'application/x-rpm',
+        ])
       );
       setLoading(false);
     }
@@ -47,7 +53,7 @@ const DashboardApplicationFiles = () => {
           <motion.div className='flex flex-wrap gap-2'>
             {applicationData?.map((data, index) => (
               <MediaCard
-                svgElementContent={''}
+                svgElementContent={''}s
                 data={data}
                 key={index}
                 extension={`${data?.mimeType?.split('/').shift()} ${

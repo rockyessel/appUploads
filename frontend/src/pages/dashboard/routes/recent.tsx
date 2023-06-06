@@ -10,10 +10,9 @@ import { SlArrowUp, SlArrowDown } from 'react-icons/sl';
 
 const DashboardRecentDocuments = () => {
   const [activeGroup, setActiveGroup] = React.useState('');
-  const [userDocumentData, setUserDocumentData] = React.useState<{
-    total: number;
-    documents: UserDocumentProps[] | [];
-  }>([]);
+  const [userDocumentData, setUserDocumentData] = React.useState<
+    UserDocumentProps[] | []
+  >([]);
   const [loading, setLoading] = React.useState(false);
 
   const [timeInterval, setTimeInterval] = React.useState('day');
@@ -33,7 +32,7 @@ const DashboardRecentDocuments = () => {
       const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
       if (user) {
         const data = await getCurrentUserDocuments(user.$id);
-        setUserDocumentData(data);
+        setUserDocumentData(data.documents);
       }
       setLoading(false);
     },
@@ -50,14 +49,11 @@ const DashboardRecentDocuments = () => {
   };
 
   const groupedFiles = React.useMemo(() => {
-    if (userDocumentData?.documents) {
-      return groupDocumentDataByInterval(
-        userDocumentData.documents,
-        timeInterval
-      );
+    if (userDocumentData) {
+      return groupDocumentDataByInterval(userDocumentData, timeInterval);
     }
     return {};
-  }, [timeInterval, userDocumentData.documents]);
+  }, [timeInterval, userDocumentData]);
 
   console.log('entries', Object.entries(groupedFiles));
 
@@ -65,18 +61,20 @@ const DashboardRecentDocuments = () => {
     <Layout>
       <div className='bg-[rgb(255,255,255,0.2)]  backdrop-blur-md w-full h-full overflow-y-auto p-3'>
         <div>
-          <div className='bg-[rgb(255,255,255,0.4)] w-full h-auto px-4 py-2.5 rounded-lg relative flex items-center justify-between'>
-            <p className='font-medium w-fit'>
+          <div className='bg-[rgb(255,255,255,0.4)] w-full h-auto px-4 py-2.5 rounded-lg relative flex flex-wrap items-center justify-between'>
+            <p className='text-sm md:text-md font-medium w-fit'>
               Freely check your most recent files uploaded here.
             </p>
 
-            <span className='bg-[rgb(255,255,255,0.4)] w-fit h-auto px-4 py-2.5 rounded-lg relative'>
+            <span className='bg-[rgb(255,255,255,0.4)] w-full md:w-fit h-auto px-4 py-2.5 rounded-lg relative'>
               <span
-                className='capitalize inline-flex items-center gap-2'
+                className='w-full capitalize inline-flex justify-between items-center gap-2'
                 onClick={() => handleIntervalChange('')}
               >
-                {timeInterval ? timeInterval : 'Choose'}{' '}
-                {selectedIntervalState ? <SlArrowDown /> : <SlArrowUp />}
+                <span>{timeInterval ? timeInterval : 'Choose'} </span>
+                <span>
+                  {selectedIntervalState ? <SlArrowUp /> : <SlArrowDown />}
+                </span>
               </span>
               <span className='w-full'>
                 {selectedIntervalState && (
@@ -120,7 +118,7 @@ const DashboardRecentDocuments = () => {
                 >
                   <span>{format(new Date(date), 'do MMMM Y')} </span>
                   <span>
-                    {activeGroup === date ? <SlArrowDown /> : <SlArrowUp />}
+                    {activeGroup === date ? <SlArrowUp /> : <SlArrowDown />}
                   </span>
                 </h3>
                 <div className='flex flex-wrap gap-2'>

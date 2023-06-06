@@ -74,7 +74,7 @@ export const AppWriteContextProvider = (props: {
   children: React.ReactNode;
 }) => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [documentsData, setDocumentsData] = React.useState<UserDocumentProps[]>(
+  const [documentsData, setDocumentsData] = React.useState<UserDocumentProps[] | []>(
     []
   );
   const [globalDocumentData, setGlobalDocumentData] = React.useState<
@@ -157,7 +157,10 @@ export const AppWriteContextProvider = (props: {
     setFiles(removed_file);
   };
 
-  const handleClear = () => setFiles([]);
+  const handleClear = () => {
+    setFiles([]);
+    setDocumentsData([])
+  };
 
   const uploadFile = async (file: File): Promise<UserDocumentProps[] | []> => {
     // @desc Generate unique ID

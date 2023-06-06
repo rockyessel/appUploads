@@ -18,7 +18,7 @@ const DashboardMusicFiles = () => {
     if (userId) {
       setLoading(true);
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
-      setMusicData(filteredData(allCurrentUserDocuments?.documents, 'audio'));
+      setMusicData(filteredData(allCurrentUserDocuments?.documents, ['audio']));
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

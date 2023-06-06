@@ -5,8 +5,13 @@ import Logo from '../logo';
 import { BsSun, BsMoon } from 'react-icons/bs';
 import { slideAnimation } from '../../utils/motion';
 import { UserProps } from '../../interface';
+import { TbArrowBarLeft } from 'react-icons/tb';
 
-const Navbar = () => {
+interface Props {
+  setHideMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Navbar = (props: Props) => {
   const [user, setUser] = React.useState<UserProps>();
 
   React.useEffect(() => {
@@ -21,7 +26,7 @@ const Navbar = () => {
       className={`bg-[rgb(255,255,255,0.2)]  backdrop-blur-lg border-b-[1px] w-full py-2 px-5`}
     >
       <motion.nav className='w-full h-full m-0 p-0 flex justify-between'>
-        <Logo size='text-2xl' />
+        <Logo size='text-2xl hidden md:block' />
         <motion.ul className='flex items-center gap-5 font-medium'>
           {user?.status ? (
             <Link to='/dashboard'>
@@ -44,6 +49,13 @@ const Navbar = () => {
               <BsMoon className='swap-off fill-current text-xl' />
             </label>
           </motion.li>
+
+          <span
+            onClick={() => props.setHideMenu((prev) => !prev)}
+            className=' bg-transparent-500 text-white p-1 rounded-lg bg-black z-[100]'
+          >
+            <TbArrowBarLeft className='text-xl' />
+          </span>
         </motion.ul>
       </motion.nav>
     </motion.header>

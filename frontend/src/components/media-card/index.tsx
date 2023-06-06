@@ -1,12 +1,9 @@
-// import React from 'react'
-// import { motion } from 'framer-motion';
 import VideoCard from './video';
 import AudioPlayer from './audio';
 import ImageCard from './image';
 import { UserDocumentProps } from '../../interface';
 import SvgCard from './svg';
 import ApplicationCard from './applications';
-import DefaultCard from './applications/default-card';
 import DocumentCard from './documents';
 
 interface Props {
@@ -17,8 +14,6 @@ interface Props {
 }
 
 const MediaCard = (props: Props) => {
-  // console.log('props', props);
-
   switch (props?.extension) {
     // @desc mimeType extension
     case 'image svg':
@@ -69,59 +64,15 @@ const MediaCard = (props: Props) => {
     case 'application dmg':
       return (
         <ApplicationCard
-          extension={props.extension}
+          extension={props.data.extension}
           documentData={props.data}
         />
       );
 
-    // @desc mimeType extension
-    case 'txt':
-    case 'csv':
-    case 'html':
-    case 'cs':
-    case 'cpp':
-    case 'h':
-    case 'hpp':
-    case 'rs':
-    case 'java':
-    case 'ts':
-    case 'js':
-    case 'pdf':
-    case 'docx':
-    case 'xlsx':
-    case 'pptx':
-    case 'zip':
-    case 'ttf':
-    case 'otf':
-    case 'woff2':
-    case 'woff':
-    case 'eot':
-    case 'dfont':
-    case 'pfa':
-    case 'pfb':
-    case 'dotx':
-    case 'xlts':
-    case 'potx':
-    case 'doc':
-    case 'xls':
-    case 'ppt':
-    case 'dot':
-    case 'xlt':
-    case 'pot':
+    default:
       return (
         <DocumentCard extension={props.extension} documentData={props.data} />
       );
-
-    /// // @desc mimeType extension
-    // case 'text html':
-    //   return (
-    //     <motion.div className='w-full bg-transparent h-32 overflow-hidden rounded-lg flex items-center px-10 border-[1px]'>
-    //       <video src={props?.value} />
-    //     </motion.div>
-    //   );
-
-    default:
-      return <DefaultCard documentData={props.data} />;
   }
 };
 

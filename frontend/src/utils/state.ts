@@ -11,6 +11,7 @@ export const screenState = proxy({
   },
   dashboardScreen: {
     default: true,
+    share:false,
   },
 });
 

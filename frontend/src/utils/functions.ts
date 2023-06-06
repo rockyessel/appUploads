@@ -1,5 +1,4 @@
 import { Metadata, UserDocumentProps } from '../interface';
-import { screenState } from './state';
 import * as jsmediatags from 'jsmediatags';
 import { jsmediatagsError } from 'jsmediatags/types';
 import {
@@ -13,6 +12,7 @@ import {
   addYears,
   format,
 } from 'date-fns';
+import { assignedMimeTypes, mimeTypes } from './constant';
 
 type FileCategory =
   | 'image'
@@ -147,99 +147,21 @@ export const downloadFile = async (
   }
 };
 
-export const handleScreenChange = (screen: string) => {
-  switch (screen) {
-    case 'music':
-      screenState.dashboardScreen.music = true;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.settings = false;
-      screenState.dashboardScreen.video = false;
-      break;
-    case 'image':
-      screenState.dashboardScreen.image = true;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.settings = false;
-      screenState.dashboardScreen.video = false;
-      break;
-    case 'video':
-      screenState.dashboardScreen.video = true;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.settings = false;
-      break;
-    case 'application':
-      screenState.dashboardScreen.application = true;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.settings = false;
-      screenState.dashboardScreen.video = false;
-      break;
-    case 'document':
-      screenState.dashboardScreen.document = true;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.settings = false;
-      screenState.dashboardScreen.video = false;
-      break;
-    case 'generative':
-      screenState.dashboardScreen.generative = true;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.settings = false;
-      screenState.dashboardScreen.video = false;
-      break;
-    case 'settings':
-      screenState.dashboardScreen.settings = true;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.video = false;
-      break;
-    default:
-      screenState.dashboardScreen.settings = false;
-      screenState.dashboardScreen.music = false;
-      screenState.dashboardScreen.application = false;
-      screenState.dashboardScreen.document = false;
-      screenState.dashboardScreen.generative = false;
-      screenState.dashboardScreen.image = false;
-      screenState.dashboardScreen.video = false;
-      break;
-  }
-};
-
 export const filteredData = (
   data: UserDocumentProps[],
-  type: string
+  types: string[]
 ): UserDocumentProps[] => {
   console.log('original data', data);
 
   const filtered = data?.filter((obj) => {
     const mimeType = obj.mimeType.toLowerCase();
-    return mimeType.startsWith(`${type}`);
+    return types.some((type) => mimeType.startsWith(`${type}`));
   });
 
   console.log('filtered data', filtered);
 
   return filtered;
 };
-
 export const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
@@ -271,16 +193,6 @@ export const fetchAudioData = async (
 
 export const fileMimeTypeSetter = (file: File): File => {
   // @desc Some files don't have mimeType
-  const mimeTypes = ['deb', 'rpm', 'app', 'ipa', 'dmg', 'msi'];
-  const assignedMimeTypes: { [key: string]: string } = {
-    deb: 'application/vnd.debian.binary-package',
-    rpm: 'application/x-rpm',
-    app: 'application/octet-stream',
-    ipa: 'application/octet-stream',
-    dmg: 'application/x-apple-diskimage',
-    msi: 'application/x-msdownload',
-  };
-
   if (file && file.type === '') {
     const extension = file.name.toLowerCase().split('.').pop();
     const isMimeTypePresentInArr = mimeTypes?.includes(`${extension}`);

@@ -5,6 +5,7 @@ import AppleCard from './apple-card';
 import DefaultCard from './default-card';
 import DesktopCard from './desktop-card';
 import LinuxCard from './linux-card';
+import { AiOutlineAppstoreAdd } from 'react-icons/ai';
 
 interface Props {
   documentData: UserDocumentProps;
@@ -14,29 +15,29 @@ interface Props {
 const ApplicationCard = (props: Props) => {
   switch (props.extension) {
     // @desc Apple Applications (macOS and iOS)
-    case 'application app':
-    case 'application ipa':
-    case 'application dmg':
+    case 'app':
+    case 'ipa':
+    case 'dmg':
       return <AppleCard documentData={props.documentData} />;
 
     // @desc Mobile Apps (Android)
-    case 'application apk':
-    case 'application xapk':
+    case 'apk':
+    case 'xapk':
       return <AndroidCard documentData={props.documentData} />;
 
     // @desc Linux Applications
-    case 'application deb':
-    case 'application rpm':
+    case 'deb':
+    case 'rpm':
       return <LinuxCard documentData={props.documentData} />;
 
     // @desc Desktop Applications
-    case 'application exe':
-    case 'application msi':
+    case 'exe':
+    case 'msi':
       return <DesktopCard documentData={props.documentData} />;
 
-    // @desc For any other application extension
+    // @desc For any other extension
     default:
-      return <DefaultCard documentData={props.documentData} />;
+      return <p></p>;
   }
 };
 

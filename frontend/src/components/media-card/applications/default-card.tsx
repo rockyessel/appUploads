@@ -3,26 +3,36 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { UserDocumentProps } from '../../../interface';
 import { AiOutlineAppstoreAdd } from 'react-icons/ai';
+import { RiCloseLine } from 'react-icons/ri';
+import { CiCircleMore } from 'react-icons/ci';
 
 interface Props {
   documentData: UserDocumentProps;
+  icon: React.JSX.Element;
 }
 
 const DefaultCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
 
-  const applicationTitle = props?.documentData?.filename
-    ?.slice(0, 12)
-    .concat(`...${props?.documentData?.extension}`);
+  const title =
+    props?.documentData?.filename.length > 12
+      ? props?.documentData?.filename
+          ?.slice(0, 12)
+          .concat(`...${props?.documentData?.extension}`)
+      : props?.documentData?.filename;
 
   return (
-    <motion.div className='relative flex-col rounded-lg bg-white border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
+    <motion.div className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
       <span className='absolute top-2 right-1 inline-flex items-center justify-center rounded-lg text-sm p-1'>
         <span
           className='z-20 bg-white border-[1px] p-1 rounded-lg'
           onClick={() => setClicked((prev) => !prev)}
         >
-          {clicked ? 'X' : '...'}
+          {clicked ? (
+            <RiCloseLine className='text-xl' />
+          ) : (
+            <CiCircleMore className='text-xl' />
+          )}
         </span>
         {clicked && (
           <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
@@ -41,11 +51,9 @@ const DefaultCard = (props: Props) => {
           </span>
         )}
       </span>
-      <div>
-        <AiOutlineAppstoreAdd className='text-4xl' />
-      </div>
-      <span className='absolute bottom-2 rounded-lg bg-transparent text-sm px-2 py-1'>
-        {applicationTitle}
+      <div>{props.icon}</div>
+      <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
+        {title}
       </span>
     </motion.div>
   );

@@ -18,7 +18,7 @@ const DashboardVideosFiles = () => {
     if (userId) {
       setLoading(true);
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
-      setVideoData(filteredData(allCurrentUserDocuments?.documents, 'video'));
+      setVideoData(filteredData(allCurrentUserDocuments?.documents, ['video']));
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

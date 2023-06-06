@@ -10,23 +10,20 @@ import { GiTimeDynamite } from 'react-icons/gi';
 import Logo from '../../../components/logo';
 import { useAppwriteContext } from '../../../context/app-write';
 import { formatFileSize, hasNoValue } from '../../../utils/functions';
+import FileItem from '../../../components/file-item';
 
 const LoadingScreen = () => {
   const snap = useSnapshot(screenState);
   const [state, setState] = React.useState<boolean>();
-  const {
-    files,
-    handleRemoveFile,
-    handleClear,
-    handleFile,
-    uploadFile,
-    documentsData,
-  } = useAppwriteContext();
+  const [loading, setLoading] = React.useState<boolean>();
+  const { files, handleClear, handleFile, uploadFile, documentsData } =
+    useAppwriteContext();
 
   const handleFileUpload = async () => {
+    setLoading(true);
     const uploadPromises = files.map((file) => uploadFile(file));
-    const uploadResults = await Promise.all(uploadPromises);
-    console.log('file uploads', uploadResults);
+    await Promise.allSettled(uploadPromises);
+    setLoading(false);
   };
 
   // @desc This effect is responsible for screen changes
@@ -46,20 +43,16 @@ const LoadingScreen = () => {
     screenState.filesScreen = !hasEmptyDocument && hasFiles;
   }, [documentsData, files.length, state]);
 
+
   return (
     <AnimatePresence>
       {snap.loadingScreen && (
-        <motion.section
-          // className='w-full bg-white absolute top-0 left-0 z-[5] flex items-center justify-center'
-          {...slideAnimation('right')}
-        >
-          <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] min-h-screen'>
+        <motion.section className='w-full' {...slideAnimation('right')}>
+          <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
             <Logo size='text-2xl' />
             <motion.div className='w-full flex flex-col gap-0 p-0 m-0 items-center justify-center  bg-[rgb(255,255,255,0.4)] backdrop-blur-lg border-[1px] rounded-lg'>
-              <CircleProgressbar percent={100} />
-              <p className='text-sm font-medium pb-3'>
-                1.00 Mbit/s | 00:00:16 | 25.11% | 233.32 KB / 24.2 MB
-              </p>
+              <p>Click on start, to upload your files.</p>
+              {loading && <p>Loading, please wait patent</p>}
             </motion.div>
             <motion.div className='flex flex-col gap-4 items-center justify-center w-full  bg-[rgb(255,255,255,0.4)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
               <motion.div className='w-full inline-flex items-center justify-between text-sm'>
@@ -69,11 +62,12 @@ const LoadingScreen = () => {
                     title={'Start'}
                     handleClick={handleFileUpload}
                   >
-                    Start <AiOutlineUpload />
+                    <span className='hidden md:block'>Start</span>{' '}
+                    <AiOutlineUpload />
                   </Button>
                   <label className='inline-flex items-center  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
-                    {/* <Button  styles={''} title={'Add more'}> */}
-                    Add more <AiOutlinePlus />
+                    <span className='hidden md:block'>Add more</span>{' '}
+                    <AiOutlinePlus />
                     <input
                       type='file'
                       name='file'
@@ -82,7 +76,6 @@ const LoadingScreen = () => {
                       onChange={handleFile}
                       multiple
                     />
-                    {/* </Button> */}
                   </label>
                 </span>
                 <Button
@@ -90,7 +83,8 @@ const LoadingScreen = () => {
                   title={'Clear'}
                   handleClick={handleClear}
                 >
-                  Clear <GiTimeDynamite className='text-red-500' />
+                  <span className='hidden md:block'>Clear</span>{' '}
+                  <GiTimeDynamite className='text-red-500' />
                 </Button>
               </motion.div>
               <motion.div
@@ -99,29 +93,12 @@ const LoadingScreen = () => {
                 }`}
               >
                 {files?.map((file, index) => (
-                  <motion.div
-                    key={index}
-                    className={`w-full bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] rounded-lg flex items-center justify-between p-3`}
-                  >
-                    <span className='font-medium'>{file.name}</span>
-                    <span className='inline-flex items-center gap-3'>
-                      <span>{formatFileSize(file.size)}</span>
-                      <Button
-                        styles={
-                          'border-[1px] p-2 rounded-lg bg-transparent hover:bg-rose-500 hover:text-gray-200 cursor-pointer active:ring-2 active:ring-rose-600 active:bg-rose-600 active:border-2 transition-all ease-in-out active:border-white active:text-black'
-                        }
-                        title={'Clear'}
-                        handleClick={() => handleRemoveFile(file.name)}
-                      >
-                        <FaTimes />
-                      </Button>
-                    </span>
-                  </motion.div>
+                  <FileItem key={index} file={file} />
                 ))}
 
                 {files.length === 0 && (
                   <p className='w-full bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] rounded-lg flex items-center justify-between p-3'>
-                    Add files to start uploading
+                    Add files to start uploading.
                   </p>
                 )}
               </motion.div>

@@ -10,9 +10,12 @@ interface Props {
 const AndroidCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
 
-  const applicationTitle = props?.documentData?.filename
-    ?.slice(0, 12)
-    .concat(`...${props?.documentData?.extension}`);
+  const title =
+    props?.documentData?.filename.length > 12
+      ? props?.documentData?.filename
+          ?.slice(0, 12)
+          .concat(`...${props?.documentData?.extension}`)
+      : props?.documentData?.filename;
 
   return (
     <motion.div className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
@@ -48,7 +51,7 @@ const AndroidCard = (props: Props) => {
         />
       </div>
       <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
-        {applicationTitle}
+        {title}
       </span>
     </motion.div>
   );

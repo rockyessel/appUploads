@@ -17,51 +17,46 @@ interface Props {
 
 const MainAudioCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
-  const [showTitle, setShowTitle] = React.useState(false);
-  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const [duration, setDuration] = React.useState(0);
-  const [currentTime, setCurrentTime] = React.useState(0);
+  // const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null);
+  // const [isPlaying, setIsPlaying] = React.useState(false);
+  // const [duration, setDuration] = React.useState(0);
+  // const [currentTime, setCurrentTime] = React.useState(0);
 
-  React.useEffect(() => {
-    const audio = new Audio(props?.documentData?.view);
-    audio.addEventListener('loadedmetadata', () => {
-      setDuration(audio.duration);
-    });
-    audio.addEventListener('timeupdate', () => {
-      setCurrentTime(audio.currentTime);
-    });
-    audio.addEventListener('ended', () => {
-      setIsPlaying(false);
-      setCurrentTime(0);
-    });
-    setAudio(audio);
-  }, [props?.documentData?.view]);
+  // React.useEffect(() => {
+  //   const audio = new Audio(props?.documentData?.view);
+  //   audio.addEventListener('loadedmetadata', () => {
+  //     setDuration(audio.duration);
+  //   });
+  //   audio.addEventListener('timeupdate', () => {
+  //     setCurrentTime(audio.currentTime);
+  //   });
+  //   audio.addEventListener('ended', () => {
+  //     setIsPlaying(false);
+  //     setCurrentTime(0);
+  //   });
+  //   setAudio(audio);
+  // }, [props?.documentData?.view]);
 
-  React.useEffect(() => {
-    const audio = new Audio(props?.documentData?.view);
-    audio.addEventListener('loadedmetadata', () => {
-      setDuration(audio.duration);
-    });
-    setAudio(audio);
-  }, [props?.documentData?.view]);
+  // React.useEffect(() => {
+  //   const audio = new Audio(props?.documentData?.view);
+  //   audio.addEventListener('loadedmetadata', () => {
+  //     setDuration(audio.duration);
+  //   });
+  //   setAudio(audio);
+  // }, [props?.documentData?.view]);
 
-  const togglePlay = () => {
-    if (isPlaying) {
-      audio?.pause();
-      setIsPlaying(false);
-    } else {
-      audio?.play();
-      setIsPlaying(true);
-    }
-  };
+  // const togglePlay = () => {
+  //   if (isPlaying) {
+  //     audio?.pause();
+  //     setIsPlaying(false);
+  //   } else {
+  //     audio?.play();
+  //     setIsPlaying(true);
+  //   }
+  // };
 
   return (
-    <motion.div
-      onMouseLeave={() => setShowTitle(false)}
-      onMouseEnter={() => setShowTitle(true)}
-      className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg  border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'
-    >
+    <motion.div className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg  border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
       <img
         className='w-full h-full object-cover object-center rounded-lg'
         src={props?.audioData?.image}
@@ -98,7 +93,7 @@ const MainAudioCard = (props: Props) => {
 
       <motion.div className='md:absolute hidden md:block inset-0 backdrop-blur-[2px] top-56 bg-gradient-to-b from-transparent via-[#18202b]/90 to-[#18202b] group-hover:from-[#18202b]/[1] group-hover:via-[#18202b]/80 group-hover:to-[#18202b]/[1]'></motion.div>
       <motion.div className='absolute bottom-1 w-full flex flex-col items-center justify-center text-gray-50'>
-        <motion.div className='w-full flex items-center justify-around '>
+        {/* <motion.div className='w-full flex items-center justify-around '>
           <motion.span>{formatTime(currentTime)}</motion.span>
           <motion.span
             title={isPlaying ? 'Pause' : 'Play'}
@@ -107,15 +102,14 @@ const MainAudioCard = (props: Props) => {
             {isPlaying ? <VscDebugPause /> : <VscPlay />}
           </motion.span>
           <motion.span>{formatTime(duration)}</motion.span>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
-      {showTitle && (
-        <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
-          {props?.audioData?.title
-            ?.slice(0, 12)
-            .concat(`...${props?.documentData?.extension}`)}
-        </span>
-      )}
+
+      <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
+        {props?.audioData?.title
+          ?.slice(0, 12)
+          .concat(`...${props?.documentData?.extension}`)}
+      </span>
     </motion.div>
   );
 };

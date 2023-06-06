@@ -6,9 +6,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root,
 *,
+:root,
 *::after,
+*::before,
 html {
   padding: 0;
   margin: 0;
@@ -17,6 +18,38 @@ html {
 
 :root {
   --plyr-color-main: #ff008ca4;
+  --plyr-video-background: transparent;
+  --plyr-badge-border-radius: 0.5rem;
+}
+
+@font-face {
+  font-family: 'Cascadia';
+  font-style: normal;
+  font-weight: normal;
+  src: url('/Cascadia.ttf');
+}
+
+pre code span {
+  font-family: 'Cascadia' !important;
+  width: 100%;
+}
+
+.file {
+  height: 100% !important;
+  overflow-y: scroll !important;
+}
+
+pre {
+  width: 100%;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  -ms-border-radius: 0.5rem;
+  -o-border-radius: 0.5rem;
+  height: 25rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
 }
 
 body {
@@ -61,7 +94,15 @@ body {
   background: #555;
 }
 
-.player {
-  --plyr-badge-border-radius: 0.5rem;
+.plyr__video-wrapper {
+  -webkit-border-radius: 0.89rem;
+  -moz-border-radius: 0.89rem;
+  -ms-border-radius: 0.89rem;
+  -o-border-radius: 0.89rem;
+  border-radius: 0.89rem;
+}
 
+.plyr--video .plyr__controls {
+  background-color: transparent;
+  background: transparent;
 }
