@@ -39,7 +39,7 @@ const PlyrVideoCard = (props: Props) => {
     ) : null;
 
   return (
-    <div className='flex items-center justify-center rounded-lg'>
+    <div className='flex items-center justify-center rounded-lg bg-black'>
       {plyrVideo}
     </div>
   );

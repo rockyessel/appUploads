@@ -10,7 +10,6 @@ interface Props {
 }
 
 const Layout = (props: Props) => {
-  
   const [hideMenu, setHideMenu] = React.useState(true);
   return (
     <React.Fragment>
@@ -21,9 +20,9 @@ const Layout = (props: Props) => {
             <div className='w-280px'>
               <SideBar hideMenu={hideMenu} />
             </div>
-            <div className='w-full h-[94vh] overflow-y-auto flex-1 relative'>
+            <div className='w-full h-[94vh] overflow-y-auto flex-1 flex items-center flex-col justify-center relative'>
               <AnimatePresence>{props.children}</AnimatePresence>
-              <DashboardFooter />
+              {/* <DashboardFooter /> */}
             </div>
           </motion.div>
         </motion.section>

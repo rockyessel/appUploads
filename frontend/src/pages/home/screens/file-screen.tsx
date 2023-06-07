@@ -58,7 +58,10 @@ const FileScreen = () => {
   return (
     <AnimatePresence>
       {snap.filesScreen && (
-        <motion.section className='w-full' {...slideAnimation('up')}>
+        <motion.section
+          className='w-full h-full flex items-center justify-center'
+          {...slideAnimation('up')}
+        >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
             <div>
               {documentsData.map(
@@ -155,13 +158,15 @@ const FileScreen = () => {
               })}
             </div>
 
-            <div>
+            <div className='w-full'>
               <Button styles='' title='Go back' handleClick={handleClear}>
                 Go back
               </Button>
             </div>
 
-            <TabComponentCard documentData={documentsData} />
+            <div className='w-full rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+              <TabComponentCard documentData={documentsData} />
+            </div>
           </motion.div>
         </motion.section>
       )}

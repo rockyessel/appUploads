@@ -3,13 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { slideAnimation } from '../../../utils/motion';
 import { useSnapshot } from 'valtio';
 import { screenState } from '../../../utils/state';
-import { Button, CircleProgressbar } from '../../../components';
-import { FaTimes } from 'react-icons/fa';
+import { Button } from '../../../components';
 import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
 import { GiTimeDynamite } from 'react-icons/gi';
 import Logo from '../../../components/logo';
 import { useAppwriteContext } from '../../../context/app-write';
-import { formatFileSize, hasNoValue } from '../../../utils/functions';
+import { hasNoValue } from '../../../utils/functions';
 import FileItem from '../../../components/file-item';
 
 const LoadingScreen = () => {
@@ -40,19 +39,21 @@ const LoadingScreen = () => {
 
     setState(hasEmptyDocument);
 
-    screenState.filesScreen = !hasEmptyDocument && hasFiles;
+    screenState.filesScreen = !hasEmptyDocument && hasFiles && files.length === documentsData.length;
   }, [documentsData, files.length, state]);
-
 
   return (
     <AnimatePresence>
       {snap.loadingScreen && (
-        <motion.section className='w-full' {...slideAnimation('right')}>
+        <motion.section
+          className='w-full h-full flex items-center justify-center'
+          {...slideAnimation('right')}
+        >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
             <Logo size='text-2xl' />
             <motion.div className='w-full flex flex-col gap-0 p-0 m-0 items-center justify-center  bg-[rgb(255,255,255,0.4)] backdrop-blur-lg border-[1px] rounded-lg'>
-              <p>Click on start, to upload your files.</p>
-              {loading && <p>Loading, please wait patent</p>}
+              <p className='p-3'>Click on start, to upload your files.</p>
+              {loading && <p className='p-3'>Loading, please wait patent</p>}
             </motion.div>
             <motion.div className='flex flex-col gap-4 items-center justify-center w-full  bg-[rgb(255,255,255,0.4)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
               <motion.div className='w-full inline-flex items-center justify-between text-sm'>

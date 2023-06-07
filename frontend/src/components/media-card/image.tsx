@@ -20,7 +20,7 @@ const ImageCard = (props: Props) => {
       : props.documentData.filename;
 
   return (
-    <motion.div className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
+    <motion.div className='relative flex-col rounded-lg bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 w-[50rem] h-[30rem] inline-flex items-center justify-center'>
       {props.documentData.view ? (
         <img
           className='w-full h-full object-cover object-center rounded-lg'
@@ -43,7 +43,7 @@ const ImageCard = (props: Props) => {
           )}
         </span>
         {clicked && (
-          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
+          <span className='top-0 border-[1px] border-gray-300 w-full right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
             <Link
               to={`/dashboard/image/${props.documentData.$id}`}
               className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'

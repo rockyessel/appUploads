@@ -15,13 +15,13 @@ const MediaViewerCard = (props: Props): React.JSX.Element => {
       return <PlyrVideoCard url={props.documentData.view} />;
 
     case 'document':
-      return <DocumentView url={props.documentData.view} />;
+      return <DocumentView documentData={props.documentData} />;
     case 'image':
       return (
         <img
           src={props.documentData.view}
           title={props.documentData.filename}
-          className='rounded-lg w-[30rem]'
+          className='rounded-lg w-full'
         />
       );
     case 'code':

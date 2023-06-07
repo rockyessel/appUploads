@@ -1,6 +1,6 @@
 import VideoCard from './video';
 import AudioPlayer from './audio';
-import ImageCard from './image';
+import ImageCard from './image/main';
 import { UserDocumentProps } from '../../interface';
 import SvgCard from './svg';
 import ApplicationCard from './applications';
@@ -51,6 +51,7 @@ const MediaCard = (props: Props) => {
     case 'image jpg':
     case 'image jpeg':
     case 'image jfif':
+    case 'image gif':
       return <ImageCard documentData={props.data} />;
 
     // @desc mimeType extension

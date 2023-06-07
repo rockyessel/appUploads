@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../../../components/dashboard/layout';
 import { screenState } from '../../../utils/state';
 import { motion } from 'framer-motion';
-import { fadeAnimation } from '../../../utils/motion';
+import { fadeAnimation, slideAnimation } from '../../../utils/motion';
 import { useAppwriteContext } from '../../../context/app-write';
 import { useParams } from 'react-router-dom';
 import { UserDocumentProps } from '../../../interface';
@@ -52,84 +52,59 @@ const DashboardFileDetails = () => {
 
   return (
     <Layout>
-      <motion.div {...fadeAnimation} className='w-full file'>
-        <div className='w-full flex flex-col gap-10 items-center justify-center sm:w-[30rem] md:w-[35rem] lg:w-full px-4'>
-          {loading ? (
-            <p>Loading</p>
-          ) : documentData !== undefined ? (
-            <>
-              <div className='mt-4'>
-                <MediaViewerCard
-                  fileCategory={fileCategory}
-                  documentData={documentData}
-                />
-              </div>
-
-              <AudioPlayer />
-
-              <div className='w-full'>
-                <div>
-                  <p className='font-bold text-3xl'>File information</p>
+      <motion.section
+        className='w-full h-full flex items-center justify-center'
+        {...slideAnimation('up')}
+      >
+        <motion.div {...fadeAnimation} className='w-full px-4'>
+          <div className='w-full'>
+            {loading ? (
+              <p>Loading</p>
+            ) : documentData !== undefined ? (
+              <div className='w-full h-full flex flex-col gap-5'>
+                <div className='w-full h-[39rem] mt-20'>
+                  <MediaViewerCard
+                    fileCategory={fileCategory}
+                    documentData={documentData}
+                  />
                 </div>
-                <div className='flex flex-wrap justify-start gap-10 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
-                  <p className='flex flex-col'>
-                    <span className='font-bold'>Filename</span>
-                    <span className=''>{documentData?.filename}</span>
-                  </p>
-                  <p className='flex flex-col'>
-                    <span className='font-bold'>File Extension</span>
-                    <span>{documentData?.extension}</span>
-                  </p>
-                  <p className='flex flex-col'>
-                    <span className='font-bold'>File Size</span>
-                    <span>{documentData?.size}</span>
-                  </p>
-                  <p className='flex flex-col'>
-                    <span className='font-bold'>Uploaded on</span>
-                    <span>{formattedCreatedAt}</span>
-                  </p>
-                  <p className='flex flex-col'>
-                    <span className='font-bold'>Mimetype on</span>
-                    <span>{documentData?.mimeType}</span>
-                  </p>
+                <div className='w-full flex flex-col gap-5'>
+                  <div className='w-full flex flex-wrap justify-start gap-10 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+                    <p className='flex flex-col'>
+                      <span className='font-bold'>Filename</span>
+                      <span className=''>{documentData?.filename}</span>
+                    </p>
+                    <p className='flex flex-col'>
+                      <span className='font-bold'>File Extension</span>
+                      <span>{documentData?.extension}</span>
+                    </p>
+                    <p className='flex flex-col'>
+                      <span className='font-bold'>File Size</span>
+                      <span>{documentData?.size}</span>
+                    </p>
+                    <p className='flex flex-col'>
+                      <span className='font-bold'>Uploaded on</span>
+                      <span>{formattedCreatedAt}</span>
+                    </p>
+                    <p className='flex flex-col'>
+                      <span className='font-bold'>Mimetype on</span>
+                      <span>{documentData?.mimeType}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className='w-full mb-5 overflow-hidden relative flex flex-col gap-4 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+                  <FileAction documentData={documentData} />
+                  <TabComponentCard
+                    documentData={documentData ? [documentData] : []}
+                  />
                 </div>
               </div>
-              <div className='w-full overflow-hidden relative flex flex-col gap-4 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
-                <FileAction documentData={documentData} />
-                <TabComponentCard
-                  documentData={documentData ? [documentData] : []}
-                />
-              </div>
-            </>
-          ) : (
-            <p>Data is not available</p>
-          )}
-          {documentData && (
-            <div className='mt-4'>
-              <MediaViewerCard
-                fileCategory={fileCategory}
-                documentData={documentData}
-              />
-            </div>
-          )}
-         
-          {/* {documentData?.mimeType.includes('video') && (
-            <div className='relative w-full  bg-transparent'>
-              <PlyrVideoCard url={documentData.view} />
-            </div>
-          )} */}
-          {/* {documentData && (
-            <div className='w-full'>
-              <DocumentView url={documentData.view} />
-            </div>
-          )} */}
-          {/* {documentData && (
-          <div className='text-sm w-full'>
-            <CodeViewer url={documentData.view} />
+            ) : (
+              <p>Data is not available</p>
+            )}
           </div>
-        )} */}
-        </div>
-      </motion.div>
+        </motion.div>
+      </motion.section>
     </Layout>
   );
 };

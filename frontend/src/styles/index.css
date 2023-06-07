@@ -19,7 +19,7 @@ html {
 :root {
   --plyr-color-main: #ff008ca4;
   --plyr-video-background: transparent;
-  --plyr-badge-border-radius: 0.5rem;
+  /* --plyr-badge-border-radius: 0.5rem; */
 }
 
 @font-face {
@@ -51,6 +51,8 @@ pre {
   overflow-x: auto;
   border-radius: 0.5rem;
 }
+
+.dark{}
 
 body {
   background-image: radial-gradient(
@@ -95,11 +97,11 @@ body {
 }
 
 .plyr__video-wrapper {
-  -webkit-border-radius: 0.89rem;
+  /* -webkit-border-radius: 0.89rem;
   -moz-border-radius: 0.89rem;
   -ms-border-radius: 0.89rem;
-  -o-border-radius: 0.89rem;
-  border-radius: 0.89rem;
+  -o-border-radius: 0.89rem; */
+  /* border-radius: 0.89rem; */
 }
 
 .plyr--video .plyr__controls {

@@ -33,7 +33,7 @@ const ImageCard = (props: Props) => {
 
       <span className='absolute top-1 right-1 inline-flex items-center justify-center rounded-lg text-sm p-1'>
         <span
-          className='z-20 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg text-gray-50/70 border-[1px] p-1 rounded-lg'
+          className='z-20 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] p-1 rounded-lg'
           onClick={() => setClicked((prev) => !prev)}
         >
           {clicked ? (
@@ -43,7 +43,7 @@ const ImageCard = (props: Props) => {
           )}
         </span>
         {clicked && (
-          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
+          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-[rgba(255,255,255,0.5)] backdrop-blur-md'>
             <Link
               to={`/dashboard/image/${props.documentData.$id}`}
               className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'
