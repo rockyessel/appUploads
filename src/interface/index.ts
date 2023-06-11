@@ -13,6 +13,8 @@ export interface UserDocumentProps {
   size: string;
   updatedAt: string;
   view: string;
+  public: boolean;
+  access_file_code: string;
 }
 
 export interface UserProps {

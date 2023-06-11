@@ -2,8 +2,8 @@ import React from 'react';
 import PlyrVideoCard from './video';
 import { UserDocumentProps } from '../../interface';
 import DocumentView from '../document-view';
-import CodeViewer from '../code';
 import Image from '../media-card/image';
+import AudioPlayer from './audio/AudioPlayer';
 
 interface Props {
   fileCategory?: string;
@@ -18,15 +18,20 @@ const MediaViewerCard = (props: Props): React.JSX.Element => {
     case 'document':
       return <DocumentView documentData={props.documentData} />;
 
-    
     case 'image':
       return (
-        <Image
-          size='w-full lg:w-[40rem]'
-          extension={props.documentData.extension}
-          documentData={props.documentData}
-        />
+        <div className='flex items-center justify-center w-full bg-[rgba(0,0,0,0.5)] rounded-lg'>
+          <Image
+            size='w-full lg:w-[40rem]'
+            extension={props.documentData.extension}
+            documentData={props.documentData}
+          />
+        </div>
       );
+
+    // // @desc mimeType extension
+    case 'music':
+      return <AudioPlayer documentData={props.documentData} />;
 
     default:
       return <p>Hello World</p>;

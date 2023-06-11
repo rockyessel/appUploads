@@ -13,49 +13,48 @@ import FileItem from '../../../components/file-item';
 import { toast } from 'react-toastify';
 
 const LoadingScreen = () => {
-  const snap = useSnapshot(screenState);
-  const [state, setState] = React.useState<boolean>();
-  const [loading, setLoading] = React.useState<boolean>();
-  const { files, handleClear, handleFile, uploadFile, documentsData } =
-    useAppwriteContext();
+const snap = useSnapshot(screenState);
+const [state, setState] = React.useState<boolean>();
+const [loading, setLoading] = React.useState<boolean>();
 
-  const handleFileUpload = async () => {
-    setLoading(true);
-    loading ? toast.info(`(${files.length}) File/s  being uploaded.`) : null
-    const uploadPromises = files.map((file) => uploadFile(file));
-    await Promise.allSettled(uploadPromises);
-    toast.success(
-      `${files.length > 0 ? 'Files' : 'File'} uploaded successfully`
-    );
-    setLoading(false);
-  };
+// @desc Destructuring necessary functions and data from the context
+const { files, handleClear, handleFile, uploadFile, documentsData } =
+  useAppwriteContext();
 
-  console.log(files)
+// @desc Function to handle file upload
+const handleFileUpload = async () => {
+  setLoading(true);
+  const uploadPromises = files.map((file) => uploadFile(file));
+  await Promise.allSettled(uploadPromises);
+  toast.success(
+    `${files.length > 0 ? 'Files' : 'File'} uploaded successfully`
+  );
+  setLoading(false);
+};
 
-  // @desc This effect is responsible for screen changes
-  React.useEffect(() => {
-    const hasEmptyDocument = hasNoValue(documentsData);
-    const hasFiles = files.length > 0;
-    const hasNoFiles = files.length === 0;
+console.log(files);
 
-    if (hasNoFiles) {
-      screenState.defaultScreen = true;
-      screenState.loadingScreen = false;
-      screenState.filesScreen = false;
-    }
+// @desc This effect is responsible for screen changes
+React.useEffect(() => {
+  const hasEmptyDocument = hasNoValue(documentsData);
+  const hasFiles = files.length > 0;
+  const hasNoFiles = files.length === 0;
 
-    setState(hasEmptyDocument);
-    if (
-      !hasEmptyDocument &&
-      hasFiles &&
-      files.length === documentsData.length
-    ) {
+  if (hasNoFiles) {
+    screenState.defaultScreen = true;
+    screenState.loadingScreen = false;
+    screenState.filesScreen = false;
+  }
 
-      screenState.defaultScreen = false;
-      screenState.loadingScreen = false;
-      screenState.filesScreen = true;
-    }
-  }, [documentsData, files.length, state]);
+  setState(hasEmptyDocument);
+
+  // @desc Checking conditions for screen transitions
+  if (!hasEmptyDocument && hasFiles && files.length === documentsData.length) {
+    screenState.defaultScreen = false;
+    screenState.loadingScreen = false;
+    screenState.filesScreen = true;
+  }
+}, [documentsData, files.length, state]);
 
   return (
     <AnimatePresence>

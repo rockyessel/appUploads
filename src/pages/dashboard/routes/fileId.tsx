@@ -1,3 +1,4 @@
+// Import necessary dependencies and components for the current file or module
 import React from 'react';
 import Layout from '../../../components/dashboard/layout';
 import { screenState } from '../../../utils/state';
@@ -6,96 +7,71 @@ import { fadeAnimation, slideAnimation } from '../../../utils/motion';
 import { useAppwriteContext } from '../../../context/app-write';
 import { useParams } from 'react-router-dom';
 import { UserDocumentProps } from '../../../interface';
-import { TabComponentCard } from '../../../components';
+import { FileDescription, TabComponentCard } from '../../../components';
 import FileAction from '../../../components/file-action';
-import { format } from 'date-fns';
 import MediaViewerCard from '../../../components/media-viewer-card';
 import { hasNoValue } from '../../../utils/functions';
 
 const DashboardFileDetails = () => {
-  const [documentData, setDocumentData] = React.useState<UserDocumentProps>();
-  const [loading, setLoading] = React.useState(true);
+  const [documentData, setDocumentData] = React.useState<UserDocumentProps>(); // State for storing the document data
+  const [loading, setLoading] = React.useState(true); // State for indicating if the data is currently being loaded
 
   React.useEffect(() => {
-    screenState.dashboardScreen.default = false;
+    screenState.dashboardScreen.default = false; // Modifying the screen state for the dashboard screen
   }, []);
 
-  const router = useParams();
-  const fileCategory = router.fileCategory;
-  console.log('router', router);
-  const documentId = router.fileId;
+  const router = useParams(); // Accessing the router parameters
+  const fileCategory = router.fileCategory; // Extracting the file category from the router
+  const documentId = router.fileId; // Extracting the document ID from the router
 
-  const { getDocumentById } = useAppwriteContext();
+  const { getDocumentById } = useAppwriteContext(); // Accessing the document retrieval function from the Appwrite context
 
   const getDocumentDataById = React.useMemo(
     () => async () => {
       try {
-        const data = await getDocumentById(`${documentId}`);
-        setDocumentData(data);
-        setLoading(false);
+        const data = await getDocumentById(`${documentId}`); // Retrieving the document data by ID
+        setDocumentData(data); // Updating the state with the retrieved document data
+        setLoading(false); // Updating the loading state to indicate the data is no longer being fetched
       } catch (error) {
-        setLoading(false);
+        setLoading(false); // Handling any errors and updating the loading state accordingly
       }
     },
-    [documentId, getDocumentById]
+    [documentId, getDocumentById] // Dependencies for the memoized callback function
   );
 
-  const formattedCreatedAt = documentData?.createdAt
-    ? format(new Date(documentData.createdAt), 'do MMMM Y')
-    : '';
-
-  console.log('documentData', documentData);
-  const noDataFromId = hasNoValue(documentData);
-  console.log('noDataFromId', noDataFromId);
+  console.log('documentData', documentData); // Logging the value of the documentData state variable
+  const noDataFromId = hasNoValue(documentData); // Checking if the documentData has no value
+  console.log('noDataFromId', noDataFromId); // Logging the value of noDataFromId
 
   React.useEffect(() => {
-    getDocumentDataById();
-  }, [getDocumentDataById]);
+    getDocumentDataById(); // Calling the getDocumentDataById function on component mount or when its dependencies change
+  }, [getDocumentDataById]); // Dependency array for the useEffect hook
 
   return (
     <Layout>
-      <motion.section
-        className='w-full h-full'
-        {...slideAnimation('up')}
-      >
+      <motion.section className='w-full h-full' {...slideAnimation('up')}>
         <motion.div {...fadeAnimation} className='w-full px-4'>
           <div className='w-full'>
+            {/* State */}
             {loading ? (
+              // Display loading screen if `loading` is true
               <p>Loading</p>
             ) : !noDataFromId && documentData ? (
+              // Hide loading screen and display file information if `noDataFromId` is false and `documentData` exists
               <div className='w-full h-full flex flex-col gap-10 mt-10'>
                 <div className='w-full'>
+                  {/* Displaying the current file visually */}
                   <MediaViewerCard
                     fileCategory={fileCategory}
                     documentData={documentData}
                   />
                 </div>
+
                 <div className='w-full flex flex-col gap-5'>
-                  <div className='w-full flex flex-col gap-5'>
-                    <div className='w-full flex flex-wrap justify-start gap-10 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
-                      <p className='flex flex-col'>
-                        <span className='font-bold'>Filename</span>
-                        <span className=''>{documentData?.filename}</span>
-                      </p>
-                      <p className='flex flex-col'>
-                        <span className='font-bold'>File Extension</span>
-                        <span>{documentData?.extension}</span>
-                      </p>
-                      <p className='flex flex-col'>
-                        <span className='font-bold'>File Size</span>
-                        <span>{documentData?.size}</span>
-                      </p>
-                      <p className='flex flex-col'>
-                        <span className='font-bold'>Uploaded on</span>
-                        <span>{formattedCreatedAt}</span>
-                      </p>
-                      <p className='flex flex-col'>
-                        <span className='font-bold'>Mimetype on</span>
-                        <span>{documentData?.mimeType}</span>
-                      </p>
-                    </div>
-                  </div>
+                  {/* Displaying all information about the current file */}
+                  <FileDescription documentData={documentData} />
                   <div className='w-full mb-5 overflow-hidden relative flex flex-col gap-4 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+                    {/* Actions related to the current file */}
                     <FileAction documentData={documentData} />
                     <TabComponentCard
                       documentData={documentData ? [documentData] : []}
@@ -104,6 +80,7 @@ const DashboardFileDetails = () => {
                 </div>
               </div>
             ) : (
+              // Display message if there is no data available
               <p>Data is not available</p>
             )}
           </div>

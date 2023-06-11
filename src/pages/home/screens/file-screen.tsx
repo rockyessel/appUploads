@@ -3,142 +3,89 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSnapshot } from 'valtio';
 import { screenState } from '../../../utils/state';
 import { slideAnimation } from '../../../utils/motion';
-import { AiOutlineUpload, AiOutlinePlus } from 'react-icons/ai';
-// import { GiTimeDynamite } from 'react-icons/gi';
 import { useAppwriteContext } from '../../../context/app-write';
 import { hasNoValue } from '../../../utils/functions';
-// import { useNavigate } from 'react-router-dom';
-import { Button, TabComponentCard } from '../../../components';
-import SvgCard from '../../../components/media-card/svg';
-import MediaCard from '../../../components/media-card';
+import {
+  Button,
+  TabComponentCard,
+  DisplayUploadedFiles,
+} from '../../../components';
 
 const FileScreen = () => {
-  const [currentSlider, setCurrentSlider] = React.useState(0);
-  const [state, setState] = React.useState<boolean>();
-  const snap = useSnapshot(screenState);
-  const { documentsData, files, handleClear } = useAppwriteContext();
+  // State variables
+  const [currentSlider, setCurrentSlider] = React.useState(0); // Keeps track of the current slider index
+  const [state, setState] = React.useState<boolean>(); // State variable used for screen change
+  const [loading, setLoading] = React.useState<boolean>(); // State variable used for displaying loading message
 
-  console.log('documentsData', documentsData);
+  // Accessing snapshot and app context
+  const snap = useSnapshot(screenState); // Accessing the snapshot of screenState
+  const { documentsData, files, handleClear } = useAppwriteContext(); // Accessing data and functions from the app context
 
-  const imageLength = documentsData.length;
+  console.log('documentsData', documentsData); // Logging the value of documentsData to the console
 
-  // @desc This effect is responsible for screen change
+  const imageLength = documentsData.length; // Getting the length of the documentsData array
+
+  // Effect for screen change
   React.useEffect(() => {
+    // Checking various conditions to determine the current screen state
     const hasEmptyDocument = hasNoValue(documentsData);
     const hasNoFiles = files.length === 0;
     const hasFiles = files.length > 0;
     const hasDocumentData = documentsData.length === 0;
 
     if (hasNoFiles) {
+      // If there are no files, show the default screen
       screenState.loadingScreen = false;
       screenState.defaultScreen = true;
       screenState.filesScreen = false;
     }
 
     if (hasFiles && hasDocumentData) {
+      // If there are files but no document data, show the loading screen
       screenState.loadingScreen = true;
       screenState.defaultScreen = false;
       screenState.filesScreen = false;
     }
 
     if (files.length > 0 && documentsData.length > 0) {
+      // If there are both files and document data, show this screen
       screenState.loadingScreen = false;
       screenState.defaultScreen = false;
       screenState.filesScreen = true;
     }
 
-    setState(hasEmptyDocument);
+    setState(hasEmptyDocument); // Update the state variable based on whether the documentsData is empty
   }, [documentsData, documentsData?.length, files.length, state]);
 
+  React.useEffect(() => {
+    if (files.length !== documentsData.length) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [documentsData.length, files.length]);
+
+  // Function to handle moving the dot in the slider
   const handleMoveDot = (index: number) => {
-    setCurrentSlider(index);
-    console.log('index', index);
+    setCurrentSlider(index); // Update the currentSlider state with the provided index
   };
 
   return (
     <AnimatePresence>
+      {/* filesScreen Screen */}
       {snap.filesScreen && (
+        // Section for displaying media content
         <motion.section
           className='w-full h-full flex items-center justify-center'
           {...slideAnimation('up')}
         >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
-            <div>
-              {documentsData.map(
-                (document, index) =>
-                  document.mimeType.startsWith('image') && (
-                    <div key={index}>
-                      {document.$id === documentsData[currentSlider].$id && (
-                        <div>
-                          <MediaCard
-                            size='w-[35rem] h-[20rem]'
-                            data={document}
-                            key={index}
-                            extension={`image ${document.extension}`}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )
-              )}
-
-              {documentsData.map(
-                (document, index) =>
-                  document.mimeType.startsWith('audio') && (
-                    <div key={index}>
-                      {document.$id === documentsData[currentSlider].$id && (
-                        <div>
-                          <MediaCard
-                            data={document}
-                            key={index}
-                            extension={`audio ${document.extension}`}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )
-              )}
-
-              {documentsData.map(
-                (document, index) =>
-                  document.mimeType.startsWith('video') && (
-                    <div key={index}>
-                      {document.$id === documentsData[currentSlider].$id && (
-                        <div>
-                          <MediaCard
-                            svgElementContent={''}
-                            data={document}
-                            key={index}
-                            extension={`video ${document.extension}`}
-                            value={document.view}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )
-              )}
-
-              {documentsData.map(
-                (document, index) =>
-                  document.mimeType.startsWith('application') && (
-                    <div key={index}>
-                      {document.$id === documentsData[currentSlider].$id && (
-                        <div>
-                          <MediaCard
-                            svgElementContent={''}
-                            data={document}
-                            key={index}
-                            extension={`application ${document.extension}`}
-                            value={document.view}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )
-              )}
-            </div>
-
+            <DisplayUploadedFiles
+              currentSlider={currentSlider}
+              documentsData={documentsData}
+            />
             <div className={'flex justify-center gap-3 relative bottom-[2rem]'}>
+              {/* Rendering dots for slider navigation */}
               {Array.from({ length: imageLength }).map((_, index: number) => {
                 return (
                   <div
@@ -153,17 +100,18 @@ const FileScreen = () => {
                 );
               })}
             </div>
-
             <div className='w-full'>
+              {/* Button to go back */}
               <Button styles='' title='Go back' handleClick={handleClear}>
                 Go back
               </Button>
             </div>
-
             <div className='w-full rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
-              <TabComponentCard documentData={documentsData} />
+              {/* Component for displaying document data in a tab format */}
+              <TabComponentCard documentData={[documentsData[currentSlider]]} />
             </div>
           </motion.div>
+          {loading && <p>{documentsData.length}/{files.length}Loading</p>}
         </motion.section>
       )}
     </AnimatePresence>

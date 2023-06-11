@@ -14,50 +14,17 @@ import {
 } from 'date-fns';
 import { assignedMimeTypes, mimeTypes } from './constant';
 
-type FileCategory =
-  | 'image'
-  | 'video'
-  | 'audio'
-  | 'application'
-  | 'document'
-  | 'unknown';
-
-export const getFileCategory = async (
-  fileUrl: string
-): Promise<FileCategory> => {
-  try {
-    const response = await fetch(fileUrl);
-    if (response.ok) {
-      const contentType = response.headers.get('content-type');
-      if (contentType) {
-        if (contentType.startsWith('image/')) {
-          return 'image';
-        } else if (contentType.startsWith('video/')) {
-          return 'video';
-        } else if (contentType.startsWith('audio/')) {
-          return 'audio';
-        } else if (
-          contentType === 'application/pdf' ||
-          contentType === 'text/html'
-        ) {
-          return 'document';
-        } else if (contentType.startsWith('application/')) {
-          return 'application';
-        }
-      }
-    }
-    return 'unknown';
-  } catch (error) {
-    console.error('Error fetching file:', error);
-    return 'unknown';
-  }
-};
-
+/**
+ * Formats the file size in a human-readable format.
+ * @param size - The file size in bytes.
+ * @returns The formatted file size with appropriate units (B, KB, MB, GB).
+ */
 export const formatFileSize = (size: number): string => {
   const units = ['B', 'KB', 'MB', 'GB'];
   let formattedSize = size;
   let unitIndex = 0;
 
+  // Iterate through the units and divide the size by 1024 until it's less than 1024 or we reach the largest unit
   while (formattedSize >= 1024 && unitIndex < units.length - 1) {
     formattedSize /= 1024;
     unitIndex++;
@@ -66,6 +33,12 @@ export const formatFileSize = (size: number): string => {
   return `${formattedSize?.toFixed(2)}${units[unitIndex]}`;
 };
 
+
+/**
+ * Shuffles the characters in a string randomly.
+ * @param input - The input string to shuffle.
+ * @returns The shuffled string.
+ */
 const shuffleString = (input: string): string => {
   const shuffleRatio = Math.random() * 0.8;
   let characters = input.split('');
@@ -73,22 +46,33 @@ const shuffleString = (input: string): string => {
   return characters.join('');
 };
 
-// Generate a random string
+/**
+ * Generates a random string of random length.
+ * @returns The generated random string.
+ */
 export const generateString = (): string => {
+  // Shuffling the characters to ensure randomness
   const characters = shuffleString(
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   );
-  const length = Math.floor(Math.random() * 6) + 5;
-  const usedChars: string[] = [];
-  let result = '';
 
+  // Determining the length of the random string
+  const length = Math.floor(Math.random() * 6) + 5;
+
+  // Array to track used characters
+  const usedChars: string[] = [];
+
+  // Building the random string character by character
+  let result = '';
   for (let i = 0; i < length; i++) {
     let index: number;
 
+    // Selecting a random character that has not been used before
     do {
       index = Math.floor(Math.random() * characters.length);
     } while (usedChars.includes(characters[index]));
 
+    // Adding the selected character to the result string and tracking it as used
     result += characters[index];
     usedChars.push(characters[index]);
   }
@@ -96,7 +80,11 @@ export const generateString = (): string => {
   return result;
 };
 
-// Check if the object has no value
+/**
+ * Checks if the provided object has no value.
+ * @param obj - The object to check.
+ * @returns A boolean indicating whether the object has no value.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const hasNoValue = (obj: any): boolean => {
   if (Array.isArray(obj)) {
@@ -119,10 +107,14 @@ export const hasNoValue = (obj: any): boolean => {
   return true; // Other types (number, boolean, null, undefined) have no values
 };
 
-export const downloadFile = async (
-  url: string,
-  name: string
-): Promise<void> => {
+
+/**
+ * Downloads a file from the specified URL with the provided name.
+ * @param url - The URL of the file to download.
+ * @param name - The desired name of the downloaded file.
+ * @returns A Promise that resolves when the file is successfully downloaded.
+ */
+export const downloadFile = async (url: string, name: string): Promise<void> => {
   try {
     // Fetch the file from the URL
     const response = await fetch(url);
@@ -148,71 +140,95 @@ export const downloadFile = async (
   }
 };
 
-export const filteredData = (
-  data: UserDocumentProps[],
-  types: string[]
-): UserDocumentProps[] => {
-  console.log('original data', data);
 
+/**
+ * Filters an array of user document objects based on the provided types.
+ * @param data - The array of user document objects to filter.
+ * @param types - The array of types to filter by.
+ * @returns The filtered array of user document objects.
+ */
+export const filteredData = (data: UserDocumentProps[], types: string[]): UserDocumentProps[] => {
+  // Filtering the data array based on the provided types
   const filtered = data?.filter((obj) => {
     const mimeType = obj.mimeType.toLowerCase();
     return types.some((type) => mimeType.startsWith(`${type}`));
   });
 
+  // Logging the filtered data for debugging purposes
   console.log('filtered data', filtered);
 
   return filtered;
-};
-export const formatTime = (time: number) => {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
-  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-  return `${minutes}:${formattedSeconds}`;
-};
+}
 
-export const fetchAudioData = async (
-  audioURL: string,
-  setMetadata: React.Dispatch<React.SetStateAction<Metadata | undefined>>
-) => {
+
+
+/**
+ * Fetches audio metadata from the provided audio URL and updates the metadata state.
+ * @param audioURL - The URL of the audio file.
+ * @param setMetadata - The state setter function for updating the metadata.
+ */
+export const fetchAudioData = async (audioURL: string, setMetadata: React.Dispatch<React.SetStateAction<Metadata | undefined>>) => {
   try {
     const response = await fetch(`${audioURL}`);
     const data = await response.blob();
 
+    // Read the audio file tags using jsmediatags library
     jsmediatags.read(data, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onSuccess: (tags: { type: string; tags: any }) => {
-        setMetadata(tags.tags);
+        setMetadata(tags.tags); // Update the metadata state with the extracted tags
       },
       onError: (error: jsmediatagsError) => {
-        console.log(error);
+        console.log(error); // Log any errors that occur during tag extraction
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log(error); // Log any errors that occur during the fetch operation
   }
 };
 
+
+/**
+ * Sets the mimeType of a file if it is not provided or empty.
+ * @param file - The file object.
+ * @returns The updated file object with the mimeType set.
+ */
 export const fileMimeTypeSetter = (file: File): File => {
-  // @desc Some files don't have mimeType
+  // Check if the file object exists and if its mimeType is empty
   if (file && file.type === '') {
-    const extension = file.name.toLowerCase().split('.').pop();
-    const isMimeTypePresentInArr = mimeTypes?.includes(`${extension}`);
+    const extension = file.name.toLowerCase().split('.').pop(); // Get the file extension
+    const isMimeTypePresentInArr = mimeTypes?.includes(`${extension}`); // Check if the mimeType is present in the allowed mimeTypes array
+
     if (isMimeTypePresentInArr) {
+      // If the mimeType is present in the allowed mimeTypes array, create a new File object with the updated mimeType
       const updatedFile = new File([file], file.name, {
-        type: assignedMimeTypes[`${extension}`],
+        type: assignedMimeTypes[`${extension}`], // Assign the appropriate mimeType based on the extension
       });
+
       return updatedFile;
     }
   }
-  return file;
+
+  return file; // Return the file object as-is if the mimeType is already provided or if it doesn't match the allowed mimeTypes
 };
 
+
+/**
+ * Groups an array of UserDocumentProps by a specified time interval.
+ * @param documentData - The array of UserDocumentProps to be grouped.
+ * @param interval - The time interval for grouping (day, week, month, year).
+ * @returns An object with grouped UserDocumentProps arrays, where the keys are the interval periods.
+ */
 export const groupDocumentDataByInterval = (
   documentData: UserDocumentProps[],
   interval: string
 ) => {
   const groups: { [intervalKey: string]: UserDocumentProps[] } = {};
 
+  /**
+   * Get the start of the interval for a given date.
+   * @param date - The input date.
+   * @returns The start of the interval for the date.
+   */
   const getStartOfInterval = (date: Date) => {
     switch (interval) {
       case 'day':
@@ -228,6 +244,11 @@ export const groupDocumentDataByInterval = (
     }
   };
 
+  /**
+   * Add an interval to a given date.
+   * @param date - The input date.
+   * @returns The date incremented by the interval.
+   */
   const addInterval = (date: Date) => {
     switch (interval) {
       case 'day':
@@ -259,4 +280,29 @@ export const groupDocumentDataByInterval = (
   });
 
   return groups;
+};
+
+
+/**
+ * Check if the total size of files or any individual file in the array exceeds 2GB.
+ * @param files - An array of files to be checked.
+ * @returns A boolean indicating if the file(s) exceed the size limit.
+ */
+export const checkFileSize = (files: File[]): boolean => {
+  const maxSize = 2 * 1024 * 1024 * 1024; // 2GB in bytes
+  let totalSize = 0;
+
+  for (const file of files) {
+    if (file.size > maxSize) {
+      // Single file exceeds 2GB
+      return true;
+    }
+    totalSize += file.size;
+    if (totalSize > maxSize) {
+      // Total size of files exceeds 2GB
+      return true;
+    }
+  }
+
+  return false; // Files are within the limit
 };

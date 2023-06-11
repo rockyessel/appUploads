@@ -18,21 +18,28 @@ const UploadScreen = () => {
     const hasNoFiles = files.length === 0;
 
     if (hasFiles) {
-      // files.length === 1 && toast.info('File Selected');
-      //
+      // Display toast message when files are added
       toast.info('File added');
+
+      // Update screenState to show loading screen
       screenState.defaultScreen = false;
       screenState.loadingScreen = true;
       screenState.filesScreen = false;
     }
 
     if (hasNoFiles) {
-      toast.info('Select a file to upload.');
+      // Update screenState to show default screen
       screenState.defaultScreen = true;
       screenState.loadingScreen = false;
       screenState.filesScreen = false;
     }
   }, [files]);
+
+  // The content to display on the default screen
+  const defaultScreenContent = {
+    title: 'Welcome to our Cloud File Storage!',
+    description: `With our secure and reliable cloud file storage service, you can easily store, manage, and access your files from anywhere, at any time. Whether you're an individual, a small business, or a large organization, we provide a seamless and efficient solution for your file storage needs.`,
+  };
 
   return (
     <AnimatePresence>
@@ -48,23 +55,14 @@ const UploadScreen = () => {
                 <input type='file' onChange={handleFile} className='w-0 h-0' />
                 <ImUpload className='text-3xl md:text-7xl' />
                 <motion.p className='text-xs text-center mt-5'>
-                  Host JPG, GIF and PNG images up to 10MB each. (or Drag and
-                  Drop your files here)
+                  Host JPG, GIF and PNG images and others up to 2GB each.
                 </motion.p>
               </label>
             </motion.div>
 
             <motion.div className='text-sm font-medium flex flex-col gap-2 p-5'>
-              <motion.p className='font-bold'>
-                Welcome to our Cloud File Storage!
-              </motion.p>
-              <motion.p>
-                With our secure and reliable cloud file storage service, you can
-                easily store, manage, and access your files from anywhere, at
-                any time. Whether you're an individual, a small business, or a
-                large organization, we provide a seamless and efficient solution
-                for your file storage needs.
-              </motion.p>
+              <motion.p className='font-bold'>{defaultScreenContent.title}</motion.p>
+              <motion.p>{defaultScreenContent.description}</motion.p>
             </motion.div>
           </motion.div>
         </motion.section>

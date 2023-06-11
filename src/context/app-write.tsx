@@ -38,7 +38,7 @@ interface AppWriteContextProps {
   >;
   getDocumentById: ($id: string) => Promise<UserDocumentProps | undefined>;
   uploadUserProfile: (file: File) => Promise<string>;
-  triggerEffect: boolean;
+  updateDocuments: (documentId: string, updatedValue: boolean ) => Promise<void>
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -64,57 +64,51 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   getEveryUserDocuments: () => Promise.resolve([]),
   getCurrentUserDocuments: () => Promise.resolve({ total: 0, documents: [] }),
   globalDocumentData: [],
-  triggerEffect: false,
   setGlobalDocumentData: () => [],
   getDocumentById: () => Promise.resolve(defaultDocument),
   uploadUserProfile: () => Promise.resolve(''),
+  updateDocuments: () => Promise.resolve(),
 });
 
-export const AppWriteContextProvider = (props: {
-  children: React.ReactNode;
-}) => {
-  const [files, setFiles] = React.useState<File[]>([]);
-  const [documentsData, setDocumentsData] = React.useState<
-    UserDocumentProps[] | []
-  >([]);
-  const [globalDocumentData, setGlobalDocumentData] = React.useState<
-    UserDocumentProps[]
-  >([]);
-  const [triggerEffect, setTriggerEffect] = React.useState(false);
-  const [allDocuments, setAllDocuments] = React.useState<
-    UserDocumentProps[] | []
-  >([]);
 
+export const AppWriteContextProvider = (props: { children: React.ReactNode }) => {
+  const [files, setFiles] = React.useState<File[]>([]);
+  const [documentsData, setDocumentsData] = React.useState<UserDocumentProps[] | []>([]);
+  const [globalDocumentData, setGlobalDocumentData] = React.useState<UserDocumentProps[]>([]);
+  const [allDocuments, setAllDocuments] = React.useState<UserDocumentProps[] | []>([]);
+
+  // @desc To register a new user
   const register = async (form: typeof registerForm) => {
     await account.create(uniqueID, form.email, form.password, form.name);
     await account.createEmailSession(form.email, form.password);
   };
 
+  // @desc To log in a user
   const login = async (form: typeof loginForm) => {
     await account.createEmailSession(form.email, form.password);
   };
 
+  // @desc To log out the current user
   const logout = async () => {
     const data = await account.deleteSession('current');
     window.localStorage.removeItem('user');
     console.log('logout', data);
   };
 
+  // @desc To verify the user's identity
   const verifyUser = React.useCallback(async () => {
     try {
       // setTriggerEffect((prev) => !prev);
-      // @desc get user from localStorage
+      // Get user from localStorage
       const getUserFromLocalStorage = window.localStorage.getItem('user');
-
-      // @desc parse user
+      // Parse user
       const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
-      // @desc get user from db
+      // Get user from db
       const currentUser = await account.get();
-      // @desc check for null
+      // Check for null
       if (user === null) {
-        // @desc if null, put user from db to localStorage
+        // If null, put user from db into localStorage
         window.localStorage.setItem('user', JSON.stringify(currentUser));
-        // @desc
       } else if (currentUser && user !== null) {
         const currentUserId = currentUser.$id;
         const savedUserId = user.$id; //647200b7f40247e76178
@@ -139,21 +133,14 @@ export const AppWriteContextProvider = (props: {
     }
   }, []);
 
+  // @desc To get the current user
   const getUser = async (): Promise<UserProps> => {
     const data = await account.get();
     verifyUser();
-
     return data;
   };
 
-  // React.useEffect(() => {
-  //   const timeout = setInterval(() => {
-  //     verifyUser();
-  //   }, 10000);
-
-  //   return () => clearInterval(timeout);
-  // }, [verifyUser]);
-
+  // @desc To handle file selection
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files;
     if (selectedFile) {
@@ -162,66 +149,57 @@ export const AppWriteContextProvider = (props: {
     }
   };
 
+  // @desc To handle file removal
   const handleRemoveFile = (name: string) => {
     const removed_file = files.filter((file) => file.name !== name);
     toast.error(`File Removed`);
     setFiles(removed_file);
   };
 
+  // @desc To clear all files
   const handleClear = () => {
     setFiles([]);
     setDocumentsData([]);
-
     toast.error(`All files removed`);
   };
 
+  // @desc To upload a file
   const uploadFile = async (file: File): Promise<UserDocumentProps[] | []> => {
-    // @desc Generate unique ID
-    const documentId = generateString();
-
+    // Generate unique ID
+    const documentId = `${generateString()}${generateString()}${generateString()}`;
     const updatedFile = fileMimeTypeSetter(file);
-
     const data = await storage.createFile(
       `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,
       documentId,
       updatedFile
     );
-
     const currentUser = await getUser();
-    console.log('currentUser', currentUser);
-
     if (data) {
-      // @desc Get information from file and data.
-      const view = await storage.getFileView(data?.bucketId, data?.$id)?.href;
+      // Get information from file and data
+      const view = storage.getFileView(data?.bucketId, data?.$id)?.href;
       const filename = updatedFile?.name?.toLowerCase();
       const extension = updatedFile.name.toLowerCase().split('.').pop();
       const size = formatFileSize(data?.sizeOriginal);
-      const preview = await storage.getFilePreview(data?.bucketId, data?.$id)
-        ?.href;
-
+      const preview = storage.getFilePreview(data?.bucketId, data?.$id)?.href;
       const mimeType = updatedFile.type;
       const createdAt = data?.$createdAt;
       const updatedAt = data?.$updatedAt;
       const userId = currentUser?.$id;
-      // const unique_extension = `${updatedFile.type
-      //   .split('/')
-      //   .shift()} ${extension}`;
-
-      // @desc db model schema
+      const access_file_code = generateString();
+      // Database model schema
       const dbSchemaData = {
         view,
-        preview,
-        extension,
         size,
-        filename,
-        mimeType,
-        createdAt,
-        updatedAt,
         userId,
-        // unique_extension,
+        preview,
+        mimeType,
+        filename,
+        createdAt,
+        extension,
+        updatedAt,
+        access_file_code,
       };
-
-      // @desc Creating document.
+      // Create document
       const createdDocument: typeof defaultDocument = await db.createDocument(
         `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
         `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
@@ -230,11 +208,11 @@ export const AppWriteContextProvider = (props: {
       );
       setDocumentsData((previousDoc) => [...previousDoc, createdDocument]);
     }
-
     console.log('documentsData', documentsData);
     return documentsData as UserDocumentProps[];
   };
 
+  // @desc To get the current user's documents
   const getCurrentUserDocuments = async (userId: string) => {
     const data = (await db.listDocuments(
       `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
@@ -248,6 +226,7 @@ export const AppWriteContextProvider = (props: {
     return data;
   };
 
+  // @desc To get a document by its ID
   const getDocumentById = async ($id: string) => {
     if ($id) {
       const data = (await db.getDocument(
@@ -259,11 +238,13 @@ export const AppWriteContextProvider = (props: {
     }
   };
 
+  // @desc To get all files in a bucket
   const getAllFiles = async (bucketId: string) => {
     const data = await storage.listFiles(bucketId);
     return data;
   };
 
+  // @desc To delete a file from the database and bucket
   const deleteFrom_db_bucket = async (fileId: string) => {
     await storage.deleteFile(
       `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,
@@ -276,34 +257,41 @@ export const AppWriteContextProvider = (props: {
     );
   };
 
+  // @desc To upload a user profile image
   const uploadUserProfile = async (file: File): Promise<string> => {
-    // @desc Generate unique ID
+    // Generate unique ID
     const documentId = generateString();
-
     const data = await storage.createFile(
       `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,
       documentId,
       file
     );
-
     const view = await storage.getFileView(data?.bucketId, data?.$id)?.href;
-
-    // const currentUser = await getUser();
     const profile = { profile: view };
-
     const user = await account.updatePrefs({ profile });
     window.localStorage.setItem('user', JSON.stringify(user));
-
     return view;
   };
 
+  // @desc To update document attributes
+  const updateDocuments = async (documentId: string, updatedValue: boolean) => {
+     await db.updateDocument(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+      documentId,
+      // Update the Index Attribute
+      { public: updatedValue }
+    ) as UserDocumentProps;
+   
+  };
+
+  // @desc To get every user's documents
   const getEveryUserDocuments = async (): Promise<UserDocumentProps[]> => {
     const data = await db.listDocuments(
       `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
       `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`
     );
     setAllDocuments(data as unknown as UserDocumentProps[] | []);
-
     return allDocuments;
   };
 
@@ -331,7 +319,7 @@ export const AppWriteContextProvider = (props: {
     setGlobalDocumentData,
     getDocumentById,
     uploadUserProfile,
-    triggerEffect,
+    updateDocuments,
   };
 
   return (
