@@ -14,7 +14,7 @@ interface Props {
 const VideoCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <motion.div className='relative flex-col rounded-lg bg-transparent border-[2px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
+    <motion.div className='relative flex-col rounded-lg border-[2px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
       {props?.documentData ? (
         <video
           className='w-full h-full object-cover object-center rounded-lg'

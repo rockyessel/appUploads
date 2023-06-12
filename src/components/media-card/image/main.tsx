@@ -24,7 +24,7 @@ const ImageCard = (props: Props) => {
     <motion.div
       className={`${
         props.size ? props.size : 'w-40 h-32'
-      } relative flex-col bg-[rgb(255,255,255,0.1)] backdrop-blur-lg border-[1px] border-gray-300 gap-4 inline-flex items-center justify-center`}
+      } relative flex-col bg-[rgb(255,255,255,0.1)]  border-[1px] border-gray-300 gap-4 inline-flex items-center justify-center`}
     >
       {props.documentData.view ? (
         <img

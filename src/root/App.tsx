@@ -15,6 +15,7 @@ import DashboardImageFiles from '../pages/dashboard/routes/image';
 import DashboardApplicationFiles from '../pages/dashboard/routes/application';
 import DashboardDocumentFiles from '../pages/dashboard/routes/document';
 import DashboardRecentDocuments from '../pages/dashboard/routes/recent';
+import FileSearchUsers from '../pages/dashboard/routes/file-search-users';
 
 const App = () => {
   return (
@@ -45,7 +46,7 @@ const App = () => {
         <Route path='/dashboard/upload' element={<UserFilesUpload />} />
         <Route path='/files' element={<FilesExplorer />} />
         <Route path='/files/:fileId' element={<FilesExplorer />} />
-        <Route path='/files/' element={<FilesExplorer />} />
+        <Route path='/dashboard/search/' element={<FileSearchUsers />} />
       </Routes>
       <ToastContainer />
     </>

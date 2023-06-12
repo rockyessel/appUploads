@@ -307,7 +307,7 @@ export const assignedMimeTypes: { [key: string]: string } = {
   hx: 'text/plain',
 };
 
-export const assignedIconExtensions: { [key: string]: string } = {
+export const assignedIconExtensions: {  [key: string]: React.ReactNode } = {
   pdf: <FaFilePdf className='text-4xl' />,
   dotx: <SiMicrosoftword className='text-4xl' />,
   xlts: <SiMicrosoftexcel className='text-4xl' />,

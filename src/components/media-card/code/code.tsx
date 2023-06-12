@@ -4,7 +4,6 @@ import { UserDocumentProps } from '../../../interface';
 import { CiCircleMore } from 'react-icons/ci';
 import { RiCloseLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { AiFillCode } from 'react-icons/ai';
 import { assignedIconExtensions } from '../../../utils/constant';
 
 interface Props {

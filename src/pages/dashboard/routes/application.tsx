@@ -8,19 +8,18 @@ import { UserDocumentProps, UserProps } from '../../../interface';
 import Layout from '../../../components/dashboard/layout';
 
 const DashboardApplicationFiles = () => {
-  const { getCurrentUserDocuments } = useAppwriteContext();
-  const [applicationData, setApplicationData] = React.useState<
-    UserDocumentProps[] | []
-  >([]);
-  const [loading, setLoading] = React.useState(false);
+  const { getCurrentUserDocuments } = useAppwriteContext(); // Get the function for fetching user documents from the Appwrite context
+  const [applicationData, setApplicationData] = React.useState<UserDocumentProps[] | []>([]); // Store the user's application document data
+  const [loading, setLoading] = React.useState(false); // Indicates whether the data is currently being loaded
 
   const getAllUserDocuments = React.useCallback(async (userId: string) => {
     if (userId) {
-      setLoading(true);
-      const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
-      console.log('allCurrentUserDocuments', allCurrentUserDocuments);
+      setLoading(true); // Set loading state to true
+      const allCurrentUserDocuments = await getCurrentUserDocuments(userId); // Fetch all user documents using the getCurrentUserDocuments function
+      console.log('allCurrentUserDocuments', allCurrentUserDocuments); // Log the fetched user documents for debugging purposes
       setApplicationData(
         filteredData(allCurrentUserDocuments?.documents, [
+          // Filter and store the user's application document data based on selected MIME types
           'application/vnd.debian.binary-package',
           'application/x-apple-diskimage',
           'application/octet-stream',
@@ -28,16 +27,16 @@ const DashboardApplicationFiles = () => {
           'application/x-rpm',
         ])
       );
-      setLoading(false);
+      setLoading(false); // Set loading state to false after fetching and updating the data
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('user');
-    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
+    const getUserFromLocalStorage = window.localStorage.getItem('user'); // Get the user data from local storage
+    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`); // Parse the user data
     if (user) {
-      getAllUserDocuments(user.$id);
+      getAllUserDocuments(user.$id); // Fetch all user documents when the component mounts or when the user changes
     }
   }, [getAllUserDocuments]);
 

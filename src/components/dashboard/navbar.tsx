@@ -7,6 +7,7 @@ import { slideAnimation } from '../../utils/motion';
 import { UserProps } from '../../interface';
 import { TbArrowBarLeft } from 'react-icons/tb';
 import { useAppwriteContext } from '../../context/app-write';
+import { AiOutlineCaretDown } from 'react-icons/ai';
 
 interface Props {
   setHideMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,6 +33,7 @@ const Navbar = (props: Props) => {
     >
       <motion.nav className='w-full h-full m-0 p-0 flex justify-between'>
         <Logo size='text-2xl hidden md:block' />
+       
         <motion.ul className='flex items-center gap-5 font-medium'>
           {loading ? (
             <p>Loading</p>

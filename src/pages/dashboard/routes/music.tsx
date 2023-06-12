@@ -8,33 +8,34 @@ import MediaCard from '../../../components/media-card';
 import Layout from '../../../components/dashboard/layout';
 
 const DashboardMusicFiles = () => {
-  const [loading, setLoading] = React.useState(false);
-  const { getCurrentUserDocuments } = useAppwriteContext();
-  const [musicData, setMusicData] = React.useState<UserDocumentProps[] | []>([]);
+const [loading, setLoading] = React.useState(false); // Indicates whether the data is currently being loaded
+const { getCurrentUserDocuments } = useAppwriteContext(); // Custom hook to get the function for fetching user documents
+const [musicData, setMusicData] = React.useState<UserDocumentProps[] | []>([]); // Stores the user's music data
 
-  const getAllUserDocuments = React.useCallback(async (userId: string) => {
-    if (userId) {
-      setLoading(true);
-      const allCurrentUserDocuments = await getCurrentUserDocuments(userId);
-      setMusicData(filteredData(allCurrentUserDocuments?.documents, ['audio']));
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const getAllUserDocuments = React.useCallback(async (userId: string) => {
+  if (userId) {
+    setLoading(true); // Set loading state to true
+    const allCurrentUserDocuments = await getCurrentUserDocuments(userId); // Fetch all user documents using the getCurrentUserDocuments function
+    setMusicData(filteredData(allCurrentUserDocuments?.documents, ['audio'])); // Filter and store the user's music data
+    setLoading(false); // Set loading state to false after fetching and updating the data
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
-  React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('user');
-    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
-    if (user) {
-      getAllUserDocuments(user.$id);
-    }
-  }, [getAllUserDocuments]);
+React.useEffect(() => {
+  const getUserFromLocalStorage = window.localStorage.getItem('user'); // Get the user data from local storage
+  const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`); // Parse the user data
+  if (user) {
+    getAllUserDocuments(user.$id); // Fetch all user documents when the component mounts or when the user changes
+  }
+}, [getAllUserDocuments]);
+
 
   return (
     <Layout>
       <motion.div
         {...fadeAnimation}
-        className='bg-[rgb(255,255,255,0.2)]  backdrop-blur-md w-full h-full overflow-y-auto p-3'
+        className='w-full h-full overflow-y-auto p-3'
       >
         {loading ? (
           <p>Loading music</p>

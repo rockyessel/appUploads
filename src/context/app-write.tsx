@@ -1,5 +1,5 @@
 import React from 'react';
-import { uniqueID, account, storage, db } from '../utils/config';
+import { account, storage, db } from '../utils/config';
 import {
   fileMimeTypeSetter,
   formatFileSize,
@@ -32,13 +32,20 @@ interface AppWriteContextProps {
   getCurrentUserDocuments: (
     userId: string
   ) => Promise<{ total: number; documents: UserDocumentProps[] | [] }>;
+  getAllPublicDocuments: () => Promise<{
+    total: number;
+    documents: UserDocumentProps[] | [];
+  }>;
+  getDocumentByCode: (
+    code: string
+  ) => Promise<{ total: number; documents: UserDocumentProps[] | [] }>;
   globalDocumentData: UserDocumentProps[] | [];
   setGlobalDocumentData: React.Dispatch<
     React.SetStateAction<UserDocumentProps[] | []>
   >;
   getDocumentById: ($id: string) => Promise<UserDocumentProps | undefined>;
   uploadUserProfile: (file: File) => Promise<string>;
-  updateDocuments: (documentId: string, updatedValue: boolean ) => Promise<void>
+  updateDocuments: (documentId: string, updatedValue: boolean) => Promise<void>;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -63,6 +70,8 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   deleteFrom_db_bucket: () => Promise.resolve(),
   getEveryUserDocuments: () => Promise.resolve([]),
   getCurrentUserDocuments: () => Promise.resolve({ total: 0, documents: [] }),
+  getAllPublicDocuments: () => Promise.resolve({ total: 0, documents: [] }),
+  getDocumentByCode: () => Promise.resolve({ total: 0, documents: [] }),
   globalDocumentData: [],
   setGlobalDocumentData: () => [],
   getDocumentById: () => Promise.resolve(defaultDocument),
@@ -79,7 +88,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
 
   // @desc To register a new user
   const register = async (form: typeof registerForm) => {
-    await account.create(uniqueID, form.email, form.password, form.name);
+    await account.create(`${generateString()}${generateString()}`, form.email, form.password, form.name);
     await account.createEmailSession(form.email, form.password);
   };
 
@@ -90,9 +99,8 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
 
   // @desc To log out the current user
   const logout = async () => {
-    const data = await account.deleteSession('current');
+     await account.deleteSession('current');
     window.localStorage.removeItem('user');
-    console.log('logout', data);
   };
 
   // @desc To verify the user's identity
@@ -226,6 +234,32 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
     return data;
   };
 
+  // @desc To get the current user's documents
+  const getAllPublicDocuments = async () => {
+    const data = (await db.listDocuments(
+      `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
+      `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
+      [
+        Query.equal('public', [true]),
+        Query.limit(100),
+      ]
+    )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
+    return data;
+  };
+
+  // @desc To get the current user's documents
+  const getDocumentByCode = async (code:string) => {
+    const data = (await db.listDocuments(
+      `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
+      `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
+      [
+        Query.select(['access_file_code', `${code}`]),
+      ]
+    )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
+    console.log('data', data);
+    return data;
+  };
+
   // @desc To get a document by its ID
   const getDocumentById = async ($id: string) => {
     if ($id) {
@@ -237,6 +271,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
       return data;
     }
   };
+
 
   // @desc To get all files in a bucket
   const getAllFiles = async (bucketId: string) => {
@@ -320,6 +355,8 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
     getDocumentById,
     uploadUserProfile,
     updateDocuments,
+    getAllPublicDocuments,
+    getDocumentByCode,
   };
 
   return (
