@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Authentication = () => {
   const navigate = useNavigate();
   React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('user');
+    const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user');
     const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
 
     console.log('user', user);

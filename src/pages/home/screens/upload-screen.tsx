@@ -45,7 +45,7 @@ const UploadScreen = () => {
     <AnimatePresence>
       {snap.defaultScreen && (
         <motion.section {...slideAnimation('left')}>
-          <motion.div className='w-full flex flex-col gap-1 md:gap-10 items-center justify-center lg:w-[40rem] px-1 md:px-4'>
+          <motion.div className='w-full flex flex-col gap-1 md:gap-10 items-center justify-center lg:w-[40rem] px-1 md:px-4 '>
             <motion.div className='hidden md:block'>
               <Logo size='text-2xl' />
             </motion.div>

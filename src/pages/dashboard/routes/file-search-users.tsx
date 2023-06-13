@@ -8,48 +8,76 @@ import { UserDocumentProps } from '../../../interface';
 import MediaCard from '../../../components/media-card';
 
 const FileSearchUsers = () => {
-  const [hideDropdownMenu, setHideDropdownMenu] = React.useState(false);
+  // State variables
+  const [hideDropdownMenu, setHideDropdownMenu] = React.useState(false); // State for toggling the visibility of the dropdown menu
   const [publicDocumentData, setPublicDocumentData] = React.useState<
     UserDocumentProps[]
-  >([]);
-  const [documentCodeValue, setDocumentCodeValue] = React.useState<string>('');
-  const { getAllPublicDocuments, getDocumentByCode } = useAppwriteContext();
+  >([]); // State for storing public document data
+  const [findDocumentIdSearch, setFindDocumentIdSearch] =
+    React.useState<string>(''); // State for storing the search input value for document IDs
+  const [gottenDocumentsFromSearch, setGottenDocumentsFromSearch] =
+    React.useState<UserDocumentProps[] | undefined | []>([]); // State for storing the documents obtained from search
 
+  // Destructure the required functions from the Appwrite context
+  const { getAllPublicDocuments, getDocumentById } = useAppwriteContext();
+
+  // Fetch all public documents when the component mounts
   React.useEffect(() => {
     getAllPublicDocuments().then((data) => {
       setPublicDocumentData(data.documents);
     });
   }, [getAllPublicDocuments]);
+
+  // Toggle the visibility of the dropdown menu
   const handleHideDropdownMenu = () => {
     setHideDropdownMenu((prev) => !prev);
   };
 
-  const handleFindDocumentByCode = async (event: any) => {
-    event.preventDefault()
-    if (documentCodeValue) {
-      const findCodeArr = documentCodeValue.split(',');
-      console.log('findCodeArr', findCodeArr);
-        const findPromise = findCodeArr.map((code) => getDocumentByCode(code));
-        await Promise.allSettled(findPromise);
+  // Handle finding documents by code
+  const handleFindDocumentByCode = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (findDocumentIdSearch) {
+      const findDocumentIdArr = findDocumentIdSearch.split(',');
+      console.log('findDocumentIdArr', findDocumentIdArr);
+
+      // Map each code to a promise of fetching the document by ID
+      const findPromise = findDocumentIdArr.map((code) =>
+        getDocumentById(code)
+      );
+
+      // Execute all promises and wait for their settlement
+      const data = (await Promise.allSettled(findPromise));
+
+      // Update the state with the obtained documents from search
+      setGottenDocumentsFromSearch((previousData) => {
+        return [...(previousData || []), ...data] as
+          | UserDocumentProps[]
+          | []
+          | undefined;
+        // Casting Explanation: Here, we use the spread operator to concatenate the previousData array (if it exists) with the new data array. The as keyword is used for casting the resulting array to the type UserDocumentProps[], [] or undefined. This casting is necessary because the state variable gottenDocumentsFromSearch is defined as UserDocumentProps[] | undefined | [], allowing for three possible types of values it can hold.
+      });
     }
   };
 
-  console.log('documentCodeValue', documentCodeValue);
+// Log the value of findDocumentIdSearch
+console.log('findDocumentIdSearch', findDocumentIdSearch);
 
-  const dropdownMenu = [
-    { name: 'All Categories' },
-    { name: 'Images' },
-    { name: 'Applications' },
-    { name: 'Documents' },
-    { name: 'File with code' },
-  ];
+// Dropdown menu options
+const dropdownMenu = [
+  { name: 'All Categories' },
+  { name: 'Images' },
+  { name: 'Applications' },
+  { name: 'Documents' },
+  { name: 'File with code' },
+];
 
-  const handleChange = (event: any) => {
-    const { target } = event;
-    setDocumentCodeValue(target.value);
-  };
+// Handle change event of the search input
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const { target } = event;
+  setFindDocumentIdSearch(target.value);
+};
 
-  console.log('publicDocumentData', publicDocumentData);
+  console.log('gottenDocumentsFromSearch', gottenDocumentsFromSearch);
 
   return (
     <Layout>
@@ -79,7 +107,7 @@ const FileSearchUsers = () => {
           <form onSubmit={handleFindDocumentByCode}>
             <input
               type='text'
-              value={documentCodeValue}
+              value={findDocumentIdSearch}
               onChange={handleChange}
               className='w-full  input bg-transparent border-[1px] border-gray-50/60'
               placeholder='Search file with code'

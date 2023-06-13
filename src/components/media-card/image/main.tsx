@@ -19,8 +19,12 @@ const ImageCard = (props: Props) => {
           .slice(0, 12)
           .concat(`...${props.documentData.extension}`)
       : props.documentData.filename;
+  
+  // const isOtherUsers = props.documentData.public && 
 
   return (
+
+    props.documentData.public ?
     <motion.div
       className={`${
         props.size ? props.size : 'w-40 h-32'
@@ -72,7 +76,7 @@ const ImageCard = (props: Props) => {
           {title}
         </span>
       )}
-    </motion.div>
+    </motion.div> : null
   );
 };
 

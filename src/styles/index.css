@@ -6,6 +6,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reset styles for the entire document */
 *,
 :root,
 *::after,
@@ -13,49 +14,20 @@
 html {
   padding: 0;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 :root {
+  /* video player */
   --plyr-color-main: #ff008ca4;
   --plyr-video-background: transparent;
-  /* --plyr-badge-border-radius: 0.5rem; */
-}
 
-@font-face {
-  font-family: 'Cascadia';
-  font-style: normal;
-  font-weight: normal;
-  src: url('/Cascadia.ttf');
-}
-
-pre code span {
-  font-family: 'Cascadia' !important;
-  width: 100%;
-}
-
-.file {
-  height: 100% !important;
-  overflow-y: scroll !important;
-}
-
-pre {
-  width: 100%;
-  backdrop-filter: blur(2px);
-  background-color: rgba(0, 0, 0, 0.8) !important;
-  -webkit-border-radius: 0.5rem;
-  -moz-border-radius: 0.5rem;
-  -ms-border-radius: 0.5rem;
-  -o-border-radius: 0.5rem;
-  height: 25rem;
-  overflow-x: auto;
-  border-radius: 0.5rem;
-}
-
-.dark{}
-
-body {
-  background-image: radial-gradient(
+  /* Dark Theme */
+  --background: radial-gradient(
       at 40% 20%,
       hsla(28, 100%, 74%, 1) 0px,
       transparent 50%
@@ -66,14 +38,83 @@ body {
     radial-gradient(at 0% 100%, rgb(165, 60, 0) 0px, transparent 50%),
     radial-gradient(at 80% 100%, rgb(38, 33, 175) 0px, transparent 50%),
     radial-gradient(at 0% 0%, rgba(52, 65, 52, 0.582) 0px, transparent 50%);
+  --code-background: rgba(0, 0, 0, 0.8) !important;
+  --profile-background: linear-gradient(to right, rgba(165, 60, 0, 0.6), rgba(29, 38, 172, 0.7));
+}
+
+.rainbow {
+background-image:var(--profile-background)
+}
+
+/* Dark theme */
+.dark {
+  --background: radial-gradient(
+      at 40% 20%,
+      rgba(0, 0, 0, 0.664) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 80% 0%, rgba(0, 0, 0, 0.664) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(0, 0, 0, 0.664) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, rgba(0, 0, 0, 0.664) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(0, 0, 0, 0.664) 0px, transparent 50%),
+    radial-gradient(at 80% 100%, rgba(0, 0, 0, 0.664) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, rgba(0, 0, 0, 0.664) 0px, transparent 50%);
+  --code-background: rgba(26, 23, 23, 0.397) !important;
+  --profile-background: linear-gradient(to right, rgba(255,0,0,0), rgba(0, 0, 0, 0.7));
+}
+/* End */
+
+/* Custom styling for video player */
+.plyr--video .plyr__controls {
+  background-color: transparent;
+  background: transparent;
+}
+/* End */
+
+@font-face {
+  font-family: 'Cascadia';
+  font-style: normal;
+  font-weight: normal;
+  src: url('/Cascadia.ttf');
 }
 
 @supports (font-variation-settings: normal) {
   html {
-    font-family: 'Poppins', 'Inter var', sans-serif;
+    font-family: 'Inter', 'Poppins', 'Inter var', sans-serif;
   }
 }
 
+/* Font for code */
+pre {
+  width: 100%;
+  backdrop-filter: blur(2px);
+  background-color: var(--code-background);
+  -webkit-border-radius: 0.5rem;
+  -moz-border-radius: 0.5rem;
+  -ms-border-radius: 0.5rem;
+  -o-border-radius: 0.5rem;
+  height: 25rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+}
+
+pre code span {
+  font-family: 'Cascadia' !important;
+  width: 100%;
+}
+/* End */
+
+/* For file className */
+.file {
+  height: 100% !important;
+  overflow-y: scroll !important;
+}
+
+body {
+  background-image: var(--background);
+}
+
+/* Custom Scrollbar */
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
@@ -95,20 +136,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
-.plyr__video-wrapper {
-  /* -webkit-border-radius: 0.89rem;
-  -moz-border-radius: 0.89rem;
-  -ms-border-radius: 0.89rem;
-  -o-border-radius: 0.89rem; */
-  /* border-radius: 0.89rem; */
-}
-
-.plyr--video .plyr__controls {
-  background-color: transparent;
-  background: transparent;
-}
-
+/* End */
 
 /* Audio Player Styling */
 .audioPlayer {
@@ -302,3 +330,5 @@ body {
 .progressBarWrapper {
   position: relative;
 }
+
+/* End */

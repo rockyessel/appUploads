@@ -11,11 +11,7 @@ const TabRender = (props: Props) => {
   switch (props?.selectActiveTab) {
     case 'link':
       return (
-        <TabContentCard
-          size={`${
-            props.documentsData.length === 1 ? 'h-auto p-3' : 'h-[4rem]'
-          }`}
-        >
+        <TabContentCard>
           {props?.documentsData?.map((document, index) => (
             <motion.code className='w-full' key={index}>
               {document?.view}
@@ -25,9 +21,7 @@ const TabRender = (props: Props) => {
       );
     case 'html-code':
       return (
-        <TabContentCard
-          size={`${props.documentsData.length === 1 ? 'h-auto p-3' : 'h-[4rem]'}`}
-        >
+        <TabContentCard>
           {props?.documentsData?.map((document, index) => (
             <motion.code
               className='w-full'
@@ -39,13 +33,9 @@ const TabRender = (props: Props) => {
 
     default:
       return (
-        <TabContentCard
-          size={`${
-            props.documentsData.length === 1 ? 'h-auto p-3' : 'h-[4rem]'
-          }`}
-        >
+        <TabContentCard>
           {props?.documentsData?.map((document, index) => (
-            <motion.code className='w-[30rem] overflow-hidden' key={index}>
+            <motion.code className='w-full' key={index}>
               {`[URL=${document?.$id}][IMG]${document?.view}[/IMG][/URL]`}
             </motion.code>
           ))}

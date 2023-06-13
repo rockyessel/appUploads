@@ -27,7 +27,7 @@ const DashboardRecentDocuments = () => {
   const getUserDocuments = React.useMemo(
     () => async () => {
       setLoading(true); // Set loading state to true
-      const getUserFromLocalStorage = window.localStorage.getItem('user'); // Get the user data from local storage
+      const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user'); // Get the user data from local storage
       const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`); // Parse the user data
       if (user) {
         const data = await getCurrentUserDocuments(user.$id); // Fetch the user's documents using the getCurrentUserDocuments function
@@ -61,16 +61,16 @@ const DashboardRecentDocuments = () => {
 
   return (
     <Layout>
-      <div className='bg-[rgb(255,255,255,0.2)]  backdrop-blur-md w-full h-full overflow-y-auto p-3'>
+      <div className='w-full h-full overflow-y-auto p-3'>
         <div>
           {/* Section displaying the header */}
-          <div className='bg-[rgb(255,255,255,0.4)] w-full h-auto px-4 py-2.5 rounded-lg relative flex flex-wrap items-center justify-between'>
+          <div className='bg-[rgb(255,255,255,0.4)] dark:bg-[rgb(180,173,173,0.5)] w-full h-auto px-4 py-2.5 rounded-lg relative flex flex-wrap items-center justify-between'>
             <p className='text-sm md:text-md font-medium w-fit'>
               Freely check your most recent files uploaded here.
             </p>
 
             {/* Section for selecting the time interval */}
-            <span className='bg-[rgb(255,255,255,0.4)] w-full md:w-fit h-auto px-4 py-2.5 rounded-lg relative'>
+            <span className='bg-[rgb(255,255,255,0.4)] dark:bg-[rgb(180,173,173,0.5)] shadow-lg w-full md:w-fit h-auto px-4 py-2.5 rounded-lg relative'>
               <span
                 className='w-full capitalize inline-flex justify-between items-center gap-2'
                 onClick={() => handleIntervalChange('')}
@@ -82,7 +82,7 @@ const DashboardRecentDocuments = () => {
               </span>
               <span className='w-full'>
                 {selectedIntervalState && (
-                  <span className='flex flex-col absolute bg-[rgb(255,255,255,0.9)] px-4 py-2 right-0 top-12 rounded-lg'>
+                  <span className='flex flex-col absolute bg-[rgb(255,255,255,0.9)] dark:bg-[rgba(189,183,183,0.89)] dark:font-medium px-4 py-2 right-0 top-12 rounded-lg'>
                     {dayMonthYear.map((period, index) => (
                       <span
                         key={index}
@@ -104,18 +104,20 @@ const DashboardRecentDocuments = () => {
               <div className='flex flex-col gap-2' key={date}>
                 {/* Group header */}
                 <h3
-                  className='flex items-center justify-between w-full h-auto px-4 py-2.5 rounded-lg bg-[rgb(255,255,255,0.5)]'
+                  className='flex items-center justify-between w-full h-auto px-4 py-2.5 rounded-lg bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] cursor-pointer'
                   onClick={() => toggleGroup(date)}
                 >
-                  <span>{format(new Date(date), 'do MMMM Y')} </span>
-                  <span>
+                  <span className='shadow-lg px-4 py-2 rounded-lg'>
+                    {format(new Date(date), 'do MMMM Y')}{' '}
+                  </span>
+                  <span className='shadow-lg px-4 py-2 rounded-lg'>
                     {activeGroup === date ? <SlArrowUp /> : <SlArrowDown />}
                   </span>
                 </h3>
                 <div className='flex flex-wrap gap-2'>
                   {/* List of files within the group */}
                   {activeGroup === date && (
-                    <ul className='flex flex-wrap gap-2 items-center'>
+                    <ul className='flex flex-wrap gap-2 items-center my-2.5'>
                       {files.map((file, index_) => (
                         <MediaCard
                           key={index_}

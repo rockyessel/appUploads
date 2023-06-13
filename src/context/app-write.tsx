@@ -100,7 +100,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
   // @desc To log out the current user
   const logout = async () => {
      await account.deleteSession('current');
-    window.localStorage.removeItem('user');
+    window.localStorage.removeItem('appwrite_user');
   };
 
   // @desc To verify the user's identity
@@ -108,7 +108,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
     try {
       // setTriggerEffect((prev) => !prev);
       // Get user from localStorage
-      const getUserFromLocalStorage = window.localStorage.getItem('user');
+      const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user');
       // Parse user
       const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
       // Get user from db
@@ -116,25 +116,25 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
       // Check for null
       if (user === null) {
         // If null, put user from db into localStorage
-        window.localStorage.setItem('user', JSON.stringify(currentUser));
+        window.localStorage.setItem('appwrite_user', JSON.stringify(currentUser));
       } else if (currentUser && user !== null) {
         const currentUserId = currentUser.$id;
         const savedUserId = user.$id; //647200b7f40247e76178
         if (savedUserId !== currentUserId) {
           await account.deleteSession('current');
-          window.localStorage.removeItem('user');
+          window.localStorage.removeItem('appwrite_user');
           window.location.replace('/authenticate');
         } else {
           console.log('verified');
           return;
         }
       } else {
-        window.localStorage.removeItem('user');
+        window.localStorage.removeItem('appwrite_user');
       }
     } catch (error) {
       const location = window.location.pathname;
       if (location === '/dashboard') {
-        window.localStorage.removeItem('user');
+        window.localStorage.removeItem('appwrite_user');
         window.location.replace('/authenticate');
       }
       console.log('something went wrong');
@@ -248,17 +248,19 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
   };
 
   // @desc To get the current user's documents
-  const getDocumentByCode = async (code:string) => {
-    const data = (await db.listDocuments(
-      `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
-      `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
-      [
-        Query.select(['access_file_code', `${code}`]),
-      ]
-    )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
-    console.log('data', data);
-    return data;
+const getDocumentByCode = async (code: string) => {
+  const data = (await db.listDocuments(
+    import.meta.env.VITE_APPWRITE_DATABASE_ID,
+    import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+    [Query.select(['access_file_code', code])]
+  )) as unknown as {
+    total: number;
+    documents: UserDocumentProps[] | [];
   };
+  console.log('data', data);
+  return data;
+};
+
 
   // @desc To get a document by its ID
   const getDocumentById = async ($id: string) => {
@@ -304,7 +306,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
     const view = await storage.getFileView(data?.bucketId, data?.$id)?.href;
     const profile = { profile: view };
     const user = await account.updatePrefs({ profile });
-    window.localStorage.setItem('user', JSON.stringify(user));
+    window.localStorage.setItem('appwrite_user', JSON.stringify(user));
     return view;
   };
 

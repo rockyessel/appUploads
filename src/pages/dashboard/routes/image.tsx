@@ -24,7 +24,7 @@ const DashboardImageFiles = () => {
   }, []);
 
   React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('user'); // Get the user data from local storage
+    const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user'); // Get the user data from local storage
     const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`); // Parse the user data
     if (user) {
       getAllUserDocuments(user.$id); // Fetch all user documents when the component mounts or when the user changes

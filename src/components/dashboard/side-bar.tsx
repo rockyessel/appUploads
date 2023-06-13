@@ -94,7 +94,7 @@ const SideBar = (props: Props) => {
           <motion.ul className='w-full flex flex-col justify-center gap-4'>
             <motion.li
               onClick={() => {
-                navigate('/dashboard');
+                navigate('/dashboard/settings');
               }}
               className='hover:bg-white rounded-lg bg-[rgb(255,255,255,0.2)] p-4 backdrop-blur-lg cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400 inline-flex items-center gap-1'
             >

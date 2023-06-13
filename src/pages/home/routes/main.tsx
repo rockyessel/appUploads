@@ -8,7 +8,7 @@ import { BsImage } from 'react-icons/bs';
 const Home = () => {
   const navigate = useNavigate();
   React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('user');
+    const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user');
     const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
 
     if (user !== null) {

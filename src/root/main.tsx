@@ -4,6 +4,7 @@ import App from './App.tsx';
 import '../styles/index.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AppWriteContextProvider } from '../context/app-write.tsx';
+import { ThemeContextProvider } from '../context/theme.tsx';
 import { inject } from '@vercel/analytics';
 
 inject();
@@ -11,9 +12,11 @@ inject();
 ReactDOM.createRoot(document.querySelector('#root') as HTMLElement).render(
   <React.StrictMode>
     <AppWriteContextProvider>
-      <Router>
-        <App />
-      </Router>
+      <ThemeContextProvider>
+        <Router>
+          <App />
+        </Router>
+      </ThemeContextProvider>
     </AppWriteContextProvider>
   </React.StrictMode>
 );

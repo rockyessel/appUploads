@@ -30,7 +30,7 @@ export interface UserProps {
   emailVerification: boolean;
   phoneVerification: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prefs: Record<string, any>;
+  prefs: {profile:{profile:string}};
 }
 
 

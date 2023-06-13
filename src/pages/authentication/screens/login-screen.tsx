@@ -38,13 +38,13 @@ const LoginScreen = () => {
       console.log('Done');
     } catch (error) {
       console.log('error', error);
+      setLoading(false);
     } finally {
       console.log('Finally Done');
       setForm({ email: '', password: '' });
     }
   };
 
-  if (loading) return <p>Loading</p>;
   return (
     <AnimatePresence>
       {snap.authenticationScreen.login && (
@@ -120,6 +120,7 @@ const LoginScreen = () => {
                 >
                   Login <AiOutlinePlus />
                 </button>
+                {loading && 'lOADING'}
               </div>
             </form>
           </motion.div>

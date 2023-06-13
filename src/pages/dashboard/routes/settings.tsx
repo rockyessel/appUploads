@@ -1,165 +1,163 @@
-// import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { slideAnimation } from '../../../utils/motion';
-// import { useAppwriteContext } from '/interface';
-// import { RiUploadCloud2Fill } from 'react-icons/ri';
-// import { Input } from '../../../components';
+import { RiUploadCloud2Fill } from 'react-icons/ri';
+import { Input } from '../../../components';
+import { useAppwriteContext } from '../../../context/app-write';
+import Layout from '../../../components/dashboard/layout';
+import { UserProps } from '../../../interface';
+import { toast } from 'react-toastify';
 
-const SettingsScreen = () => {
-  // const [fileInput, setFileInput] = React.useState<File>();
-  // const [profileURL, setProfileURL] = React.useState('');
-  // const { uploadUserProfile } = useAppwriteContext();
+const DashboardSettings = () => {
+  const [fileInput, setFileInput] = React.useState<File>();
+  const [profileURL, setProfileURL] = React.useState('');
+  const [getUser, setGetUser] = React.useState<UserProps>();
+  const [userForm, setUserForm] = React.useState({
+    name: getUser?.name,
+    email: getUser?.name,
+  });
+  const [loading, setLoading] = React.useState(false)
 
-  // const handleFileChange = async (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   const selectedFile = event.target.files;
-  //   if (selectedFile) {
-  //     setFileInput(selectedFile[0]);
-  //   }
-  // };
+  // Access the uploadUserProfile function from the useAppwriteContext hook
+  const { uploadUserProfile } = useAppwriteContext();
 
-  // const handleProfileUpload = React.useMemo(
-  //   () => async () => {
-  //     if (fileInput) {
-  //       setProfileURL(await uploadUserProfile(fileInput));
-  //     }
-  //   },
-  //   [fileInput, uploadUserProfile]
-  // );
+  // Handle file input change event
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFile = event.target.files;
+    if (selectedFile) {
+      setFileInput(selectedFile[0]);
+    }
+  };
 
-  // React.useEffect(() => {
-  //   handleProfileUpload();
-  // }, [handleProfileUpload]);
+  const handleForm = (event: any) => {
+    const { target } = event;
+    const changing = {
+      ...userForm,
+      [target.name]: target.value
+    }
+    
+    setUserForm(changing);
+  }
 
-  // React.useEffect(() => {
-  //   const getUserFromLocalStorage = window.localStorage.getItem('user');
-  //   const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
-  //   setProfileURL(user.prefs.profile.profile);
-  // }, []);
+  // Memoized profile upload handler
+  const handleProfileUpload = React.useMemo(
+    () => async () => {
+   try {
+     // Check if a file is selected
+     if (fileInput) {
+       setLoading(true);
+       // Upload the user profile using the selected file
+       setProfileURL(await uploadUserProfile(fileInput));
+       setLoading(false);
+       toast.success('Profile uploaded');
+      }
+    } catch (error) {
+      console.log(error)
+      toast.done(user.prefs?.profile?.profile);
+      setLoading(false);
+   }
+    },
+    [fileInput, uploadUserProfile]
+  );
+
+  // Trigger the profile upload on component mount
+  React.useEffect(() => {
+    handleProfileUpload();
+  }, [handleProfileUpload]);
+
+  // Fetch user profile URL from local storage on component mount
+  React.useEffect(() => {
+    const getUserFromLocalStorage =
+      window.localStorage.getItem('appwrite_user');
+    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
+    setGetUser(user);
+    // Set the profile URL from user preferences
+    setProfileURL(user.prefs?.profile?.profile);
+  }, []);
 
   return (
-    <motion.div
-      {...slideAnimation('up')}
-      className='bg-transparent w-full h-full overflow-y-auto p-3 flex flex-col gap-10'
-    >
-      <div className='flex flex-col gap-5'>
-        <div>
-          <p className='text-xl font-medium'>Your Profile</p>
-          <span>Choose how you are displayed to your viewer</span>
-        </div>
+    <Layout>
+      <motion.div
+        {...slideAnimation('up')}
+        className='w-full h-full overflow-y-auto p-3 flex flex-col gap-10'
+      >
+        <div className='flex flex-col gap-5'>
+          <div>
+            <p className='text-xl font-medium'>Your Profile</p>
+            <span>Choose how you are displayed to your viewer</span>
+          </div>
 
-        {/* <form className='w-full'>
-          <div className='w-full flex items-center gap-10'>
-            <div className='flex flex-col gap-2.5'>
-              <div>
-                <Input
-                  value={''}
-                  onChange={() => {}}
-                  type='text'
-                  name='name'
-                  elementType='input'
-                  styles=''
-                  label='Name'
-                  placeholder='John Do...'
-                />
-              </div>
-              <div>
-                <label htmlFor=''>Profile URL</label>
-                <div className='flex items-center'>
-                  <p className='bg-white p-2 border-y border-x rounded-l-lg'>
-                    appuploads.vercel.app/
-                  </p>
+          <form className='w-full'>
+            <div className='w-full flex items-center gap-10'>
+              <div className='flex flex-col gap-2.5'>
+                <div>
                   <Input
-                    value={''}
-                    onChange={() => {}}
+                    value={userForm?.name}
+                    onChange={handleForm}
                     type='text'
                     name='name'
                     elementType='input'
-                    styles={`lg:w-[18rem] placeholder:italic placeholder:font-medium border-y border-r border-gray-300 text-gray-900`}
-                    placeholder='@johndoe'
+                    styles=''
+                    label='Name'
+                    placeholder='John Do...'
+                  />
+                </div>
+                <div>
+                  <label htmlFor=''>Email</label>
+                  <input
+                    value={userForm?.email}
+                    onChange={handleForm}
+                    type='email'
+                    name='email'
+                    id='email'
+                    className='bg-transparent border border-gray-300 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
+                    placeholder='John Do...'
                   />
                 </div>
               </div>
-            </div>
 
-            {!profileURL ? (
-              <label className='w-40 h-40 bg-white border-[1px] rounded-full'>
-                <input
-                  onChange={handleFileChange}
-                  type='file'
-                  className='w-0 h-0'
-                />
-                <span>Upload image</span>
-              </label>
-            ) : (
-              <div className='w-40 h-40 bg-white border-[3px] rounded-full relative'>
-                <img
-                  className='w-full h-full rounded-full object-cover object-center'
-                  src={profileURL}
-                  alt=''
-                />
-                <label>
+              {!profileURL ? (
+                <label className='w-40 h-40 bg-transparent border-[1px] rounded-full relative'>
+                  <span className='w-full h-full inline-flex items-center text-4xl font-bold backdrop-blur-lg dark:text-gray-400 rainbow rounded-full justify-center'>
+                    RE
+                  </span>
                   <input
                     onChange={handleFileChange}
                     type='file'
                     className='w-0 h-0'
                   />
-                  <RiUploadCloud2Fill className='bg-white rounded-full text-5xl border-[1px] p-3 absolute -right-5 top-12' />
+                  <RiUploadCloud2Fill className='bg-[rgba(255,255,255,0.1)] backdrop-blur-lg rounded-full text-5xl border-[1px] p-3 absolute -right-5 top-12' />
                 </label>
-              </div>
-            )}
-          </div>
-        </form> */}
-      </div>
-
-      <div className='flex flex-col gap-5'>
-        <div>
-          <p className='text-xl font-medium'>Email and Phone</p>
-          <span>
-            Manage the email and phone you use to sign into appUploads and
-            receive notifications.
-          </span>
+              ) : (
+                <div className='w-40 h-40 bg-[rgba(255,255,255,0.1)] backdrop-blur-lg border-[1px] rounded-full relative'>
+                  <img
+                    className='w-full h-full rounded-full object-cover object-center'
+                    src={profileURL}
+                    alt=''
+                  />
+                  <label>
+                    <input
+                      onChange={handleFileChange}
+                      type='file'
+                      className='w-0 h-0'
+                    />
+                    <RiUploadCloud2Fill className='bg-[rgba(255,255,255,0.1)] backdrop-blur-lg rounded-full text-5xl border-[1px] p-3 absolute -right-5 top-12' />
+                  </label>
+                </div>
+              )}
+            </div>
+          </form>
         </div>
 
-        {/* <form className='flex items-center gap-3'>
-          <div>
-            <label htmlFor=''>Email</label>
-            <input
-              value={''}
-              onChange={() => {}}
-              type='email'
-              name='email'
-              id='email'
-              className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
-              placeholder='John Do...'
-            />
-          </div>
-          <div>
-            <label htmlFor=''>Phone</label>
-            <input
-              value={''}
-              onChange={() => {}}
-              type='text'
-              name='Phone'
-              id='phone'
-              className='bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full lg:w-[14.7rem] p-2.5'
-              placeholder='John Do...'
-            />
-          </div>
-        </form> */}
-
-        <p>
-          For your security, we will send you a code to verify any change to
-          your email or phone number.
-        </p>
-      </div>
-
-      <div>
-        <p className=''>Delete Account</p>
-      </div>
-    </motion.div>
+        <div>
+          <p className='shadow-lg w-fit px-4 py-2 rounded-lg bg-rose-800 dark:text-gray-200 '>Delete Account</p>
+        </div>
+      </motion.div>
+    </Layout>
   );
 };
 
-export default SettingsScreen;
+export default DashboardSettings;
+

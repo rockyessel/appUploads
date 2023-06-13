@@ -65,23 +65,22 @@ React.useEffect(() => {
         >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
             <Logo size='text-2xl' />
-            <motion.div className='w-full flex flex-col gap-0 p-0 m-0 items-center justify-center  bg-[rgb(255,255,255,0.4)] backdrop-blur-lg border-[1px] rounded-lg'>
+            <motion.div className='w-full flex flex-col gap-0 p-0 m-0 items-center justify-center  bg-[rgb(255,255,255,0.4)] dark:bg-[rgba(139,139,139,0.4)] backdrop-blur-lg border-[1px] rounded-lg'>
               <p className='p-3'>Click on start, to upload your files.</p>
               {loading && <p className='p-3'>Loading, please wait patent</p>}
-             
             </motion.div>
-            <motion.div className='flex flex-col gap-4 items-center justify-center w-full  bg-[rgb(255,255,255,0.4)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
+            <motion.div className='flex flex-col gap-4 items-center justify-center w-full  bg-[rgb(255,255,255,0.4)] dark:bg-[rgb(139,139,139,0.4)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
               <motion.div className='w-full inline-flex items-center justify-between text-sm'>
                 <span className='inline-flex items-center gap-2'>
                   <Button
-                    styles={' bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'}
+                    styles={'bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg'}
                     title={'Start'}
                     handleClick={handleFileUpload}
                   >
                     <span className='hidden md:block'>Start</span>{' '}
                     <AiOutlineUpload />
                   </Button>
-                  <label className='inline-flex items-center  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
+                  <label className='inline-flex items-center  bg-[rgb(255,255,255,0.5)] dark:bg-[rgba(180,173,173,0.5)] backdrop-blur-lg border-[1px] rounded-lg px-4 py-2'>
                     <span className='hidden md:block'>Add more</span>{' '}
                     <AiOutlinePlus />
                     <input
@@ -95,7 +94,7 @@ React.useEffect(() => {
                   </label>
                 </span>
                 <Button
-                  styles={'bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'}
+                  styles={'bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg'}
                   title={'Clear'}
                   handleClick={handleClear}
                 >
@@ -104,13 +103,18 @@ React.useEffect(() => {
                 </Button>
               </motion.div>
               <motion.div
-                className={`w-full flex flex-col gap-2  ${files.length > 5 && 'overflow-y-auto h-48'}`}>
+                className={`w-full flex flex-col gap-2  ${
+                  files.length > 5 && 'overflow-y-auto h-48'
+                }`}
+              >
                 {files?.map((file, index) => (
                   <FileItem key={index} file={file} />
                 ))}
 
                 {files.length === 0 && (
-                  <p className='w-full bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] rounded-lg flex items-center justify-between p-3'>Add files to start uploading.</p>
+                  <p className='w-full bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg border-[1px] rounded-lg flex items-center justify-between p-3'>
+                    Add files to start uploading.
+                  </p>
                 )}
               </motion.div>
             </motion.div>

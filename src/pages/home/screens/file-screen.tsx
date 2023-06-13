@@ -10,6 +10,7 @@ import {
   TabComponentCard,
   DisplayUploadedFiles,
 } from '../../../components';
+import FileAction from '../../../components/file-action';
 
 const FileScreen = () => {
   // State variables
@@ -106,12 +107,17 @@ const FileScreen = () => {
                 Go back
               </Button>
             </div>
-            <div className='w-full rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+            <div className='w-full rounded-lg bg-[rgba(255,255,255,0.4)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-md p-3 flex flex-col gap-3'>
               {/* Component for displaying document data in a tab format */}
+              <FileAction documentData={documentsData[currentSlider]} />
               <TabComponentCard documentData={[documentsData[currentSlider]]} />
             </div>
           </motion.div>
-          {loading && <p>{documentsData.length}/{files.length}Loading</p>}
+          {loading && (
+            <p>
+              {documentsData.length}/{files.length}Loading
+            </p>
+          )}
         </motion.section>
       )}
     </AnimatePresence>

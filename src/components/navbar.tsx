@@ -10,7 +10,7 @@ const Navbar = () => {
   const [user, setUser] = React.useState<UserProps>();
 
   React.useEffect(() => {
-    const userInfo = window.localStorage.getItem('user');
+    const userInfo = window.localStorage.getItem('appwrite_user');
     const parseUserInfo = userInfo ? JSON.parse(userInfo) : {};
     setUser(parseUserInfo);
   }, []);

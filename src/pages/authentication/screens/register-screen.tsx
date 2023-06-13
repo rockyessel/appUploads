@@ -35,12 +35,12 @@ const RegisterScreen = () => {
       setLoading(false);
     } catch (error) {
       console.log('error', error);
+       setLoading(false);
     } finally {
       setForm({ email: '', password: '', name: '' });
     }
   };
 
-  if (loading) return <p>Loading</p>;
 
   return (
     <AnimatePresence>
@@ -141,6 +141,8 @@ const RegisterScreen = () => {
                 >
                   Register <AiOutlinePlus />
                 </button>
+
+                {loading && 'Loading'}
               </div>
             </form>
           </motion.div>

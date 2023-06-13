@@ -4,6 +4,7 @@ import typography from '@tailwindcss/typography';
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       keyframes: {
@@ -15,7 +16,7 @@ export default {
       animation: {
         ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
-        fontFamily: {
+      fontFamily: {
         cascadia: ['Cascadia'],
       },
     },
