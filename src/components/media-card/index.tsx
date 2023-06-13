@@ -1,14 +1,14 @@
-import VideoCard from './video';
+import VideoCard from './video/video';
 import AudioPlayer from './audio';
 import { UserDocumentProps } from '../../interface';
-import ApplicationCard from './applications';
-import DocumentCard from './documents';
+import ApplicationCard from './application';
+import DocumentCard from './document';
 import Image from './image/index';
 
 interface Props {
   data: UserDocumentProps;
   extension: string;
-  size?:string
+  size?: string;
 }
 
 const MediaCard = (props: Props) => {

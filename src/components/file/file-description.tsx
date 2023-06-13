@@ -1,4 +1,4 @@
-import { UserDocumentProps } from '../interface';
+import { UserDocumentProps } from '../../interface';
 import { format } from 'date-fns';
 
 interface Props {
@@ -15,6 +15,10 @@ const FileDescription = (props: Props) => {
       <p className='flex flex-col'>
         <span className='font-bold'>Filename</span>
         <span className=''>{props.documentData?.filename}</span>
+      </p>
+      <p className='flex flex-col'>
+        <span className='font-bold'>File ID</span>
+        <span className=''>{props.documentData?.$id}</span>
       </p>
       <p className='flex flex-col'>
         <span className='font-bold'>File Extension</span>

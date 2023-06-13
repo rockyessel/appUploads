@@ -10,7 +10,7 @@ import {
   TabComponentCard,
   DisplayUploadedFiles,
 } from '../../../components';
-import FileAction from '../../../components/file-action';
+import FileAction from '../../../components/file/file-action';
 
 const FileScreen = () => {
   // State variables

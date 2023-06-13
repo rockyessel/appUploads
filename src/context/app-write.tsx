@@ -165,7 +165,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
   // @desc To upload a file
   const uploadFile = async (file: File): Promise<UserDocumentProps[] | []> => {
     // Generate unique ID
-    const documentId = `${generateString()}${generateString()}${generateString()}`;
+    const documentId = generateString();
     const updatedFile = fileMimeTypeSetter(file);
     const data = await storage.createFile(
       `${import.meta.env.VITE_APPWRITE_BUCKET_ID}`,

@@ -9,52 +9,56 @@ import { GiTimeDynamite } from 'react-icons/gi';
 import Logo from '../../../components/logo';
 import { useAppwriteContext } from '../../../context/app-write';
 import { hasNoValue } from '../../../utils/functions';
-import FileItem from '../../../components/file-item';
+import FileItem from '../../../components/file/file-item';
 import { toast } from 'react-toastify';
 
 const LoadingScreen = () => {
-const snap = useSnapshot(screenState);
-const [state, setState] = React.useState<boolean>();
-const [loading, setLoading] = React.useState<boolean>();
+  const snap = useSnapshot(screenState);
+  const [state, setState] = React.useState<boolean>();
+  const [loading, setLoading] = React.useState<boolean>();
 
-// @desc Destructuring necessary functions and data from the context
-const { files, handleClear, handleFile, uploadFile, documentsData } =
-  useAppwriteContext();
+  // @desc Destructuring necessary functions and data from the context
+  const { files, handleClear, handleFile, uploadFile, documentsData } =
+    useAppwriteContext();
 
-// @desc Function to handle file upload
-const handleFileUpload = async () => {
-  setLoading(true);
-  const uploadPromises = files.map((file) => uploadFile(file));
-  await Promise.allSettled(uploadPromises);
-  toast.success(
-    `${files.length > 0 ? 'Files' : 'File'} uploaded successfully`
-  );
-  setLoading(false);
-};
+  // @desc Function to handle file upload
+  const handleFileUpload = async () => {
+    setLoading(true);
+    const uploadPromises = files.map((file) => uploadFile(file));
+    await Promise.allSettled(uploadPromises);
+    toast.success(
+      `${files.length > 0 ? 'Files' : 'File'} uploaded successfully`
+    );
+    setLoading(false);
+  };
 
-console.log(files);
+  console.log(files);
 
-// @desc This effect is responsible for screen changes
-React.useEffect(() => {
-  const hasEmptyDocument = hasNoValue(documentsData);
-  const hasFiles = files.length > 0;
-  const hasNoFiles = files.length === 0;
+  // @desc This effect is responsible for screen changes
+  React.useEffect(() => {
+    const hasEmptyDocument = hasNoValue(documentsData);
+    const hasFiles = files.length > 0;
+    const hasNoFiles = files.length === 0;
 
-  if (hasNoFiles) {
-    screenState.defaultScreen = true;
-    screenState.loadingScreen = false;
-    screenState.filesScreen = false;
-  }
+    if (hasNoFiles) {
+      screenState.defaultScreen = true;
+      screenState.loadingScreen = false;
+      screenState.filesScreen = false;
+    }
 
-  setState(hasEmptyDocument);
+    setState(hasEmptyDocument);
 
-  // @desc Checking conditions for screen transitions
-  if (!hasEmptyDocument && hasFiles && files.length === documentsData.length) {
-    screenState.defaultScreen = false;
-    screenState.loadingScreen = false;
-    screenState.filesScreen = true;
-  }
-}, [documentsData, files.length, state]);
+    // @desc Checking conditions for screen transitions
+    if (
+      !hasEmptyDocument &&
+      hasFiles &&
+      files.length === documentsData.length
+    ) {
+      screenState.defaultScreen = false;
+      screenState.loadingScreen = false;
+      screenState.filesScreen = true;
+    }
+  }, [documentsData, files.length, state]);
 
   return (
     <AnimatePresence>
@@ -73,7 +77,9 @@ React.useEffect(() => {
               <motion.div className='w-full inline-flex items-center justify-between text-sm'>
                 <span className='inline-flex items-center gap-2'>
                   <Button
-                    styles={'bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg'}
+                    styles={
+                      'bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg'
+                    }
                     title={'Start'}
                     handleClick={handleFileUpload}
                   >
@@ -94,7 +100,9 @@ React.useEffect(() => {
                   </label>
                 </span>
                 <Button
-                  styles={'bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg'}
+                  styles={
+                    'bg-[rgb(255,255,255,0.5)] dark:bg-[rgb(180,173,173,0.5)] backdrop-blur-lg'
+                  }
                   title={'Clear'}
                   handleClick={handleClear}
                 >

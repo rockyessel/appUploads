@@ -37,9 +37,9 @@ const MainAudioCard = (props: Props) => {
           )}
         </span>
         {clicked && (
-          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
+          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-[rgba(255,255,255,0.5)] backdrop-blur-md'>
             <Link
-              to={`/dashboard/music/${props?.documentData?.$id}`}
+              to={`/dashboard/music/${props.documentData.$id}`}
               className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'
             >
               <span>View</span>

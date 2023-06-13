@@ -1,14 +1,14 @@
 import React from 'react';
 import { GiTimeDynamite } from 'react-icons/gi';
-import Button from './button';
+import Button from '../button';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { UserDocumentProps } from '../interface';
-import { useAppwriteContext } from '../context/app-write';
-import { downloadFile } from '../utils/functions';
+import { UserDocumentProps } from '../../interface';
+import { useAppwriteContext } from '../../context/app-write';
+import { downloadFile } from '../../utils/functions';
 import { HiDownload } from 'react-icons/hi';
 import { TbView360 } from 'react-icons/tb';
-import { screenState } from '../utils/state';
+import { screenState } from '../../utils/state';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 const FileAction = (props: Props) => {
   const [isChecked, setIsChecked] = React.useState<boolean>(
-    props.documentData?.public
+    props.documentData?.public || false
   );
 
   // Access the 'updateDocuments' function from the Appwrite context

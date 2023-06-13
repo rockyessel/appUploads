@@ -2,13 +2,12 @@
 import { UserDocumentProps } from '../interface';
 import MediaCard from './media-card';
 
-
 interface Props {
-    documentsData: UserDocumentProps[];
-    currentSlider:number
+  documentsData: UserDocumentProps[];
+  currentSlider: number;
 }
 
-const DisplayUploadedFiles = (props:Props) => {
+const DisplayUploadedFiles = (props: Props) => {
   return (
     <div>
       {/* Displaying image media cards */}
@@ -17,7 +16,8 @@ const DisplayUploadedFiles = (props:Props) => {
           document.mimeType.startsWith('image') && (
             <div key={index}>
               {/* Display the media card if it matches the currentSlider index */}
-              {document.$id === props.documentsData[props.currentSlider].$id && (
+              {document.$id ===
+                props.documentsData[props.currentSlider].$id && (
                 <div>
                   <MediaCard
                     size='w-[35rem] h-[20rem]'
@@ -37,7 +37,8 @@ const DisplayUploadedFiles = (props:Props) => {
           document.mimeType.startsWith('audio') && (
             <div key={index}>
               {/* Display the media card if it matches the currentSlider index */}
-              {document.$id === props.documentsData[props.currentSlider].$id && (
+              {document.$id ===
+                props.documentsData[props.currentSlider].$id && (
                 <div>
                   <MediaCard
                     data={document}
@@ -56,7 +57,8 @@ const DisplayUploadedFiles = (props:Props) => {
           document.mimeType.startsWith('video') && (
             <div key={index}>
               {/* Display the media card if it matches the currentSlider index */}
-              {document.$id === props.documentsData[props.currentSlider].$id && (
+              {document.$id ===
+                props.documentsData[props.currentSlider].$id && (
                 <div>
                   <MediaCard
                     data={document}
@@ -75,7 +77,8 @@ const DisplayUploadedFiles = (props:Props) => {
           document.mimeType.startsWith('application') && (
             <div key={index}>
               {/* Display the media card if it matches the currentSlider index */}
-              {document.$id === props.documentsData[props.currentSlider].$id && (
+              {document.$id ===
+                props.documentsData[props.currentSlider].$id && (
                 <div>
                   <MediaCard
                     data={document}
@@ -89,6 +92,6 @@ const DisplayUploadedFiles = (props:Props) => {
       )}
     </div>
   );
-}
+};
 
-export default DisplayUploadedFiles
+export default DisplayUploadedFiles;

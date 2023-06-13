@@ -8,7 +8,7 @@ import { useAppwriteContext } from '../../../context/app-write';
 import { useParams } from 'react-router-dom';
 import { UserDocumentProps } from '../../../interface';
 import { FileDescription, TabComponentCard } from '../../../components';
-import FileAction from '../../../components/file-action';
+import FileAction from '../../../components/file/file-action';
 import MediaViewerCard from '../../../components/media-viewer-card';
 import { hasNoValue } from '../../../utils/functions';
 

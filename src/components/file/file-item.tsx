@@ -1,9 +1,9 @@
 // import React from 'react';
-import { formatFileSize } from '../utils/functions';
+import { formatFileSize } from '../../utils/functions';
 import { FaTimes } from 'react-icons/fa';
-import Button from './button';
+import Button from '../button';
 import { motion } from 'framer-motion';
-import { useAppwriteContext } from '../context/app-write';
+import { useAppwriteContext } from '../../context/app-write';
 
 interface Props {
   file: File;

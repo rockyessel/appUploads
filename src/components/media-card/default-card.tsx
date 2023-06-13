@@ -1,14 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { UserDocumentProps } from '../../../interface';
-import { assignedIconExtensions } from '../../../utils/constant';
+import { UserDocumentProps } from '../../interface';
+import { assignedIconExtensions } from '../../utils/constant';
+import { RiCloseLine } from 'react-icons/ri';
+import { CiCircleMore } from 'react-icons/ci';
 
 interface Props {
   documentData: UserDocumentProps;
+  documentType: string;
 }
 
-const AppleCard = (props: Props) => {
+const ApplicationDefaultCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
 
   const title =
@@ -25,12 +28,16 @@ const AppleCard = (props: Props) => {
           className='z-20 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg border-[1px] p-1 rounded-lg'
           onClick={() => setClicked((prev) => !prev)}
         >
-          {clicked ? 'X' : '...'}
+          {clicked ? (
+            <RiCloseLine className='text-xl' />
+          ) : (
+            <CiCircleMore className='text-xl' />
+          )}
         </span>
         {clicked && (
-          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-transparent'>
+          <span className='top-0 border-[1px] border-gray-300 w-40 right-0 h-32 flex flex-col gap-2 p-2 rounded-lg z-10 absolute bg-[rgba(255,255,255,0.5)] backdrop-blur-md'>
             <Link
-              to={`/dashboard/application/${props?.documentData?.$id}`}
+              to={`/dashboard/${props.documentType}/${props.documentData.$id}`}
               className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'
             >
               <span>View</span>
@@ -45,11 +52,11 @@ const AppleCard = (props: Props) => {
         )}
       </span>
       <div>{assignedIconExtensions[`${props.documentData.extension}`]}</div>
-      <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
+      <span className='absolute bottom-2 rounded-lg bg-slate-800 text-gray-50/70 text-sm px-2 py-1'>
         {title}
       </span>
     </motion.div>
   );
 };
 
-export default AppleCard;
+export default ApplicationDefaultCard;

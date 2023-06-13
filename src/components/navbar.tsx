@@ -5,9 +5,11 @@ import Logo from './logo';
 import { BsSun, BsMoon } from 'react-icons/bs';
 import { slideAnimation } from '../utils/motion';
 import { UserProps } from '../interface';
+import { useThemeContext } from '../context/theme';
 
 const Navbar = () => {
   const [user, setUser] = React.useState<UserProps>();
+  const { handleThemeSwitch } = useThemeContext();
 
   React.useEffect(() => {
     const userInfo = window.localStorage.getItem('appwrite_user');
@@ -38,11 +40,17 @@ const Navbar = () => {
             </Link>
           )}
 
-          <motion.li className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
-            <label className='swap swap-rotate border-[1px] border-gray-50/60 rounded-full p-2'>
+          <motion.li className='hover:bg-black text-gray-50/60 rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
+            <label className='swap swap-rotate rounded-full p-1'>
               <input title='Mode Toggle' type='checkbox' />
-              <BsSun className='swap-on fill-current w-6 h-6' />
-              <BsMoon className='swap-off fill-current w-6 h-6' />
+              <BsMoon
+                onClick={handleThemeSwitch}
+                className='swap-off fill-current text-xl'
+              />
+              <BsSun
+                onClick={handleThemeSwitch}
+                className='swap-on fill-current text-xl'
+              />
             </label>
           </motion.li>
         </motion.ul>
