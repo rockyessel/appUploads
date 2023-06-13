@@ -6,17 +6,19 @@ import { UserProps } from '../../../interface';
 import { useNavigate } from 'react-router-dom';
 
 const Authentication = () => {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user');
-    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
+  const navigate = useNavigate(); // Hook for navigating to different routes
 
-    console.log('user', user);
+  React.useEffect(() => {
+    const getUserFromLocalStorage =
+      window.localStorage.getItem('appwrite_user'); // Retrieve user data from localStorage
+    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`); // Parse the retrieved data into a UserProps object
+
+    console.log('user', user); // Log the user object to the console
 
     if (user !== null) {
-      navigate('/dashboard');
+      navigate('/dashboard'); // If a user exists, navigate to the '/dashboard' route
     }
-  }, [navigate]);
+  }, [navigate]); // Run this effect whenever the navigate function changes
 
   return (
     <React.Fragment>

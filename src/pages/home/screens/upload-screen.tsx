@@ -47,7 +47,7 @@ const UploadScreen = () => {
         <motion.section {...slideAnimation('left')}>
           <motion.div className='w-full flex flex-col gap-1 md:gap-10 items-center justify-center lg:w-[40rem] px-1 md:px-4 '>
             <motion.div className='hidden md:block'>
-              <Logo size='text-2xl' />
+              <Logo />
             </motion.div>
 
             <motion.div className='bg-transparent rounded-lg border-dashed border-2 border-gray-900/50 flex flex-col items-center justify-center md:p-5'>

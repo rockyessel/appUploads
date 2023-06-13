@@ -1,16 +1,7 @@
 import React from 'react';
 import { account, storage, db } from '../utils/config';
-import {
-  fileMimeTypeSetter,
-  formatFileSize,
-  generateString,
-} from '../utils/functions';
-import {
-  defaultDocument,
-  defaultUser,
-  loginForm,
-  registerForm,
-} from '../utils/state';
+import { fileMimeTypeSetter, formatFileSize, generateString } from '../utils/functions';
+import { defaultDocument, defaultUser, loginForm, registerForm } from '../utils/state';
 import { Query } from 'appwrite';
 import { UserDocumentProps, UserProps } from '../interface';
 import { toast } from 'react-toastify';
@@ -117,15 +108,15 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
       if (user === null) {
         // If null, put user from db into localStorage
         window.localStorage.setItem('appwrite_user', JSON.stringify(currentUser));
-      } else if (currentUser && user !== null) {
-        const currentUserId = currentUser.$id;
-        const savedUserId = user.$id; //647200b7f40247e76178
-        if (savedUserId !== currentUserId) {
+      } else if (currentUser && user && user !== null) {
+        const currentUserId = currentUser.$id; // Current login user
+        const savedUserId = user.$id; // User from localStorage
+        if (savedUserId === currentUserId) {
+          console.log('verified');
+        } else {
           await account.deleteSession('current');
           window.localStorage.removeItem('appwrite_user');
           window.location.replace('/authenticate');
-        } else {
-          console.log('verified');
           return;
         }
       } else {
@@ -137,7 +128,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
         window.localStorage.removeItem('appwrite_user');
         window.location.replace('/authenticate');
       }
-      console.log('something went wrong');
+      console.log('Could not verify user.');
     }
   }, []);
 

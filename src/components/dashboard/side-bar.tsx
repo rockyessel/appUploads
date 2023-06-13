@@ -17,27 +17,29 @@ interface Props {
 }
 
 const SideBar = (props: Props) => {
-  const { logout } = useAppwriteContext();
-  const [loading, setLoading] = React.useState(false);
+  const { logout } = useAppwriteContext(); // Importing the logout function from the Appwrite context
+  const [loading, setLoading] = React.useState(false); // State variable to track loading state
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate(); // Hook for navigating to different routes
+  const location = useLocation(); // Hook for accessing the current location
 
-  console.log('location', location);
-  console.log('isTrue', location.pathname.includes('/dashboard'));
   const handleLogout = async () => {
-    setLoading(true);
-    await logout();
-    setLoading(false);
+    setLoading(true); // Set loading state to true
 
-    if (location.pathname.includes('/dashboard')) navigate('/authenticate');
+    await logout(); // Call the logout function
+
+    setLoading(false); // Set loading state to false after logout is completed
+
+    if (location.pathname.includes('dashboard')) {
+      navigate('/authenticate'); // If the current route contains 'dashboard', navigate to the '/authenticate' route
+    }
   };
 
   React.useEffect(() => {
     if (loading) {
-      toast.success("You're logged out!");
+      toast.success("You're logged out!"); // Show a success toast message when the loading state is true
     }
-  }, [loading]);
+  }, [loading]); // Run this effect whenever the loading state changes
 
   return (
     <AnimatePresence>

@@ -21,7 +21,7 @@ const Navbar = () => {
       {...slideAnimation('down')}
     >
       <motion.nav className='w-full h-full m-0 p-0 flex items-center justify-between'>
-        <Logo size='text-2xl' />
+        <Logo />
 
         <motion.ul className='flex items-center gap-5 font-medium'>
           {user?.status ? (

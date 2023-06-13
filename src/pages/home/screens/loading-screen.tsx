@@ -64,7 +64,7 @@ React.useEffect(() => {
           {...slideAnimation('right')}
         >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
-            <Logo size='text-2xl' />
+            <Logo />
             <motion.div className='w-full flex flex-col gap-0 p-0 m-0 items-center justify-center  bg-[rgb(255,255,255,0.4)] dark:bg-[rgba(139,139,139,0.4)] backdrop-blur-lg border-[1px] rounded-lg'>
               <p className='p-3'>Click on start, to upload your files.</p>
               {loading && <p className='p-3'>Loading, please wait patent</p>}

@@ -1,21 +1,10 @@
 import { Tilt } from 'react-tilt';
 import React from 'react';
-import { Button, Navbar, Tag } from '../../../components';
-import { useNavigate } from 'react-router-dom';
-import { UserProps } from '../../../interface';
+import { Button, Navbar } from '../../../components';
 import { BsImage } from 'react-icons/bs';
+import Head from '../../../components/head';
 
 const Home = () => {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user');
-    const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
-
-    if (user !== null) {
-      navigate('/dashboard');
-    }
-  }, [navigate]);
-
   const defaultOptions = {
     reverse: false, // reverse the tilt direction
     max: 35, // max tilt rotation (degrees)
@@ -30,6 +19,18 @@ const Home = () => {
 
   return (
     <React.Fragment>
+      <Head
+        MIME='png'
+        alt='Homepage - Dnest'
+        author_name='Rocky Essel'
+        description='Welcome to our Cloud File Storage!'
+        image=''
+        keywords='Cloud file, file storage, storage, online cloud, file sharing'
+        publishedAt={new Date().toISOString()}
+        title='Dnest Homepage'
+        type='Website'
+        updatedAt={new Date().toISOString()}
+      />
       <Navbar />
       <main className='w-full h-full flex flex-col items-center justify-center bg-[rgb(255,255,255,0.1)]  gap-[10rem] backdrop:blur-lg shadow-lg px-32 pb-32'>
         <section className='w-full flex items-center justify-center mt-32'>
@@ -48,7 +49,6 @@ const Home = () => {
                   className='inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900'
                 >
                   Start with test
-                  {/* <svg className="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg> */}
                 </a>
                 <a
                   href='#'
@@ -91,18 +91,6 @@ const Home = () => {
             <span className='text-lg xl:text-xl flex-shrink-0'>New users</span>
           </p>
         </section>
-        {/* 
-        <section>
-          <p className='text-5xl font-medium text-center'>
-            Upload as much as you want, and share them with friends, family and
-            co-workers.
-          </p>
-
-          <div>
-            <p>popular of the files extension we support are:</p>
-      
-          </div>
-        </section> */}
 
         <section className='w-full flex flex-col gap-[10rem]'>
           <div className='flex flex-wrap items-center justify-between'>
@@ -157,23 +145,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
-        <section className='w-full relative flex items-center'>
-          <p className='inline-flex flex-col gap-5 absolute left-16'>
-            <span className='font-bold'>Banner for DataNest</span>
-            <span className='max-w-lg text-lg font-medium'>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Necessitatibus placeat nostrum voluptatibus ipsa, ut incidunt ea
-              id amet nobis nulla laudantium cumque autem ad beatae, expedita
-              molestias praesentium temporibus saepe.
-            </span>
-            <Button styles='w-fit' title=''>
-              Try now
-            </Button>
-          </p>
-          <img className='w-full rounded-lg shadow-xl' src='/s.png' alt='' />
-        </section>
-        <Tag />
       </main>
       {/* <Footer /> */}
     </React.Fragment>
@@ -181,8 +152,3 @@ const Home = () => {
 };
 
 export default Home;
-
-{
-  /* <span className='text-2xl'>Your Files, Boundless and Secure</span> */
-}
-//

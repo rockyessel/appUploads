@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SideBar } from '../../components';
 import { fadeAnimation } from '../../utils/motion';
 import Navbar from './navbar';
-// import DashboardFooter from './footer';
 
 interface Props {
   children: React.ReactNode;
