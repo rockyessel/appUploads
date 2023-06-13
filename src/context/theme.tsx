@@ -45,5 +45,6 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = (
 };
 
 // Custom hook to consume the theme context
+// eslint-disable-next-line react-refresh/only-export-components
 export const useThemeContext = (): ThemeContextProps =>
   React.useContext(ThemeContext);

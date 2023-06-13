@@ -174,6 +174,7 @@ export const fetchAudioData = async (audioURL: string, setMetadata: React.Dispat
 
     // Read the audio file tags using jsmediatags library
     jsmediatags.read(data, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onSuccess: (tags: { type: string; tags: any }) => {
         setMetadata(tags.tags); // Update the metadata state with the extracted tags
       },
