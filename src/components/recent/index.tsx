@@ -11,7 +11,6 @@ const RecentBodyComponent = (props: Props) => {
   const [activeGroup, setActiveGroup] = React.useState('');
 
   const toggleGroup = (date: string) => {
-    console.log('date', date);
     setActiveGroup((prevGroup) => (prevGroup === date ? '' : date));
   };
 
@@ -30,8 +29,6 @@ const RecentBodyComponent = (props: Props) => {
                 extension={`${file?.mimeType?.split('/').shift()} ${
                   file?.extension
                 }`}
-                value={''}
-                svgElementContent={''}
               />
             ))}
           </ul>

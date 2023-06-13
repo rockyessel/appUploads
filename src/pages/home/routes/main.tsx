@@ -1,6 +1,6 @@
 import { Tilt } from 'react-tilt';
 import React from 'react';
-import { Button, Footer, Navbar, Tag } from '../../../components';
+import { Button, Navbar, Tag } from '../../../components';
 import { useNavigate } from 'react-router-dom';
 import { UserProps } from '../../../interface';
 import { BsImage } from 'react-icons/bs';

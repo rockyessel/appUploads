@@ -29,10 +29,8 @@ export interface UserProps {
   phone: string;
   emailVerification: boolean;
   phoneVerification: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  prefs: {profile:{profile:string}};
+  prefs: { profile: { profile: string } };
 }
-
 
 interface APIC {
   data: {
@@ -45,7 +43,6 @@ interface APIC {
   id: string;
   size: number;
 }
-
 
 interface COMM {
   data: {

@@ -3,12 +3,7 @@ import React from 'react';
 interface Props {
   value?: string;
   name: string;
-  onChange: (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | unknown
-  ) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   styles?: string;
   type?: string;
@@ -32,16 +27,6 @@ const Input = (props: Props) => {
           onChange={props.onChange}
           placeholder={props.placeholder}
           disabled={props.disabled}
-          className={`${props.styles} bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5`}
-        />
-      )}
-
-      {props.elementType === 'textarea' && (
-        <textarea
-          name={props.name}
-          value={props.value}
-          onChange={props.onChange}
-          placeholder={props.placeholder}
           className={`${props.styles} bg-transparent border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5`}
         />
       )}

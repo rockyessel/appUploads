@@ -5,7 +5,6 @@ import { BsMusicNoteList } from 'react-icons/bs';
 import { UserDocumentProps } from '../../../interface';
 import { RiCloseLine } from 'react-icons/ri';
 import { CiCircleMore } from 'react-icons/ci';
-import { assignedIconExtensions } from '../../../utils/constant';
 
 interface Props {
   documentData: UserDocumentProps;

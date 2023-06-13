@@ -16,7 +16,7 @@ const DashboardSettings = () => {
     name: getUser?.name,
     email: getUser?.name,
   });
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   // Access the uploadUserProfile function from the useAppwriteContext hook
   const { uploadUserProfile } = useAppwriteContext();
@@ -31,33 +31,34 @@ const DashboardSettings = () => {
     }
   };
 
-  const handleForm = (event: any) => {
+  const handleForm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     const changing = {
       ...userForm,
-      [target.name]: target.value
-    }
-    
+      [target.name]: target.value,
+    };
+
     setUserForm(changing);
-  }
+  };
+
+  console.log('loading', loading);
 
   // Memoized profile upload handler
   const handleProfileUpload = React.useMemo(
     () => async () => {
-   try {
-     // Check if a file is selected
-     if (fileInput) {
-       setLoading(true);
-       // Upload the user profile using the selected file
-       setProfileURL(await uploadUserProfile(fileInput));
-       setLoading(false);
-       toast.success('Profile uploaded');
+      try {
+        // Check if a file is selected
+        if (fileInput) {
+          setLoading(true);
+          // Upload the user profile using the selected file
+          setProfileURL(await uploadUserProfile(fileInput));
+          setLoading(false);
+          toast.success('Profile uploaded');
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
       }
-    } catch (error) {
-      console.log(error)
-      toast.done(user.prefs?.profile?.profile);
-      setLoading(false);
-   }
     },
     [fileInput, uploadUserProfile]
   );
@@ -152,7 +153,9 @@ const DashboardSettings = () => {
         </div>
 
         <div>
-          <p className='shadow-lg w-fit px-4 py-2 rounded-lg bg-rose-800 dark:text-gray-200 '>Delete Account</p>
+          <p className='shadow-lg w-fit px-4 py-2 rounded-lg bg-rose-800 dark:text-gray-200 '>
+            Delete Account
+          </p>
         </div>
       </motion.div>
     </Layout>
@@ -160,4 +163,3 @@ const DashboardSettings = () => {
 };
 
 export default DashboardSettings;
-

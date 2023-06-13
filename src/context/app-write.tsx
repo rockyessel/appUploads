@@ -143,9 +143,9 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
 
   // @desc To get the current user
   const getUser = async (): Promise<UserProps> => {
-    const data = await account.get();
+    const data = await account.get() as unknown as UserProps;
     verifyUser();
-    return data;
+    return data ;
   };
 
   // @desc To handle file selection
