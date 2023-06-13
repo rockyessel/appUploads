@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { UserDocumentProps } from '../../../interface';
 import { RiCloseLine } from 'react-icons/ri';
 import { CiCircleMore } from 'react-icons/ci';
+import { assignedIconExtensions } from '../../../utils/constant';
 
 interface Props {
   documentData: UserDocumentProps;
@@ -49,13 +50,7 @@ const LinuxCard = (props: Props) => {
           </span>
         )}
       </span>
-      <div>
-        <img
-          title={props.documentData.filename}
-          className='w-20 h-20'
-          src={'/linux.png'}
-        />
-      </div>
+      <div>{assignedIconExtensions[`${props.documentData.extension}`]}</div>
       <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1 bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
         {title}
       </span>

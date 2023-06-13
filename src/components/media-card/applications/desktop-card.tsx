@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { UserDocumentProps } from '../../../interface';
+import { assignedIconExtensions } from '../../../utils/constant';
 
 interface Props {
   documentData: UserDocumentProps;
@@ -43,13 +44,7 @@ const AndroidCard = (props: Props) => {
           </span>
         )}
       </span>
-      <div>
-        <img
-          title={props.documentData.filename}
-          className='w-20 h-20'
-          src={'/exe.png'}
-        />
-      </div>
+      <div>{assignedIconExtensions[`${props.documentData.extension}`]}</div>
       <span className='absolute bottom-1 rounded-lg text-sm px-2 py-1  bg-[rgb(255,255,255,0.5)] backdrop-blur-lg'>
         {title}
       </span>
