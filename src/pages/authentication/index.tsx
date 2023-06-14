@@ -1,9 +1,8 @@
 import React from 'react';
-import RegisterScreen from '../screens/register-screen';
-import LoginScreen from '../screens/login-screen';
-import { Footer, Navbar, Tag } from '../../../components';
-import { UserProps } from '../../../interface';
+import { Footer, Navbar, Tag } from '../../components';
+import { UserProps } from '../../interface';
 import { useNavigate } from 'react-router-dom';
+import RegisterScreen from '../screens/auth/register-screen';
 
 const Authentication = () => {
   const navigate = useNavigate(); // Hook for navigating to different routes

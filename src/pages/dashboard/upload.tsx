@@ -1,9 +1,6 @@
-// import React from 'react';
 import { motion } from 'framer-motion';
-import Layout from '../../../components/dashboard/layout';
-import UploadScreen from '../../home/screens/upload-screen';
-import LoadingScreen from '../../home/screens/loading-screen';
-import FileScreen from '../../home/screens/file-screen';
+import Layout from '../../components/dashboard/layout';
+import { FileScreen, LoadingScreen, UploadScreen } from '../screens';
 
 const UserFilesUpload = () => {
   return (

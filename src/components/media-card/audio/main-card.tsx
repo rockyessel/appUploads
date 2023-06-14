@@ -48,6 +48,9 @@ const MainAudioCard = (props: Props) => {
               Share
             </span>
             <span className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'>
+              Lock
+            </span>
+            <span className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'>
               Delete
             </span>
           </span>

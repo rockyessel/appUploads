@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { slideAnimation } from '../../../utils/motion';
+import { slideAnimation } from '../../utils/motion';
 import { RiUploadCloud2Fill } from 'react-icons/ri';
-import { Input } from '../../../components';
-import { useAppwriteContext } from '../../../context/app-write';
-import Layout from '../../../components/dashboard/layout';
-import { UserProps } from '../../../interface';
+import { Input } from '../../components';
+import { useAppwriteContext } from '../../context/app-write';
+import Layout from '../../components/dashboard/layout';
+import { UserProps } from '../../interface';
 import { toast } from 'react-toastify';
 
 const DashboardSettings = () => {

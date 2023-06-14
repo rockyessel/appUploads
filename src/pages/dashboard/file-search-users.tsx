@@ -1,11 +1,11 @@
 import React from 'react';
-import Layout from '../../../components/dashboard/layout';
+import Layout from '../../components/dashboard/layout';
 import { AiOutlineCaretDown } from 'react-icons/ai';
 import { BsSearch } from 'react-icons/bs';
-import { Button } from '../../../components';
-import { useAppwriteContext } from '../../../context/app-write';
-import { UserDocumentProps } from '../../../interface';
-import MediaCard from '../../../components/media-card';
+import { Button } from '../../components';
+import { useAppwriteContext } from '../../context/app-write';
+import { UserDocumentProps } from '../../interface';
+import MediaCard from '../../components/media-card';
 
 const FileSearchUsers = () => {
   // State variables

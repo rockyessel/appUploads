@@ -1,8 +1,8 @@
 import { Tilt } from 'react-tilt';
 import React from 'react';
-import { Button, Navbar } from '../../../components';
+import { Button, Navbar } from '../../components';
 import { BsImage } from 'react-icons/bs';
-import Head from '../../../components/head';
+import Head from '../../components/head';
 
 const Home = () => {
   const defaultOptions = {

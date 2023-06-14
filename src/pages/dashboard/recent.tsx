@@ -1,12 +1,12 @@
 import React from 'react';
-import Layout from '../../../components/dashboard/layout';
-import { groupDocumentDataByInterval } from '../../../utils/functions';
-import { useAppwriteContext } from '../../../context/app-write';
-import { UserDocumentProps, UserProps } from '../../../interface';
-import MediaCard from '../../../components/media-card';
+import Layout from '../../components/dashboard/layout';
+import { groupDocumentDataByInterval } from '../../utils/functions';
+import { useAppwriteContext } from '../../context/app-write';
+import { UserDocumentProps, UserProps } from '../../interface';
+import MediaCard from '../../components/media-card';
 import { format } from 'date-fns';
 import { SlArrowUp, SlArrowDown } from 'react-icons/sl';
-import { dayMonthYear } from '../../../utils/constant';
+import { dayMonthYear } from '../../utils/constant';
 
 const DashboardRecentDocuments = () => {
   // Define state variables

@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { headContainerAnimation } from '../../../utils/motion';
-import MediaCard from '../../../components/media-card';
-import { useAppwriteContext } from '../../../context/app-write';
-import { UserDocumentProps, UserProps } from '../../../interface';
-import { filteredData } from '../../../utils/functions';
-import Layout from '../../../components/dashboard/layout';
+import { headContainerAnimation } from '../../utils/motion';
+import MediaCard from '../../components/media-card';
+import { useAppwriteContext } from '../../context/app-write';
+import { UserDocumentProps, UserProps } from '../../interface';
+import { filteredData } from '../../utils/functions';
+import Layout from '../../components/dashboard/layout';
 
 const DashboardImageFiles = () => {
   const [loading, setLoading] = React.useState(false); // Indicates whether the data is currently being loaded

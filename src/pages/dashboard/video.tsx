@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { fadeAnimation } from '../../../utils/motion';
-import { useAppwriteContext } from '../../../context/app-write';
-import MediaCard from '../../../components/media-card';
-import { filteredData } from '../../../utils/functions';
-import { UserDocumentProps, UserProps } from '../../../interface';
-import Layout from '../../../components/dashboard/layout';
+import { fadeAnimation } from '../../utils/motion';
+import { useAppwriteContext } from '../../context/app-write';
+import MediaCard from '../../components/media-card';
+import { filteredData } from '../../utils/functions';
+import { UserDocumentProps, UserProps } from '../../interface';
+import Layout from '../../components/dashboard/layout';
 
 const DashboardVideosFiles = () => {
   const { getCurrentUserDocuments } = useAppwriteContext(); // Custom hook to get the function for fetching user documents

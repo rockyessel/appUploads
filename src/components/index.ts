@@ -7,4 +7,5 @@ export { default as Input } from './input';
 export { default as Button } from './button';
 export { default as TabComponentCard } from './tab/index';
 export { default as FileDescription } from './file/file-description';
-export { default as DisplayUploadedFiles } from './display-uploaded-files';
+export { default as DisplayUploadedFiles } from './file/display-uploaded-files';
+export { default as Loader } from './loader';

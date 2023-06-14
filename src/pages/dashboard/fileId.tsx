@@ -1,16 +1,15 @@
-// Import necessary dependencies and components for the current file or module
 import React from 'react';
-import Layout from '../../../components/dashboard/layout';
-import { screenState } from '../../../utils/state';
-import { motion } from 'framer-motion';
-import { fadeAnimation, slideAnimation } from '../../../utils/motion';
-import { useAppwriteContext } from '../../../context/app-write';
+import { UserDocumentProps } from '../../interface';
+import { screenState } from '../../utils/state';
 import { useParams } from 'react-router-dom';
-import { UserDocumentProps } from '../../../interface';
-import { FileDescription, TabComponentCard } from '../../../components';
-import FileAction from '../../../components/file/file-action';
-import MediaViewerCard from '../../../components/media-viewer-card';
-import { hasNoValue } from '../../../utils/functions';
+import { useAppwriteContext } from '../../context/app-write';
+import { hasNoValue } from '../../utils/functions';
+import Layout from '../../components/dashboard/layout';
+import { fadeAnimation, slideAnimation } from '../../utils/motion';
+import MediaViewerCard from '../../components/media-viewer-card';
+import FileAction from '../../components/file/file-action';
+import { FileDescription, TabComponentCard } from '../../components';
+import { motion } from 'framer-motion';
 
 const DashboardFileDetails = () => {
   const [documentData, setDocumentData] = React.useState<UserDocumentProps>(); // State for storing the document data

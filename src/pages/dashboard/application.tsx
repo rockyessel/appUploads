@@ -1,15 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { fadeAnimation } from '../../../utils/motion';
-import { useAppwriteContext } from '../../../context/app-write';
-import { filteredData } from '../../../utils/functions';
-import MediaCard from '../../../components/media-card';
-import { UserDocumentProps, UserProps } from '../../../interface';
-import Layout from '../../../components/dashboard/layout';
+import { fadeAnimation } from '../../utils/motion';
+import { useAppwriteContext } from '../../context/app-write';
+import { filteredData } from '../../utils/functions';
+import MediaCard from '../../components/media-card';
+import { UserDocumentProps, UserProps } from '../../interface';
+import Layout from '../../components/dashboard/layout';
 
 const DashboardApplicationFiles = () => {
   const { getCurrentUserDocuments } = useAppwriteContext(); // Get the function for fetching user documents from the Appwrite context
-  const [applicationData, setApplicationData] = React.useState<UserDocumentProps[] | []>([]); // Store the user's application document data
+  const [applicationData, setApplicationData] = React.useState<
+    UserDocumentProps[] | []
+  >([]); // Store the user's application document data
   const [loading, setLoading] = React.useState(false); // Indicates whether the data is currently being loaded
 
   const getAllUserDocuments = React.useCallback(async (userId: string) => {
@@ -33,7 +35,8 @@ const DashboardApplicationFiles = () => {
   }, []);
 
   React.useEffect(() => {
-    const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user'); // Get the user data from local storage
+    const getUserFromLocalStorage =
+      window.localStorage.getItem('appwrite_user'); // Get the user data from local storage
     const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`); // Parse the user data
     if (user) {
       getAllUserDocuments(user.$id); // Fetch all user documents when the component mounts or when the user changes
