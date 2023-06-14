@@ -1,7 +1,16 @@
 import React from 'react';
 import { account, storage, db } from '../utils/config';
-import { fileMimeTypeSetter, formatFileSize, generateString } from '../utils/functions';
-import { defaultDocument, defaultUser, loginForm, registerForm } from '../utils/state';
+import {
+  fileMimeTypeSetter,
+  formatFileSize,
+  generateString,
+} from '../utils/functions';
+import {
+  defaultDocument,
+  defaultUser,
+  loginForm,
+  registerForm,
+} from '../utils/state';
 import { Query } from 'appwrite';
 import { UserDocumentProps, UserProps } from '../interface';
 import { toast } from 'react-toastify';
@@ -70,16 +79,28 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   updateDocuments: () => Promise.resolve(),
 });
 
-
-export const AppWriteContextProvider = (props: { children: React.ReactNode }) => {
+export const AppWriteContextProvider = (props: {
+  children: React.ReactNode;
+}) => {
   const [files, setFiles] = React.useState<File[]>([]);
-  const [documentsData, setDocumentsData] = React.useState<UserDocumentProps[] | []>([]);
-  const [globalDocumentData, setGlobalDocumentData] = React.useState<UserDocumentProps[]>([]);
-  const [allDocuments, setAllDocuments] = React.useState<UserDocumentProps[] | []>([]);
+  const [documentsData, setDocumentsData] = React.useState<
+    UserDocumentProps[] | []
+  >([]);
+  const [globalDocumentData, setGlobalDocumentData] = React.useState<
+    UserDocumentProps[]
+  >([]);
+  const [allDocuments, setAllDocuments] = React.useState<
+    UserDocumentProps[] | []
+  >([]);
 
   // @desc To register a new user
   const register = async (form: typeof registerForm) => {
-    await account.create(`${generateString()}${generateString()}`, form.email, form.password, form.name);
+    await account.create(
+      `${generateString()}${generateString()}`,
+      form.email,
+      form.password,
+      form.name
+    );
     await account.createEmailSession(form.email, form.password);
   };
 
@@ -90,7 +111,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
 
   // @desc To log out the current user
   const logout = async () => {
-     await account.deleteSession('current');
+    await account.deleteSession('current');
     window.localStorage.removeItem('appwrite_user');
   };
 
@@ -99,7 +120,8 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
     try {
       // setTriggerEffect((prev) => !prev);
       // Get user from localStorage
-      const getUserFromLocalStorage = window.localStorage.getItem('appwrite_user');
+      const getUserFromLocalStorage =
+        window.localStorage.getItem('appwrite_user');
       // Parse user
       const user: UserProps = JSON.parse(`${getUserFromLocalStorage}`);
       // Get user from db
@@ -107,7 +129,10 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
       // Check for null
       if (user === null && currentUser) {
         // If null, put user from db into localStorage
-        window.localStorage.setItem('appwrite_user', JSON.stringify(currentUser));
+        window.localStorage.setItem(
+          'appwrite_user',
+          JSON.stringify(currentUser)
+        );
       } else if (currentUser && user && user !== null) {
         const currentUserId = currentUser.$id; // Current login user
         const savedUserId = user.$id; // User from localStorage
@@ -134,9 +159,9 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
 
   // @desc To get the current user
   const getUser = async (): Promise<UserProps> => {
-    const data = await account.get() as unknown as UserProps;
-    // verifyUser();
-    return data ;
+    const data = (await account.get()) as unknown as UserProps;
+    verifyUser();
+    return data;
   };
 
   // @desc To handle file selection
@@ -230,28 +255,24 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
     const data = (await db.listDocuments(
       `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
       `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
-      [
-        Query.equal('public', [true]),
-        Query.limit(100),
-      ]
+      [Query.equal('public', [true]), Query.limit(100)]
     )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
     return data;
   };
 
   // @desc To get the current user's documents
-const getDocumentByCode = async (code: string) => {
-  const data = (await db.listDocuments(
-    import.meta.env.VITE_APPWRITE_DATABASE_ID,
-    import.meta.env.VITE_APPWRITE_COLLECTION_ID,
-    [Query.select(['access_file_code', code])]
-  )) as unknown as {
-    total: number;
-    documents: UserDocumentProps[] | [];
+  const getDocumentByCode = async (code: string) => {
+    const data = (await db.listDocuments(
+      import.meta.env.VITE_APPWRITE_DATABASE_ID,
+      import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+      [Query.select(['access_file_code', code])]
+    )) as unknown as {
+      total: number;
+      documents: UserDocumentProps[] | [];
+    };
+    console.log('data', data);
+    return data;
   };
-  console.log('data', data);
-  return data;
-};
-
 
   // @desc To get a document by its ID
   const getDocumentById = async ($id: string) => {
@@ -264,7 +285,6 @@ const getDocumentByCode = async (code: string) => {
       return data;
     }
   };
-
 
   // @desc To get all files in a bucket
   const getAllFiles = async (bucketId: string) => {
@@ -303,14 +323,13 @@ const getDocumentByCode = async (code: string) => {
 
   // @desc To update document attributes
   const updateDocuments = async (documentId: string, updatedValue: boolean) => {
-     await db.updateDocument(
+    (await db.updateDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       import.meta.env.VITE_APPWRITE_COLLECTION_ID,
       documentId,
       // Update the Index Attribute
       { public: updatedValue }
-    ) as UserDocumentProps;
-   
+    )) as UserDocumentProps;
   };
 
   // @desc To get every user's documents
