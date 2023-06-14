@@ -1,4 +1,7 @@
-import DocViewer, { DocViewerRenderers, IDocument } from '@cyntler/react-doc-viewer';
+import DocViewer, {
+  DocViewerRenderers,
+  IDocument,
+} from '@cyntler/react-doc-viewer';
 import CodeViewer from './code';
 import { UserDocumentProps } from '../../interface';
 
@@ -32,7 +35,7 @@ const DocumentDisplayView = (documents: IDocument[], extension: string) => {
 
     default:
       return (
-        <div className='h-[60rem] overflow-y-auto overflow-hidden'>
+        <div className='h-full overflow-y-auto overflow-hidden'>
           <CodeViewer url={documents[0].uri} />
         </div>
       );
