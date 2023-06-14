@@ -9,3 +9,5 @@ export { default as TabComponentCard } from './tab/index';
 export { default as FileDescription } from './file/file-description';
 export { default as DisplayUploadedFiles } from './file/display-uploaded-files';
 export { default as Loader } from './loader';
+export { default as EmptyDocument } from './empty-document';
+export { default as DashboardContentDisplay } from './dashboard-content-display';
