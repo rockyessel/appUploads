@@ -20,7 +20,7 @@ const ImageCard = (props: Props) => {
           .concat(`...${props.documentData.extension}`)
       : props.documentData.filename;
 
-  // const isOtherUsers = props.documentData.public &&
+  
 
   return (
     <motion.div
