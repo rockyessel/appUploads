@@ -24,7 +24,7 @@ const DashboardDocumentFiles = () => {
 
   return (
     <DashboardContentDisplay
-      loaderMessage={'Documents'}
+      loaderMessage={'Getting your files ready.'}
       emptyDocumentMessage={'Document'}
       allowedDocumentTypes={selectedMimetype}
     />

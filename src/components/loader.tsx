@@ -15,7 +15,7 @@ const Loader = (props: Props) => {
         <ImSpinner9 className='animate-spin text-4xl' />
         <img className='animate-bounce w-20' src={Logo} alt='' />
       </span>
-          <p className='font-bold text-2xl'>Loading {props.message}</p>
+          <p className='text-xl'>{props.message}</p>
     </div>
   );
 };

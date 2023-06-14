@@ -105,7 +105,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
       // Get user from db
       const currentUser = await account.get();
       // Check for null
-      if (user === null) {
+      if (user === null && currentUser) {
         // If null, put user from db into localStorage
         window.localStorage.setItem('appwrite_user', JSON.stringify(currentUser));
       } else if (currentUser && user && user !== null) {
@@ -135,7 +135,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
   // @desc To get the current user
   const getUser = async (): Promise<UserProps> => {
     const data = await account.get() as unknown as UserProps;
-    verifyUser();
+    // verifyUser();
     return data ;
   };
 
@@ -184,7 +184,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
       const createdAt = data?.$createdAt;
       const updatedAt = data?.$updatedAt;
       const userId = currentUser?.$id;
-      const access_file_code = generateString();
+      const accessCode = generateString();
       // Database model schema
       const dbSchemaData = {
         view,
@@ -196,7 +196,7 @@ export const AppWriteContextProvider = (props: { children: React.ReactNode }) =>
         createdAt,
         extension,
         updatedAt,
-        access_file_code,
+        accessCode,
       };
       // Create document
       const createdDocument: typeof defaultDocument = await db.createDocument(

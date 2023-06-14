@@ -3,7 +3,7 @@ import { DashboardContentDisplay } from '../../components';
 const DashboardImageFiles = () => {
   return (
     <DashboardContentDisplay
-      loaderMessage={'Images'}
+      loaderMessage={'Getting your files ready.'}
       emptyDocumentMessage={'Image'}
       allowedDocumentTypes={['image']}
     />
