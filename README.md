@@ -8,7 +8,7 @@
 ## Description of Project
 
 
-Our project is a cutting-edge file storage platform that revolutionizes the way you store, access, and manage your files. Designed with user convenience and data security in mind, our platform provides a seamless and reliable solution for individuals and businesses alike.
+The project is a cutting-edge file storage platform that revolutionizes the way you store, access, and manage your files. Designed with user convenience and data security in mind, the platform provides a seamless and reliable solution for individuals and businesses alike.
 
 With our platform, you can securely store a wide range of file types, including documents, images, videos, and music. We prioritize the privacy of your files by default, ensuring that only you have access to them. However, we also offer the flexibility to make files public when needed, while maintaining strict control over who can access them.
 
@@ -22,10 +22,8 @@ Join us today and experience the future of file storage. With our platform, you 
 
 ## Tech Stack
 
-- React.js (Vite)
-- TypeScript
-- TailwindCSS
-- State management: Context API
+
+- React.js - TypeScript (Vite)
 - Appwrite Cloud
     - Authentication
     - Database
@@ -41,7 +39,7 @@ Appwrite's file type handling: Appwrite's file type management can be tricky, as
 
 SVG link returning HTML elements: One specific challenge we faced was Appwrite's SVG link returning an HTML element instead of an image. However, we were able to overcome this challenge by implementing clear code logic to handle the SVG files appropriately. This solution ensured that SVG files are displayed as images within our platform.
 
-Time constraints: Time is a valuable resource, and we understand the limitations it can impose. Despite facing time constraints due to a demanding schedule, we dedicated a significant portion of our daily hours to developing this platform. Balancing work commitments with development allowed us to allocate approximately five hours each day for the past three weeks. However, unforeseen internal problems eventually consumed our remaining development time, leading to a tight schedule during the submission phase.
+**Time constraints**: Time is a valuable resource, and we understand the limitations it can impose. Despite facing time constraints due to a demanding schedule, we dedicated a significant portion of our daily hours to developing this platform. Balancing work commitments with development allowed us to allocate approximately five hours each day for the past three weeks. However, unforeseen internal problems eventually consumed our remaining development time, leading to a tight schedule during the submission phase.
 
 Lack of collaboration: Collaboration is often beneficial when working on a project of this magnitude. However, we encountered the challenge of not having additional team members willing to contribute to the development process. As a result, we took on the task of programming the entire platform from scratch independently. This required determination, perseverance, and the ability to handle the full scope of the project ourselves.
 
@@ -53,4 +51,8 @@ Despite these challenges, we are proud to have overcome them and built a robust 
 
 ## Demo Link
 
-<!--- Add a link to the demo recording of your project in this section -->
+[YouTube](https://youtu.be/eWpfgZ6G3go)
+
+### Test Login
+ - Email: test@test.test
+ - Password: test123Q@.
