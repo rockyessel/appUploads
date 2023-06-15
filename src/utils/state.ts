@@ -34,8 +34,8 @@ export const defaultDocument: UserDocumentProps = {
   size: '', // Size of the document
   updatedAt: '', // Last update timestamp of the document
   view: '', // URL or data representing the view of the document
-  public: false, // Indicates if the document is public
-  access_file_code: '', // Access code for the file
+  isPublic: false, // Indicates if the document is public
+  accessCode: '', // Access code for the file
 };
 
 // Represents the default user
