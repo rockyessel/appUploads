@@ -4,7 +4,7 @@ const DashboardMusicFiles = () => {
   return (
     <DashboardContentDisplay
       loaderMessage={'Getting your files ready.'}
-      emptyDocumentMessage={'Music'}
+      emptyDocumentMessage={'Upload to see your audio files here'}
       allowedDocumentTypes={['audio']}
     />
   );

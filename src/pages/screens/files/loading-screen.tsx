@@ -32,8 +32,6 @@ const LoadingScreen = () => {
     setLoading(false);
   };
 
-  console.log(files);
-
   // @desc This effect is responsible for screen changes
   React.useEffect(() => {
     const hasEmptyDocument = hasNoValue(documentsData);

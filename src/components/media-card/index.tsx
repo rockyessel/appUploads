@@ -31,13 +31,13 @@ const MediaCard = (props: Props) => {
     case 'video asf':
     case 'video wmv':
     case 'video webm':
-      return <VideoCard documentData={props.data} />;
+      return <VideoCard size={props?.size} documentData={props.data} />;
 
     // // @desc mimeType extension
     case 'audio mp3':
     case 'audio mpeg':
     case 'audio wma':
-      return <AudioPlayer documentData={props.data} />;
+      return <AudioPlayer size={props?.size} documentData={props.data} />;
 
     // @desc mimeType extension
     case 'image png':

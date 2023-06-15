@@ -13,7 +13,7 @@ const DashboardApplicationFiles = () => {
   return (
     <DashboardContentDisplay
       loaderMessage={'Getting your files ready.'}
-      emptyDocumentMessage={'Application'}
+      emptyDocumentMessage={'Upload to see your applications here'}
       allowedDocumentTypes={allowedTypes}
     />
   );

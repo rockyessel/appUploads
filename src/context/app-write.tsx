@@ -328,7 +328,7 @@ export const AppWriteContextProvider = (props: {
       import.meta.env.VITE_APPWRITE_COLLECTION_ID,
       documentId,
       // Update the Index Attribute
-      { public: updatedValue }
+      { isPublic: updatedValue }
     )) as UserDocumentProps;
   };
 

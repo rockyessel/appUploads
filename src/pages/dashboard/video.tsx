@@ -4,7 +4,7 @@ const DashboardVideosFiles = () => {
   return (
     <DashboardContentDisplay
       loaderMessage={'Getting your files ready.'}
-      emptyDocumentMessage={'Video'}
+      emptyDocumentMessage={'Upload to see your videos here'}
       allowedDocumentTypes={['video']}
     />
   );

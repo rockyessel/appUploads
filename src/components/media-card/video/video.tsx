@@ -9,12 +9,17 @@ import { MdOutlineSmartDisplay } from 'react-icons/md';
 
 interface Props {
   documentData: UserDocumentProps;
+  size?: string;
 }
 
 const VideoCard = (props: Props) => {
   const [clicked, setClicked] = React.useState(false);
   return (
-    <motion.div className='relative flex-col rounded-lg border-[2px] border-gray-300 gap-4 w-40 h-32 inline-flex items-center justify-center'>
+    <motion.div
+      className={`${
+        props.size ? props.size : 'w-40 h-32'
+      } relative flex-col bg-[rgb(255,255,255,0.1)]  border-[1px] border-gray-300 gap-4 inline-flex items-center justify-center`}
+    >
       {props?.documentData ? (
         <video
           className='w-full h-full object-cover object-center rounded-lg'
@@ -44,7 +49,7 @@ const VideoCard = (props: Props) => {
               <span>View</span>
             </Link>
             <span className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'>
-              Share
+              Lock
             </span>
             <span className='w-full hover:bg-white border-[1px] border-transparent hover:border-[1px] hover:border-gray-300 px-2 py-1 rounded-lg'>
               Delete

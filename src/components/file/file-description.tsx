@@ -38,7 +38,7 @@ const FileDescription = (props: Props) => {
       </p>
       <p className='flex flex-col'>
         <span className='font-bold'>Access Code</span>
-        <span>{props.documentData?.access_file_code}</span>
+        <span>{props.documentData?.accessCode}</span>
       </p>
     </div>
   );

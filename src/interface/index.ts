@@ -13,8 +13,8 @@ export interface UserDocumentProps {
   size: string;
   updatedAt: string;
   view: string;
-  public: boolean;
-  access_file_code: string;
+  isPublic: boolean;
+  accessCode: string;
 }
 
 export interface UserProps {

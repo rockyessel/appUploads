@@ -9,7 +9,6 @@ import { downloadFile } from '../../utils/functions';
 import { HiDownload } from 'react-icons/hi';
 import { TbView360 } from 'react-icons/tb';
 import { screenState } from '../../utils/state';
-import { toast } from 'react-toastify';
 
 interface Props {
   documentData: UserDocumentProps;
@@ -17,7 +16,7 @@ interface Props {
 
 const FileAction = (props: Props) => {
   const [isChecked, setIsChecked] = React.useState<boolean>(
-    props.documentData?.public || false
+    props.documentData?.isPublic || false
   );
 
   // Access the 'updateDocuments' function from the Appwrite context
@@ -34,11 +33,6 @@ const FileAction = (props: Props) => {
         if (props.documentData) {
           // Call the 'updateDocuments' function with the document ID and 'isChecked' value
           updateDocuments(props.documentData?.$id, isChecked);
-
-          // Display a toast message based on the 'isChecked' value
-          isChecked
-            ? toast.warn('Access: Anyone')
-            : toast.success('Access: Only You');
         }
       } catch (error) {
         console.log(error);

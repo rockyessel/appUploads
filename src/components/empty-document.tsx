@@ -10,7 +10,7 @@ const EmptyDocument = (props: Props) => {
       <span className='inline-flex items-center'>
         <img className='animate-bounce w-20' src={EmptyIcon} alt='' />
       </span>
-      <p className='font-bold text-2xl'>No Documents in {props.message}</p>
+      <p className='text-lg'>{props.message}</p>
     </div>
   );
 };

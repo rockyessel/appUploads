@@ -4,7 +4,7 @@ const DashboardImageFiles = () => {
   return (
     <DashboardContentDisplay
       loaderMessage={'Getting your files ready.'}
-      emptyDocumentMessage={'Image'}
+      emptyDocumentMessage={'Upload to see your images here'}
       allowedDocumentTypes={['image']}
     />
   );

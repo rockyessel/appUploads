@@ -39,11 +39,15 @@ html {
     radial-gradient(at 80% 100%, rgb(38, 33, 175) 0px, transparent 50%),
     radial-gradient(at 0% 0%, rgba(52, 65, 52, 0.582) 0px, transparent 50%);
   --code-background: rgba(0, 0, 0, 0.8) !important;
-  --profile-background: linear-gradient(to right, rgba(165, 60, 0, 0.6), rgba(29, 38, 172, 0.7));
+  --profile-background: linear-gradient(
+    to right,
+    rgba(165, 60, 0, 0.6),
+    rgba(29, 38, 172, 0.7)
+  );
 }
 
 .rainbow {
-background-image:var(--profile-background)
+  background-image: var(--profile-background);
 }
 
 /* Dark theme */
@@ -60,7 +64,11 @@ background-image:var(--profile-background)
     radial-gradient(at 80% 100%, rgba(0, 0, 0, 0.664) 0px, transparent 50%),
     radial-gradient(at 0% 0%, rgba(0, 0, 0, 0.664) 0px, transparent 50%);
   --code-background: rgba(26, 23, 23, 0.397) !important;
-  --profile-background: linear-gradient(to right, rgba(255,0,0,0), rgba(0, 0, 0, 0.7));
+  --profile-background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 0),
+    rgba(0, 0, 0, 0.7)
+  );
 }
 /* End */
 
@@ -142,9 +150,6 @@ body {
 .audioPlayer {
   ---primary: #f40082;
   --secondary: #ffd200;
-  display: flex;
-  align-items: center;
-  width: 700px;
 }
 
 .forwardBackward {
@@ -160,50 +165,20 @@ body {
   color: var(---primary);
 }
 
-.playPause {
-  background: var(---primary);
-  border: none;
-  width: 75px;
-  height: 75px;
-  font-size: 32px;
-  color: var(--secondary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-}
 
-.play {
-  position: relative;
-  left: 5px;
-}
-
-.currentTime,
-.duration {
-  font-family: monospace;
-  font-size: 16px;
-}
-
-.currentTime {
-  margin-left: 25px;
-}
 
 .progressBar {
-  --bar-bg: #ffe3d4;
+  --bar-bg: #2c2c2c;
   --seek-before-width: 0;
-  --seek-before-color: #ffc2a1;
-  --knobby: #3452a5;
+  --seek-before-color: linear-gradient(to right, #e89157, #5c2c77);
+  --knobby: #5c2c77;
+  --knobby-border:#e89157
   --selectedKnobby: #32c9c3;
-
   appearance: none;
   background: var(--bar-bg);
   position: relative;
   width: 100%;
-  height: 11px;
+  height: 5px;
   outline: none;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -219,7 +194,7 @@ body {
   background: var(--bar-bg);
   position: relative;
   width: 100%;
-  height: 11px;
+  height: 5px;
   outline: none;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -235,7 +210,7 @@ body {
   background: var(--bar-bg);
   position: relative;
   width: 100%;
-  height: 11px;
+  height: 5px;
   outline: none;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -251,9 +226,9 @@ body {
 /* progress bar - chrome and safari */
 .progressBar::before {
   content: '';
-  height: 11px;
+  height: 5px;
   width: var(--seek-before-width);
-  background-color: var(--seek-before-color);
+  background: var(--seek-before-color);
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   position: absolute;
@@ -265,10 +240,10 @@ body {
 
 /* progressbar - FireFox */
 .progressbar::-moz-range-progress {
-  background-color: var(--seek-before-color);
+  background: var(--seek-before-color);
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  height: 11px;
+  height: 5px;
 }
 
 /* Knobby - chrome and safari */
@@ -276,17 +251,17 @@ body {
   -webkit-appearance: none;
   height: 15px;
   width: 15px;
-  border: none;
-  background-color: var(--knobby);
+  background: var(--knobby);
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
   border-radius: 50%;
+  border: 5px solid #e89157;
   cursor: pointer;
   position: relative;
   z-index: 3;
-  margin: -2px 0 0 0;
+  margin: -5px 0 0 0;
   box-sizing: border-box;
 }
 
@@ -304,7 +279,7 @@ body {
 .progressBar::-moz-range-thumb {
   height: 15px;
   width: 15px;
-  border: transparent;
+  border: 5px solid var(--knobby-border);;
   background-color: var(--knobby);
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -327,8 +302,14 @@ body {
   -o-transform: scale(1.2);
 }
 
-.progressBarWrapper {
-  position: relative;
+.module-border-wrap {
+  background: linear-gradient(to right, #e89157, #5c2c77);
+  /* padding: 3px; */
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
 
 /* End */

@@ -22,7 +22,7 @@ const FileScreen = () => {
   const snap = useSnapshot(screenState); // Accessing the snapshot of screenState
   const { documentsData, files, handleClear } = useAppwriteContext(); // Accessing data and functions from the app context
 
-  console.log('documentsData', documentsData); // Logging the value of documentsData to the console
+  // console.log('documentsData', documentsData); // Logging the value of documentsData to the console
 
   const imageLength = documentsData.length; // Getting the length of the documentsData array
 
@@ -81,7 +81,7 @@ const FileScreen = () => {
           {...slideAnimation('up')}
         >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
-            <DisplayUploadedFiles
+            <DisplayUploadedFiles 
               currentSlider={currentSlider}
               documentsData={documentsData}
             />

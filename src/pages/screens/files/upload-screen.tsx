@@ -6,7 +6,6 @@ import { useSnapshot } from 'valtio';
 import { screenState } from '../../../utils/state';
 import Logo from '../../../components/logo';
 import { useAppwriteContext } from '../../../context/app-write';
-import { toast } from 'react-toastify';
 
 const UploadScreen = () => {
   const snap = useSnapshot(screenState);
@@ -18,9 +17,6 @@ const UploadScreen = () => {
     const hasNoFiles = files.length === 0;
 
     if (hasFiles) {
-      // Display toast message when files are added
-      toast.info('File added');
-
       // Update screenState to show loading screen
       screenState.defaultScreen = false;
       screenState.loadingScreen = true;

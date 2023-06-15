@@ -8,7 +8,7 @@ import Layout from '../../components/dashboard/layout';
 import { fadeAnimation, slideAnimation } from '../../utils/motion';
 import MediaViewerCard from '../../components/media-viewer-card';
 import FileAction from '../../components/file/file-action';
-import { FileDescription, TabComponentCard } from '../../components';
+import { FileDescription, Loader, TabComponentCard } from '../../components';
 import { motion } from 'framer-motion';
 
 const DashboardFileDetails = () => {
@@ -54,7 +54,7 @@ const DashboardFileDetails = () => {
             {/* State */}
             {loading ? (
               // Display loading screen if `loading` is true
-              <p>Loading</p>
+              <Loader message='Almost there..' />
             ) : !noDataFromId && documentData ? (
               // Hide loading screen and display file information if `noDataFromId` is false and `documentData` exists
               <div className='w-full h-full flex flex-col gap-10 mt-10'>
