@@ -4,3 +4,4 @@ export { default as Dashboard } from './dashboard/main'; // Exporting the Dashbo
 export { default as FilesExplorer } from './explore/index'; // Exporting the FilesExplorer component from the index file
 export { default as DashboardFileDetails } from './dashboard/fileId'; // Exporting the DashboardFileDetails component from the fileId route file
 export { default as UserFilesUpload } from './dashboard/upload'; // Exporting the UserFilesUpload component from the upload route file
+export { default as AccessPage } from './access'

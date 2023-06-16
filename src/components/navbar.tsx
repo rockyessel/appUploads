@@ -53,6 +53,11 @@ const Navbar = () => {
               />
             </label>
           </motion.li>
+          <Link to='/access'>
+            <motion.li className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
+              Access
+            </motion.li>
+          </Link>
         </motion.ul>
       </motion.nav>
     </motion.header>

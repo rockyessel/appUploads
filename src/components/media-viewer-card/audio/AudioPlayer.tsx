@@ -4,31 +4,28 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 import { Metadata, UserDocumentProps } from '../../../interface';
 import { fetchAudioData } from '../../../utils/functions';
 import { AiFillBackward, AiFillForward } from 'react-icons/ai';
-import { MdReplay } from 'react-icons/md';
+import { MdOutlineLoop, MdReplay } from 'react-icons/md';
 
 interface Props {
   documentData: UserDocumentProps;
 }
 
 const AudioPlayer = (props: Props) => {
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const [duration, setDuration] = React.useState(0);
-  const [currentTime, setCurrentTime] = React.useState(0);
-  // Define state variable to store the audio metadata
-  const [metadata, setMetadata] = React.useState<Metadata | undefined>();
+  // Initialize state variables
+  const [isPlaying, setIsPlaying] = React.useState(false); // Indicates whether the audio is currently playing or not
+  const [duration, setDuration] = React.useState(0); // Stores the duration of the audio in seconds
+  const [currentTime, setCurrentTime] = React.useState(0); // Stores the current playback time of the audio in seconds
 
-  console.log('Metadata', metadata);
+  const [metadata, setMetadata] = React.useState<Metadata | undefined>(); // Stores the metadata of the audio
+
+  console.log('Metadata', metadata); // Log the metadata object to the console
 
   // Fetch audio data and update the metadata when the 'view' prop changes
   React.useEffect(() => {
     fetchAudioData(`${props?.documentData?.view}`, setMetadata);
   }, [props?.documentData?.view]);
 
-  // Check if the audio data is available
-  // const isDataAvailable =
-  //   metadata && metadata?.picture && metadata?.picture.data;
-
-  // Extract the image data from the metadata
+  // Calculate the image URL from the metadata
   const image =
     metadata &&
     metadata?.picture &&
@@ -42,21 +39,25 @@ const AudioPlayer = (props: Props) => {
   // Extract the title from the metadata
   const title = metadata && metadata.title;
 
-  // references
-  const audioPlayer = React.useRef<HTMLAudioElement>(null); // reference to the audio player
-  const progressBar = React.useRef<HTMLInputElement>(null); // reference to the progress `bar`
-  const animationRef = React.useRef<number>(0); // reference to the animation frame
+  // Create references to the audio player, progress bar, and animation frame
+  const audioPlayer = React.useRef<HTMLAudioElement>(null);
+  const progressBar = React.useRef<HTMLInputElement>(null);
+  const animationRef = React.useRef<number>(0);
 
+  // Toggle play/pause of the audio
   const togglePlayPause = () => {
     const prevState = !isPlaying;
     setIsPlaying(prevState);
 
     if (prevState) {
-      audioPlayer.current?.play(); // play the audio
-      animationRef.current = requestAnimationFrame(whilePlaying); // start the animation loop
+      if (audioPlayer.current && currentTime === duration) {
+        audioPlayer.current.currentTime = 0; // If the audio has finished playing, restart it
+      }
+      audioPlayer.current?.play(); // Play the audio
+      animationRef.current = requestAnimationFrame(whilePlaying); // Start the animation loop
     } else {
-      audioPlayer.current?.pause(); // pause the audio
-      cancelAnimationFrame(animationRef.current); // cancel the animation frame
+      audioPlayer.current?.pause(); // Pause the audio
+      cancelAnimationFrame(animationRef.current); // Cancel the animation frame
     }
   };
 
@@ -64,13 +65,20 @@ const AudioPlayer = (props: Props) => {
   React.useEffect(() => {
     const audioDurationInSeconds = Math.floor(
       audioPlayer.current?.duration || 0
-    ); // calculate audio duration in seconds
+    ); // Calculate audio duration in seconds
     const audioCurrentTimeInSeconds = Math.floor(
       audioPlayer.current?.currentTime || 0
-    ); // calculate current playback time in seconds
-    setCurrentTime(audioCurrentTimeInSeconds); // update the current time state
-    setDuration(audioDurationInSeconds); // update the duration state
-    progressBar.current?.setAttribute('max', audioDurationInSeconds.toString()); // set the max value of the progress bar
+    ); // Calculate current playback time in seconds
+    setCurrentTime(audioCurrentTimeInSeconds); // Update the current time state
+    setDuration(audioDurationInSeconds); // Update the duration state
+    progressBar.current?.setAttribute('max', audioDurationInSeconds.toString()); // Set the max value of the progress bar
+
+    if (currentTime === duration) {
+      // If the audio has finished playing
+      audioPlayer.current?.pause();
+      setIsPlaying(false); // Pause the audio and set isPlaying state to false
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     audioPlayer?.current?.onloadedmetadata,
     audioPlayer?.current?.readyState,
@@ -80,65 +88,81 @@ const AudioPlayer = (props: Props) => {
   const calculateAudioDuration = (seconds: number) => {
     const second = 60;
     const oneMinute = 1 * second;
-    const minuteCalculation = Math.floor(seconds / oneMinute); // calculate the minutes
-    const secondCalculation = Math.floor(seconds % second); // calculate the seconds
+    const minuteCalculation = Math.floor(seconds / oneMinute); // Calculate the minutes
+    const secondCalculation = Math.floor(seconds % second); // Calculate the seconds
     const returnedMinutes =
-      minuteCalculation < 10 ? `0${minuteCalculation}` : `${minuteCalculation}`; // format minutes as "01" to "09" if less than 10
+      minuteCalculation < 10 ? `0${minuteCalculation}` : `${minuteCalculation}`; // Format minutes as "01" to "09" if less than 10
     const returnedSeconds =
-      second < 10 ? `0${secondCalculation}` : `${secondCalculation}`; // format seconds as "01" to "09" if less than 10
+      second < 10 ? `0${secondCalculation}` : `${secondCalculation}`; // Format seconds as "01" to "09" if less than 10
 
-    return `${returnedMinutes}:${returnedSeconds}`; // return formatted duration string
+    return `${returnedMinutes}:${returnedSeconds}`; // Return the formatted duration string
   };
 
   // Update the progress bar and current time while playing
   const whilePlaying = () => {
-    progressBar.current!.value = String(audioPlayer.current?.currentTime); // update the progress bar value with current playback time
-    changePlayerCurrentTime(); // update the current time state
-    animationRef.current = requestAnimationFrame(whilePlaying); // request the next animation frame
+    progressBar.current!.value = String(audioPlayer.current?.currentTime); // Update the progress bar value
+    changePlayerCurrentTime(); // Update the current time display
+    animationRef.current = requestAnimationFrame(whilePlaying); // Request the next animation frame
   };
 
-  // Change the current playback time based on the progress bar value
+  // Change the audio playback position based on the progress bar value
   const changeRange = () => {
-    audioPlayer!.current!.currentTime = Number(progressBar.current?.value); // update the current playback time based on the progress bar value
-    changePlayerCurrentTime(); // update the current time state
+    audioPlayer!.current!.currentTime = Number(progressBar.current?.value); // Update the current time of the audio
+    if (audioPlayer.current && currentTime === duration) {
+      audioPlayer.current.currentTime = 0; // If the audio has finished playing, restart it
+    }
+    changePlayerCurrentTime(); // Update the current time display
   };
 
-  // Update the progress bar width and current time state
+  // Update the progress bar width and current time display
   const changePlayerCurrentTime = () => {
     progressBar.current?.style.setProperty(
       '--seek-before-width',
       `${(Number(progressBar.current?.value) / duration) * 100}%`
-    ); // update the CSS variable to change the width of the progress bar
-    setCurrentTime(Number(progressBar.current?.value)); // update the current time state
+    ); // Update the progress bar width based on the current time
+    setCurrentTime(Number(progressBar.current?.value)); // Update the current time state
   };
 
-  // Handle skipping forward or backward in time
+  // Handle skipping forward or backward in the audio playback
   const handleTimeSkip = (type: 'forward' | 'backward') => {
     if (type === 'forward') {
       progressBar.current!.value = String(
         Number(progressBar.current!.value) + 30
-      ); // skip 30 seconds forward
-      changeRange(); // update the current playback time
+      ); // Increase the progress bar value by 30 seconds
+      changeRange(); // Change the audio playback position
     } else if (type === 'backward') {
       progressBar.current!.value = String(
         Number(progressBar.current!.value) - 30
-      ); // skip 30 seconds backward
-      changeRange(); // update the current playback time
+      ); // Decrease the progress bar value by 30 seconds
+      changeRange(); // Change the audio playback position
     }
   };
 
-  console.log('currentTime', currentTime);
-  console.log('duration', duration);
-  console.log('isPlaying', isPlaying);
+  // Restart the audio playback from the beginning
+  const handleRestartAudio = () => {
+    if (audioPlayer.current) {
+      audioPlayer.current.currentTime = 0; // Set the current time of the audio to 0
+      setIsPlaying((prevState) => !prevState); // Toggle the isPlaying state to trigger play/pause button update
+    }
+  };
 
+  console.log('currentTime', currentTime); // Log the current time to the console
+  console.log('duration', duration); // Log the duration to the console
+  console.log('isPlaying', isPlaying); // Log the isPlaying state to the console
+
+  // Styles for the audio player container with a background image
   const styles = {
     width: '100%',
     backgroundImage: `url('${image}')`,
     backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
   };
 
-  const startAudio = calculateAudioDuration(currentTime);
-  console.log('startAudio,', startAudio);
+  const startAudio = calculateAudioDuration(currentTime); // Calculate the formatted start audio duration string
+  console.log('startAudio,', startAudio); // Log the start audio duration to the console
+  console.log('currentTime,', currentTime); // Log the current time to the console
 
   return (
     <div className='w-full h-[30rem] bg-[rgba(255,255,255,0.5)]' style={styles}>
@@ -191,12 +215,22 @@ const AudioPlayer = (props: Props) => {
               </div>
             </div>
 
-            <div className='w-full flex items-center justify-center'>
+            <div className='w-full flex items-center justify-center relative'>
               <audio
                 ref={audioPlayer}
                 src={props.documentData.view}
                 preload='metadata'
               ></audio>
+
+              <button
+                onClick={handleAudioLoop}
+                className={`${
+                  isLooped && 'bg-[rgba(255,255,255,0.4)] rounded-full'
+                } p-1`}
+              >
+                <MdOutlineLoop className='text-3xl' />
+                {/* Button to loop */}
+              </button>
 
               <button
                 onClick={() => handleTimeSkip('backward')}
@@ -219,7 +253,7 @@ const AudioPlayer = (props: Props) => {
                     </span>
                   ) : (
                     <span className={'bg-slate-900 p-2 rounded-full'}>
-                      <FaPlay className='text-4xll p-1' />
+                      <FaPlay className='text-4xl p-1' />
                     </span>
                   )}
                   {/* Button to toggle play/pause based on the current playback state */}
@@ -234,9 +268,9 @@ const AudioPlayer = (props: Props) => {
                 {/* Button to skip 30 seconds forward */}
               </button>
 
-              <button>
+              <button onClick={handleRestartAudio}>
                 <MdReplay className='text-3xl' />
-                {/* Button to skip 30 seconds forward */}
+                {/* Button to restart */}
               </button>
             </div>
           </div>

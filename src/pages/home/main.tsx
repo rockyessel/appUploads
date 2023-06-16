@@ -32,7 +32,7 @@ const Home = () => {
         updatedAt={new Date().toISOString()}
       />
       <Navbar />
-      <main className='w-full h-full flex flex-col items-center justify-center bg-[rgb(255,255,255,0.1)]  gap-[10rem] backdrop:blur-lg shadow-lg px-32 pb-32'>
+      <main className='w-full h-full flex flex-col items-center justify-center bg-[rgba(255,255,255,0.1)] gap-[10rem] backdrop:blur-lg shadow-lg md:px-32 pb-32'>
         <section className='w-full flex items-center justify-center mt-32'>
           <section className=''>
             <div className='grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12'>
@@ -67,7 +67,7 @@ const Home = () => {
           </section>
         </section>
 
-        <section className='w-full flex items-center justify-between gap-5 py-10 px-14 border-b-[1px] rounded-b-lg border-t-[1px] rounded-t-lg'>
+        {/* <section className='w-full flex items-center justify-between gap-5 py-10 px-14 border-b-[1px] rounded-b-lg border-t-[1px] rounded-t-lg'>
           <p className='inline-flex items-center flex-col gap-2'>
             <span className='text-3xl xl:text-5xl font-medium'>169+</span>
             <span className='text-lg xl:text-xl flex-shrink-0'>
@@ -90,9 +90,9 @@ const Home = () => {
             <span className='text-3xl xl:text-5xl font-medium'>890+</span>
             <span className='text-lg xl:text-xl flex-shrink-0'>New users</span>
           </p>
-        </section>
+        </section> */}
 
-        <section className='w-full flex flex-col gap-[10rem]'>
+        {/* <section className='w-full flex flex-col gap-[10rem]'>
           <div className='flex flex-wrap items-center justify-between'>
             <div className='flex flex-col gap-5'>
               <p className='text-4xl font-bold'>Never-ending liquidity</p>
@@ -144,7 +144,7 @@ const Home = () => {
               </Tilt>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
       {/* <Footer /> */}
     </React.Fragment>

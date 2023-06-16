@@ -10,13 +10,9 @@ import MediaCard from '../../components/media-card';
 const FileSearchUsers = () => {
   // State variables
   const [hideDropdownMenu, setHideDropdownMenu] = React.useState(false); // State for toggling the visibility of the dropdown menu
-  const [publicDocumentData, setPublicDocumentData] = React.useState<
-    UserDocumentProps[]
-  >([]); // State for storing public document data
-  const [findDocumentIdSearch, setFindDocumentIdSearch] =
-    React.useState<string>(''); // State for storing the search input value for document IDs
-  const [gottenDocumentsFromSearch, setGottenDocumentsFromSearch] =
-    React.useState<UserDocumentProps[] | undefined | []>([]); // State for storing the documents obtained from search
+  const [publicDocumentData, setPublicDocumentData] = React.useState<UserDocumentProps[]>([]); // State for storing public document data
+  const [findDocumentIdSearch, setFindDocumentIdSearch] = React.useState<string>(''); // State for storing the search input value for document IDs
+  const [gottenDocumentsFromSearch, setGottenDocumentsFromSearch] = React.useState<UserDocumentProps[] | undefined | []>([]); // State for storing the documents obtained from search
 
   // Destructure the required functions from the Appwrite context
   const { getAllPublicDocuments, getDocumentById } = useAppwriteContext();

@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import { Authentication, Dashboard, FilesExplorer, Home, DashboardFileDetails, UserFilesUpload } from '../pages';
+import { Authentication, Dashboard, FilesExplorer, Home, DashboardFileDetails, UserFilesUpload, AccessPage } from '../pages';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import DashboardMusicFiles from '../pages/dashboard/music';
 import DashboardVideosFiles from '../pages/dashboard/video';
 import DashboardImageFiles from '../pages/dashboard/image';
@@ -11,6 +10,7 @@ import DashboardRecentDocuments from '../pages/dashboard/recent';
 import FileSearchUsers from '../pages/dashboard/file-search-users';
 import DashboardSettings from '../pages/dashboard/settings';
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -19,25 +19,14 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/authenticate' element={<Authentication />} />
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route
-          path='/dashboard/:fileCategory/:fileId'
-          element={<DashboardFileDetails />}
-        />
+        <Route path='/access' element={<AccessPage />} />
+        <Route path='/dashboard/:fileCategory/:fileId' element={<DashboardFileDetails />} />
         <Route path='/dashboard/music' element={<DashboardMusicFiles />} />
         <Route path='/dashboard/video' element={<DashboardVideosFiles />} />
         <Route path='/dashboard/image' element={<DashboardImageFiles />} />
-        <Route
-          path='/dashboard/recent'
-          element={<DashboardRecentDocuments />}
-        />
-        <Route
-          path='/dashboard/application'
-          element={<DashboardApplicationFiles />}
-        />
-        <Route
-          path='/dashboard/document'
-          element={<DashboardDocumentFiles />}
-        />
+        <Route path='/dashboard/recent' element={<DashboardRecentDocuments />} />
+        <Route path='/dashboard/application' element={<DashboardApplicationFiles />} />
+        <Route path='/dashboard/document' element={<DashboardDocumentFiles />} />
         <Route path='/dashboard/settings' element={<DashboardSettings />} />
         <Route path='/dashboard/upload' element={<UserFilesUpload />} />
         <Route path='/files' element={<FilesExplorer />} />
