@@ -1,5 +1,9 @@
 import React from 'react';
 
+interface Props {
+  children: React.ReactNode;
+}
+
 interface ThemeContextProps {
   handleThemeSwitch: () => void;
 }
@@ -12,9 +16,7 @@ const ThemeContext = React.createContext<ThemeContextProps>({
 });
 
 // Theme context provider component
-export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = (
-  props
-) => {
+export const ThemeContextProvider: React.FC<Props> = (props) => {
   const [theme, setTheme] = React.useState(() => {
     const storedTheme = localStorage.getItem('theme');
     return storedTheme || 'light';

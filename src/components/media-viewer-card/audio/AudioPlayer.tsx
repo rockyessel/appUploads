@@ -15,6 +15,7 @@ const AudioPlayer = (props: Props) => {
   const [isPlaying, setIsPlaying] = React.useState(false); // Indicates whether the audio is currently playing or not
   const [duration, setDuration] = React.useState(0); // Stores the duration of the audio in seconds
   const [currentTime, setCurrentTime] = React.useState(0); // Stores the current playback time of the audio in seconds
+  const [isLooped, setIsLooped] = React.useState(false); // Indicates whether the audio is looped or not
 
   const [metadata, setMetadata] = React.useState<Metadata | undefined>(); // Stores the metadata of the audio
 
@@ -137,6 +138,15 @@ const AudioPlayer = (props: Props) => {
       changeRange(); // Change the audio playback position
     }
   };
+
+    const handleAudioLoop = () => {
+      setIsLooped((prevState) => !prevState);
+      if (audioPlayer.current && currentTime === duration) {
+        audioPlayer.current.currentTime = 0;
+        setIsPlaying(true);
+      }
+    };
+  
 
   // Restart the audio playback from the beginning
   const handleRestartAudio = () => {
