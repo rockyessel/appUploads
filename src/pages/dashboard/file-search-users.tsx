@@ -8,47 +8,73 @@ import { Link } from 'react-router-dom';
 
 const FileSearchUsers = () => {
   // State variables
-  const [gottenDocumentsFromSearch, setGottenDocumentsFromSearch] = React.useState<UserDocumentProps[] | undefined | []>([]); // State for storing the documents obtained from search
+  const [storeToLocalStorage, setStoreToLocalStorage] = React.useState<
+    UserDocumentProps[] | undefined | []
+  >([]); // State for storing the documents to localStorage
   const [userInputValue, setUserInputValue] = React.useState<string>(''); // State for storing the documents obtained from search
-
 
   // Destructure the required functions from the Appwrite context
   const { getDocumentByFilename } = useAppwriteContext();
 
-
-
-const handleDocumentSearchResult = async (event: React.SyntheticEvent) => {
-  try {
-    event.preventDefault();
-    const data = await getDocumentByFilename(userInputValue);
-    if (data && data.length !== 0) {
-      console.log('search data', data)
-      const updatedDocuments: UserDocumentProps[] | [] =  [...(gottenDocumentsFromSearch || []), ...data];
-      localStorage.setItem('searchedDocuments', JSON.stringify(updatedDocuments));
+  const handleDocumentSearchResult = async (event: React.SyntheticEvent) => {
+    try {
+      event.preventDefault();
+      const data = await getDocumentByFilename(userInputValue);
+      if (data && data.length !== 0) {
+        console.log('search data', data);
+        const updatedDocuments: UserDocumentProps[] | [] = [
+          ...(storeToLocalStorage || []),
+          ...data,
+        ];
+        localStorage.setItem(
+          'searchedDocuments',
+          JSON.stringify(updatedDocuments)
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
+  React.useEffect(() => {
+    const getDocumentsFromLocalStorage: UserDocumentProps[] = JSON.parse(
+      `${localStorage.getItem('searchedDocuments')}`
+    );
+    if (getDocumentsFromLocalStorage !== null) {
+      setStoreToLocalStorage(getDocumentsFromLocalStorage);
+    } else {
+      setStoreToLocalStorage([]); // or setStoreToLocalStorage(undefined);
+    }
+  }, [setStoreToLocalStorage]);
 
-React.useEffect(() => {
-  const getDocumentsFromLocalStorage: UserDocumentProps[] = JSON.parse(
-    `${localStorage.getItem('searchedDocuments')}`
-  );
-  if (getDocumentsFromLocalStorage !== null) {
-    setGottenDocumentsFromSearch(getDocumentsFromLocalStorage);
-  } else {
-    setGottenDocumentsFromSearch([]); // or setGottenDocumentsFromSearch(undefined);
-  }
-}, [setGottenDocumentsFromSearch]);
-
-  console.log('gottenDocumentsFromSearch', gottenDocumentsFromSearch);
+  console.log('storeToLocalStorage', storeToLocalStorage);
 
   // Handle change event of the search input
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setUserInputValue(target.value);
+  };
+
+  const tableHead = [
+    { name: 'Filename' },
+    { name: 'Document ID' },
+    { name: 'Main URL' },
+    { name: 'Preview URL' },
+    { name: 'Size' },
+    { name: 'mimeType' },
+    { name: 'Privacy' },
+    { name: 'Access code' },
+    { name: 'Open' },
+  ];
+
+  const subDirectoryMap: { [key: string]: string } = {
+    app: 'application',
+    deb: 'application',
+    apk: 'application',
+    xapk: 'application',
+    audio: 'music',
+    image: 'image',
+    video: 'video',
   };
 
   return (
@@ -76,53 +102,20 @@ React.useEffect(() => {
 
         <div>
           <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
-            <table className='w-full text-sm text-left'>
+            <table className='w-full text-sm text-left h-[40rem] overflow-y-auto'>
               <thead className='text-xs uppercase bg-[rgba(255,255,255,0.8)] backdrop-blur-lg dark:bg-[rgba(255,255,255,0.4)] dark:text-white'>
                 <tr>
-                  <th scope='col' className='px-6 py-3'>
-                    Filename
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Document ID
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Main URL
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Preview URL
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Size
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    mimeType
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Privacy
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    Access Code
-                  </th>
-                  <th scope='col' className='px-6 py-3'>
-                    open
-                  </th>
+                  {tableHead.map((name, index) => (
+                    <th key={index} scope='col' className='px-6 py-3'>
+                      {name.name}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {gottenDocumentsFromSearch?.length !== 0 ? (
-                  gottenDocumentsFromSearch?.map((file, index) => {
+                {storeToLocalStorage?.length !== 0 ? (
+                  storeToLocalStorage?.map((file, index) => {
                     const extension = `${file.mimeType.split('/').shift()}`;
-
-                    const subDirectoryMap: { [key: string]: string } = {
-                      app: 'application',
-                      deb: 'application',
-                      apk: 'application',
-                      xapk: 'application',
-                      audio: 'music',
-                      image: 'image',
-                      video: 'video',
-                    };
-
                     const subDirectory =
                       subDirectoryMap[extension] || 'document';
                     return (
