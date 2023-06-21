@@ -36,9 +36,7 @@ interface AppWriteContextProps {
     total: number;
     documents: UserDocumentProps[] | [];
   }>;
-  getDocumentByCode: (
-    code: string
-  ) => Promise<{ total: number; documents: UserDocumentProps[] | [] }>;
+  getDocumentByFilename: (code: string) => Promise<UserDocumentProps[]>;
   globalDocumentData: UserDocumentProps[] | [];
   setGlobalDocumentData: React.Dispatch<
     React.SetStateAction<UserDocumentProps[] | []>
@@ -71,7 +69,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   getEveryUserDocuments: () => Promise.resolve([]),
   getCurrentUserDocuments: () => Promise.resolve({ total: 0, documents: [] }),
   getAllPublicDocuments: () => Promise.resolve({ total: 0, documents: [] }),
-  getDocumentByCode: () => Promise.resolve({ total: 0, documents: [] }),
+  getDocumentByFilename: () => Promise.resolve([]),
   globalDocumentData: [],
   setGlobalDocumentData: () => [],
   getDocumentById: () => Promise.resolve(defaultDocument),
@@ -261,15 +259,14 @@ export const AppWriteContextProvider = (props: {
   };
 
   // @desc To get the current user's documents
-  const getDocumentByCode = async (code: string) => {
-    const data = (await db.listDocuments(
-      import.meta.env.VITE_APPWRITE_DATABASE_ID,
-      import.meta.env.VITE_APPWRITE_COLLECTION_ID,
-      [Query.select(['access_file_code', code])]
-    )) as unknown as {
-      total: number;
-      documents: UserDocumentProps[] | [];
-    };
+  const getDocumentByFilename = async (filename: string) => {
+    const data = (
+      await db.listDocuments(
+        import.meta.env.VITE_APPWRITE_DATABASE_ID,
+        import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+        [Query.search('filename', filename)]
+      )
+    ).documents as unknown as UserDocumentProps[];
     console.log('data', data);
     return data;
   };
@@ -368,7 +365,7 @@ export const AppWriteContextProvider = (props: {
     uploadUserProfile,
     updateDocuments,
     getAllPublicDocuments,
-    getDocumentByCode,
+    getDocumentByFilename,
   };
 
   return (

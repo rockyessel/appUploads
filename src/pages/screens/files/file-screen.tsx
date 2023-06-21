@@ -81,7 +81,7 @@ const FileScreen = () => {
           {...slideAnimation('up')}
         >
           <motion.div className='w-full flex flex-col gap-10 items-center justify-center lg:w-[40rem] px-4'>
-            <DisplayUploadedFiles 
+            <DisplayUploadedFiles
               currentSlider={currentSlider}
               documentsData={documentsData}
             />
@@ -111,13 +111,13 @@ const FileScreen = () => {
               {/* Component for displaying document data in a tab format */}
               <FileAction documentData={documentsData[currentSlider]} />
               <TabComponentCard documentData={[documentsData[currentSlider]]} />
+              {loading && (
+                <p>
+                  {documentsData.length}/{files.length}Loading
+                </p>
+              )}
             </div>
           </motion.div>
-          {loading && (
-            <p>
-              {documentsData.length}/{files.length}Loading
-            </p>
-          )}
         </motion.section>
       )}
     </AnimatePresence>

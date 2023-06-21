@@ -13,7 +13,7 @@ const LoginScreen = () => {
   const [form, setForm] = React.useState({ email: '', password: '' });
   const [loading, setLoading] = React.useState(false);
   const snap = useSnapshot(screenState);
-  const { login } = useAppwriteContext();
+  const { login, getUser  } = useAppwriteContext();
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -31,6 +31,8 @@ const LoginScreen = () => {
       console.log('form', form);
       setLoading(true);
       await login(form);
+      const user = await  getUser()
+      localStorage.setItem('appwrite_user', JSON.stringify(user))
       navigate('/dashboard');
       
       toast.success('Login successfully');

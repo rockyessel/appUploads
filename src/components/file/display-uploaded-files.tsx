@@ -24,7 +24,7 @@ const DisplayUploadedFiles = (props: Props) => {
         {document.$id === props.documentsData[props.currentSlider].$id && (
           <div>
             <MediaCard
-              size='w-full lg:w-[40rem] h-40 md:h-[20rem]'
+              size='w-full md:w-[40rem] h-40 md:h-[20rem]'
               data={document}
               key={index}
               extension={`${document.mimeType?.split('/').shift()} ${

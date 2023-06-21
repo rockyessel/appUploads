@@ -6,6 +6,8 @@ import { fetchAudioData } from '../../../utils/functions';
 import { AiFillBackward, AiFillForward } from 'react-icons/ai';
 import { MdOutlineLoop, MdReplay } from 'react-icons/md';
 
+// TODO: Break the code into smaller components after working on it.
+
 interface Props {
   documentData: UserDocumentProps;
 }

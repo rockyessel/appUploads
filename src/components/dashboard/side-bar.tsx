@@ -28,6 +28,8 @@ const SideBar = (props: Props) => {
 
     await logout(); // Call the logout function
 
+    window.localStorage.clear(); // Clear local storage to prevent memory leaks when user clicks on the logout
+
     setLoading(false); // Set loading state to false after logout is completed
 
     if (location.pathname.includes('dashboard')) {

@@ -47,7 +47,7 @@ const Navbar = (props: Props) => {
           </motion.li>
 
           {user?.status ? (
-            <Link to='/dashboard'>
+            <Link className='hidden sm:block' to='/dashboard'>
               <motion.li className='hover:bg-white rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
                 Profile
               </motion.li>
@@ -62,7 +62,7 @@ const Navbar = (props: Props) => {
           <Link to='/dashboard/search'>
             <motion.li className='hover:bg-black inline-flex items-center gap-1 text-gray-50/60 rounded-lg px-3 py-1.5 cursor-pointer hover:ring-2 hover:ring-gray-300 active:ring-4 active:ring-gray-400'>
               <AiOutlineSearch className='text-2xl' />
-              Search
+              <span className='hidden sm:block'>Search</span>
             </motion.li>
           </Link>
 

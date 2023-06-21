@@ -31,7 +31,7 @@ const AccessPage = () => {
       // Execute all promises and wait for their settlement
       const settledPromises = (await Promise.allSettled(
         findPromise
-      )) as unknown as Props[]
+      )) as unknown as Props[];
 
       console.log('settledPromises', settledPromises);
 
@@ -41,8 +41,8 @@ const AccessPage = () => {
       );
 
       // Extract the values from fulfilled promises
-       fulfilledPromises.map((result) => result.value);
-      // setGottenDocumentsFromSearch(documents);
+      
+      setGottenDocumentsFromSearch(()=>fulfilledPromises.map((result) => result.value));
     }
   };
   return (

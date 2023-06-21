@@ -13,7 +13,7 @@ const RegisterScreen = () => {
   const [form, setForm] = React.useState({ email: '', password: '', name: '' });
   const [loading, setLoading] = React.useState(false);
   const snap = useSnapshot(screenState);
-  const { register } = useAppwriteContext();
+  const { register, getUser } = useAppwriteContext();
 
   const navigate = useNavigate();
 
@@ -30,6 +30,8 @@ const RegisterScreen = () => {
       event.preventDefault();
       setLoading(true);
       await register(form);
+      const user = await  getUser()
+      localStorage.setItem('appwrite_user', JSON.stringify(user))
       toast.success('Registered successfully');
       navigate('/dashboard');
       setLoading(false);
