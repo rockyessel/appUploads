@@ -11,11 +11,11 @@ interface Props {
 const AccessPage = () => {
   const [findDocumentIdSearch, setFindDocumentIdSearch] =
     React.useState<string>(''); // State for storing the search input value for document IDs
-  const [gottenDocumentsFromSearch, setGottenDocumentsFromSearch] =
+  const [gottenDocumentsFromSearch] =
     React.useState<UserDocumentProps[] | []>([]); // State for storing the documents obtained from search
   const { getDocumentById } = useAppwriteContext();
 
-  const handleFindFileById = async (event: any) => {
+  const handleFindFileById = async (event: React.SyntheticEvent) => {
     event.preventDefault(); // Prevent
 
     if (findDocumentIdSearch) {
@@ -36,13 +36,10 @@ const AccessPage = () => {
       console.log('settledPromises', settledPromises);
 
       // Filter out rejected promises
-      const fulfilledPromises = settledPromises.filter(
-        (result: { status: string }) => result.status === 'fulfilled'
-      );
 
       // Extract the values from fulfilled promises
       
-      setGottenDocumentsFromSearch(()=>fulfilledPromises.map((result) => result.value));
+      // setGottenDocumentsFromSearch(()=>fulfilledPromises.map((result) => result.value));
     }
   };
   return (
