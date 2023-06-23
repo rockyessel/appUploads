@@ -44,6 +44,7 @@ interface AppWriteContextProps {
   getDocumentById: ($id: string) => Promise<UserDocumentProps | undefined>;
   uploadUserProfile: (file: File) => Promise<string>;
   updateDocuments: (documentId: string, updatedValue: boolean) => Promise<void>;
+  getPublicDocumentById: ($id: string) => Promise<UserDocumentProps>;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -75,6 +76,7 @@ const AppWriteContext = React.createContext<AppWriteContextProps>({
   getDocumentById: () => Promise.resolve(defaultDocument),
   uploadUserProfile: () => Promise.resolve(''),
   updateDocuments: () => Promise.resolve(),
+  getPublicDocumentById: () => Promise.resolve(defaultDocument),
 });
 
 export const AppWriteContextProvider = (props: {
@@ -339,6 +341,19 @@ export const AppWriteContextProvider = (props: {
     return allDocuments;
   };
 
+
+  const getPublicDocumentById = async ($id:string): Promise<UserDocumentProps> => {
+     const data = (
+       await db.listDocuments(
+         import.meta.env.VITE_APPWRITE_DATABASE_ID,
+         import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+         [Query.equal('documentId', [`${$id}`]), Query.equal('isPublic', [true])]
+       )
+     ).documents as unknown as UserDocumentProps[];
+     console.log('data', data);
+     return data[0];
+  }
+
   React.useEffect(() => {
     getUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -366,6 +381,7 @@ export const AppWriteContextProvider = (props: {
     updateDocuments,
     getAllPublicDocuments,
     getDocumentByFilename,
+    getPublicDocumentById,
   };
 
   return (

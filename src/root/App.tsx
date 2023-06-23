@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Authentication, Dashboard, FilesExplorer, Home, DashboardFileDetails, UserFilesUpload, AccessPage } from '../pages';
+import { Authentication, Dashboard, Home, DashboardFileDetails, UserFilesUpload, AccessPage } from '../pages';
 import { ToastContainer } from 'react-toastify';
 import DashboardMusicFiles from '../pages/dashboard/music';
 import DashboardVideosFiles from '../pages/dashboard/video';
@@ -29,8 +29,6 @@ const App = () => {
         <Route path='/dashboard/document' element={<DashboardDocumentFiles />} />
         <Route path='/dashboard/settings' element={<DashboardSettings />} />
         <Route path='/dashboard/upload' element={<UserFilesUpload />} />
-        <Route path='/files' element={<FilesExplorer />} />
-        <Route path='/files/:fileId' element={<FilesExplorer />} />
         <Route path='/dashboard/search' element={<FileSearchUsers />} />
       </Routes>
       <ToastContainer />

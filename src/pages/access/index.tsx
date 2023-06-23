@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Input, Navbar } from '../../components';
 import { useAppwriteContext } from '../../context/app-write';
 import { UserDocumentProps } from '../../interface';
+import { Link } from 'react-router-dom';
 
 interface Props {
   status: string;
@@ -9,44 +10,25 @@ interface Props {
 }
 
 const AccessPage = () => {
-  const [findDocumentIdSearch, setFindDocumentIdSearch] =
-    React.useState<string>(''); // State for storing the search input value for document IDs
-  const [gottenDocumentsFromSearch] =
-    React.useState<UserDocumentProps[] | []>([]); // State for storing the documents obtained from search
-  const { getDocumentById } = useAppwriteContext();
+  const [inputValue, setInputValue] = React.useState<string>(''); // State for storing the search input value for document IDs
+  const [accessedDocumentData, setAccessDocumentData] = React.useState<UserDocumentProps>()
+
+  const { getPublicDocumentById } = useAppwriteContext();
 
   const handleFindFileById = async (event: React.SyntheticEvent) => {
     event.preventDefault(); // Prevent
 
-    if (findDocumentIdSearch) {
-      const findDocumentIdArr = findDocumentIdSearch.split(',');
-      console.log('findDocumentIdArr', findDocumentIdArr);
-      console.log('gottenDocumentsFromSearch', gottenDocumentsFromSearch);
-
-      // Map each code to a promise of fetching the document by ID
-      const findPromise = findDocumentIdArr.map((code) =>
-        getDocumentById(code)
-      );
-
-      // Execute all promises and wait for their settlement
-      const settledPromises = (await Promise.allSettled(
-        findPromise
-      )) as unknown as Props[];
-
-      console.log('settledPromises', settledPromises);
-
-      // Filter out rejected promises
-
-      // Extract the values from fulfilled promises
-      
-      // setGottenDocumentsFromSearch(()=>fulfilledPromises.map((result) => result.value));
+    if (inputValue) {
+      const data = await getPublicDocumentById(inputValue);
+      console.log(data);
+      setAccessDocumentData(data)
     }
   };
   return (
     <React.Fragment>
       <Navbar />
 
-      <main className='w-full h-full flex flex-col items-center justify-center bg-[rgba(255,255,255,0.1)] gap-[10rem] backdrop:blur-lg shadow-lg md:px-32 pb-32'>
+      <main className='w-full h-screen flex flex-col items-center justify-center bg-[rgba(255,255,255,0.1)] gap-[10rem] backdrop:blur-lg shadow-lg md:px-32 pb-32'>
         <section className='w-full flex flex-col items-center justify-center mt-32'>
           <div className='w-full'>
             <p className='font-bold text-3xl dark:text-gray-300'>
@@ -63,10 +45,8 @@ const AccessPage = () => {
                 elementType='input'
                 name='access'
                 placeholder='Hye38BuHj'
-                onChange={(event) =>
-                  setFindDocumentIdSearch(event?.target.value)
-                }
-                value={findDocumentIdSearch}
+                onChange={(event) => setInputValue(event?.target.value)}
+                value={inputValue}
                 disabled={false}
                 styles={``}
               />
@@ -75,6 +55,13 @@ const AccessPage = () => {
                 Find
               </Button>
             </form>
+          </div>
+        </section>
+
+        <section>
+          <div className='w-40 h-40 bg-[rgba(255,255,255,0.4)] backdrop-blur-lg rounded-lg flex items-center justify-center'>
+            <p>Locked</p>
+            <Link to={`/access/${accessedDocumentData?.$id}`}>View</Link>
           </div>
         </section>
       </main>
