@@ -26,6 +26,7 @@ export const defaultDocument: UserDocumentProps = {
   $id: '', // ID of the document
   $permissions: [], // Permissions associated with the document
   $updatedAt: '', // Last update timestamp of the document
+  userId: '', // User identification number or code
   createdAt: '', // Creation timestamp of the document
   extension: '', // File extension of the document
   filename: '', // Filename of the document
@@ -34,6 +35,7 @@ export const defaultDocument: UserDocumentProps = {
   size: '', // Size of the document
   updatedAt: '', // Last update timestamp of the document
   view: '', // URL or data representing the view of the document
+  isLocked: true, // Indicates if the document is locked
   isPublic: false, // Indicates if the document is public
   accessCode: '', // Access code for the file
 };

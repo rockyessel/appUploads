@@ -11,7 +11,7 @@ const FileDescription = (props: Props) => {
     : '';
 
   return (
-    <div className='w-full flex flex-wrap justify-start gap-10 rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
+    <div className='w-full flex flex-wrap justify-start gap-10 text-black rounded-lg bg-[rgba(255,255,255,0.4)] backdrop-blur-md p-3'>
       <p className='flex flex-col'>
         <span className='font-bold'>Filename</span>
         <span className=''>{props.documentData?.filename}</span>

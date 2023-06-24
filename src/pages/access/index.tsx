@@ -4,31 +4,35 @@ import { useAppwriteContext } from '../../context/app-write';
 import { UserDocumentProps } from '../../interface';
 import { Link } from 'react-router-dom';
 
-interface Props {
-  status: string;
-  value: UserDocumentProps[];
-}
-
 const AccessPage = () => {
   const [inputValue, setInputValue] = React.useState<string>(''); // State for storing the search input value for document IDs
-  const [accessedDocumentData, setAccessDocumentData] = React.useState<UserDocumentProps>()
+  const [accessedDocumentData, setAccessDocumentData] =
+    React.useState<UserDocumentProps>(); // State variable to store accessed document data
 
-  const { getPublicDocumentById } = useAppwriteContext();
+  const { getPublicDocumentById } = useAppwriteContext(); // Custom hook to retrieve public document by ID
 
   const handleFindFileById = async (event: React.SyntheticEvent) => {
-    event.preventDefault(); // Prevent
+    try {
+      event.preventDefault(); // Prevent the default form submission behavior
 
-    if (inputValue) {
-      const data = await getPublicDocumentById(inputValue);
-      console.log(data);
-      setAccessDocumentData(data)
+      if (inputValue) {
+        // Check if the input value exists
+        const data = await getPublicDocumentById(inputValue); // Retrieve the public document data using the input value (ID)
+        console.log('inputValue data', data);
+        setAccessDocumentData(data); // Update the state with the accessed document data
+      }
+    } catch (error) {
+      console.log(error);
+      console.error(error);
     }
   };
+
   return (
     <React.Fragment>
-      <Navbar />
-
+      <Navbar /> {/* Render the Navbar component */}
+      {/* Main section */}
       <main className='w-full h-screen flex flex-col items-center justify-center bg-[rgba(255,255,255,0.1)] gap-[10rem] backdrop:blur-lg shadow-lg md:px-32 pb-32'>
+        {/* First section */}
         <section className='w-full flex flex-col items-center justify-center mt-32'>
           <div className='w-full'>
             <p className='font-bold text-3xl dark:text-gray-300'>
@@ -37,20 +41,23 @@ const AccessPage = () => {
           </div>
 
           <div className='w-full'>
+            {/* File access form */}
             <form
-              onSubmit={handleFindFileById}
+              onSubmit={handleFindFileById} // Call handleFindFileById function on form submission
               className='w-full flex items-center'
             >
+              {/* Input field for the access code */}
               <Input
                 elementType='input'
                 name='access'
                 placeholder='Hye38BuHj'
-                onChange={(event) => setInputValue(event?.target.value)}
+                onChange={(event) => setInputValue(event?.target.value)} // Update inputValue state on input change
                 value={inputValue}
                 disabled={false}
                 styles={``}
               />
 
+              {/* Button to submit the form */}
               <Button type='submit' styles='' title='Find'>
                 Find
               </Button>
@@ -58,11 +65,18 @@ const AccessPage = () => {
           </div>
         </section>
 
+        {/* Second section */}
         <section>
-          <div className='w-40 h-40 bg-[rgba(255,255,255,0.4)] backdrop-blur-lg rounded-lg flex items-center justify-center'>
-            <p>Locked</p>
-            <Link to={`/access/${accessedDocumentData?.$id}`}>View</Link>
-          </div>
+          {/* Render if accessedDocumentData exists */}
+          {accessedDocumentData && (
+            <div className='w-40 h-40 bg-[rgba(255,255,255,0.4)] backdrop-blur-lg rounded-lg flex flex-col gap-2 items-center justify-center'>
+              <p>Locked</p>
+              <Link to={`/access/${accessedDocumentData?.$id}`}>
+                Unlock Here
+              </Link>{' '}
+              {/* Link to unlock the document */}
+            </div>
+          )}
         </section>
       </main>
     </React.Fragment>

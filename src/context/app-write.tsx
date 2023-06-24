@@ -44,7 +44,7 @@ interface AppWriteContextProps {
   getDocumentById: ($id: string) => Promise<UserDocumentProps | undefined>;
   uploadUserProfile: (file: File) => Promise<string>;
   updateDocuments: (documentId: string, updatedValue: boolean) => Promise<void>;
-  getPublicDocumentById: ($id: string) => Promise<UserDocumentProps>;
+  getPublicDocumentById: ($id: string) => Promise<UserDocumentProps | undefined>;
 }
 
 const AppWriteContext = React.createContext<AppWriteContextProps>({
@@ -255,7 +255,7 @@ export const AppWriteContextProvider = (props: {
     const data = (await db.listDocuments(
       `${import.meta.env.VITE_APPWRITE_DATABASE_ID}`,
       `${import.meta.env.VITE_APPWRITE_COLLECTION_ID}`,
-      [Query.equal('public', [true]), Query.limit(100)]
+      [Query.equal('isPublic', [true]), Query.limit(100)]
     )) as unknown as { total: number; documents: UserDocumentProps[] | [] };
     return data;
   };
@@ -342,16 +342,11 @@ export const AppWriteContextProvider = (props: {
   };
 
 
-  const getPublicDocumentById = async ($id:string): Promise<UserDocumentProps> => {
-     const data = (
-       await db.listDocuments(
-         import.meta.env.VITE_APPWRITE_DATABASE_ID,
-         import.meta.env.VITE_APPWRITE_COLLECTION_ID,
-         [Query.equal('documentId', [`${$id}`]), Query.equal('isPublic', [true])]
-       )
-     ).documents as unknown as UserDocumentProps[];
-     console.log('data', data);
-     return data[0];
+  const getPublicDocumentById = async ($id:string): Promise<UserDocumentProps | undefined> => {
+    const data = await getDocumentById($id)
+    if (data && data.isPublic === true) {
+      return data
+    }
   }
 
   React.useEffect(() => {

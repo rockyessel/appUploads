@@ -11,3 +11,4 @@ export { default as DisplayUploadedFiles } from './file/display-uploaded-files';
 export { default as Loader } from './loader';
 export { default as EmptyDocument } from './empty-document';
 export { default as DashboardContentDisplay } from './dashboard-content-display';
+export { default as Head } from './head';

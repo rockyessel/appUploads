@@ -5,6 +5,7 @@ export interface UserDocumentProps {
   $id: string;
   $permissions: string[];
   $updatedAt: string;
+  userId: string;
   createdAt: string;
   extension: string;
   filename: string;
@@ -13,6 +14,7 @@ export interface UserDocumentProps {
   size: string;
   updatedAt: string;
   view: string;
+  isLocked: boolean;
   isPublic: boolean;
   accessCode: string;
 }

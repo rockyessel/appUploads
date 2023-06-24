@@ -11,6 +11,7 @@ import FileSearchUsers from '../pages/dashboard/file-search-users';
 import DashboardSettings from '../pages/dashboard/settings';
 import React from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import AccessDocumentPage from '../pages/access/$id';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/authenticate' element={<Authentication />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/access' element={<AccessPage />} />
+        <Route path='/access/:id' element={<AccessDocumentPage />} />
         <Route path='/dashboard/:fileCategory/:fileId' element={<DashboardFileDetails />} />
         <Route path='/dashboard/music' element={<DashboardMusicFiles />} />
         <Route path='/dashboard/video' element={<DashboardVideosFiles />} />

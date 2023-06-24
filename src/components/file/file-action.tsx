@@ -3,7 +3,7 @@ import { GiTimeDynamite } from 'react-icons/gi';
 import Button from '../button';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { UserDocumentProps } from '../../interface';
+import { UserProps, UserDocumentProps } from '../../interface';
 import { useAppwriteContext } from '../../context/app-write';
 import { downloadFile } from '../../utils/functions';
 import { HiDownload } from 'react-icons/hi';
@@ -18,7 +18,8 @@ const FileAction = (props: Props) => {
   const [isChecked, setIsChecked] = React.useState<boolean>(
     props.documentData?.isPublic || false
   );
-
+const [isClicked, setIsClicked] = React.useState(false)
+  const [currentUser, setCurrentUser] = React.useState<UserProps>();
   // Access the 'updateDocuments' function from the Appwrite context
   const { updateDocuments } = useAppwriteContext();
 
@@ -30,7 +31,7 @@ const FileAction = (props: Props) => {
     () => () => {
       try {
         // Check if 'props.documentData' exists
-        if (props.documentData) {
+        if (props.documentData && isClicked) {
           // Call the 'updateDocuments' function with the document ID and 'isChecked' value
           updateDocuments(props.documentData?.$id, isChecked);
         }
@@ -39,7 +40,7 @@ const FileAction = (props: Props) => {
       }
     },
     // Update 'handleUpdate' whenever 'isChecked' or 'updateDocuments' changes
-    [isChecked, props.documentData, updateDocuments]
+    [isChecked, isClicked, props.documentData, updateDocuments]
   );
 
   // Call 'handleUpdate' once during component mount
@@ -64,11 +65,23 @@ const FileAction = (props: Props) => {
 
   // Handle the toggle of the public access checkbox
   const handlePublicToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsClicked((previousState) => !previousState);
     setIsChecked(event.target.checked);
   };
 
+
+  React.useEffect(() => {
+    const userInfo = window.localStorage.getItem('appwrite_user');
+    const parseUserInfo = userInfo ? JSON.parse(userInfo) : {};
+    setCurrentUser(parseUserInfo);
+  }, []);
+
+  const ifPublicDontShow =
+    props.documentData &&
+    props.documentData.userId === currentUser?.$id
+
   return (
-    <motion.div className='w-full inline-flex items-center gap-5 lg:gap-10 text-sm'>
+    <motion.div className='w-full inline-flex text-black items-center gap-5 lg:gap-10 text-sm'>
       {/* View Button */}
       <div className='inline-flex items-center gap-2'>
         <a href={`${props.documentData?.view}`} target='_blank' rel='noopener'>
@@ -78,18 +91,20 @@ const FileAction = (props: Props) => {
         </a>
 
         {/* Visibility Mode Button */}
-        <Button
-          styles={'w-full inline-flex items-center'}
-          title={'Visibility mode'}
-        >
-          <span className='hidden md:flex'>Public</span>
-          <input
-            onChange={handlePublicToggle}
-            type='checkbox'
-            checked={isChecked}
-            className={`toggle ${isChecked ? 'bg-green-800' : 'bg-rose-800'}`}
-          />
-        </Button>
+        {ifPublicDontShow && (
+          <Button
+            styles={'w-full inline-flex items-center'}
+            title={'Visibility mode'}
+          >
+            <span className='hidden md:flex'>Public</span>
+            <input
+              onChange={handlePublicToggle}
+              type='checkbox'
+              checked={isChecked}
+              className={`toggle ${isChecked ? 'bg-green-800' : 'bg-rose-800'}`}
+            />
+          </Button>
+        )}
 
         {/* Download Button */}
         <Button
@@ -107,10 +122,12 @@ const FileAction = (props: Props) => {
       </div>
 
       {/* Delete Button */}
-      <Button styles={''} title={'Delete'} handleClick={handleDelete}>
-        <span className='hidden md:block'>Delete</span>
-        <GiTimeDynamite className='text-red-500' />
-      </Button>
+      {ifPublicDontShow && (
+        <Button styles={''} title={'Delete'} handleClick={handleDelete}>
+          <span className='hidden md:block'>Delete</span>
+          <GiTimeDynamite className='text-red-500' />
+        </Button>
+      )}
     </motion.div>
   );
 };
