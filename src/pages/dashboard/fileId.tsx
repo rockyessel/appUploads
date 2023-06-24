@@ -38,9 +38,9 @@ const DashboardFileDetails = () => {
     [documentId, getDocumentById] // Dependencies for the memoized callback function
   );
 
-  console.log('documentData', documentData); // Logging the value of the documentData state variable
+  // console.log('documentData', documentData); // Logging the value of the documentData state variable
   const noDataFromId = hasNoValue(documentData); // Checking if the documentData has no value
-  console.log('noDataFromId', noDataFromId); // Logging the value of noDataFromId
+  // console.log('noDataFromId', noDataFromId); // Logging the value of noDataFromId
 
   React.useEffect(() => {
     getDocumentDataById(); // Calling the getDocumentDataById function on component mount or when its dependencies change

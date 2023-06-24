@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { slideAnimation } from '../../utils/motion';
 import { RiUploadCloud2Fill } from 'react-icons/ri';
-import { Input } from '../../components';
+import { Input, Loader } from '../../components';
 import { useAppwriteContext } from '../../context/app-write';
 import Layout from '../../components/dashboard/layout';
 import { UserProps } from '../../interface';
@@ -41,7 +41,7 @@ const DashboardSettings = () => {
     setUserForm(changing);
   };
 
-  console.log('loading', loading);
+  // console.log('loading', loading);
 
   // Memoized profile upload handler
   const handleProfileUpload = React.useMemo(
@@ -119,7 +119,11 @@ const DashboardSettings = () => {
                 </div>
               </div>
 
-              {!profileURL ? (
+              {loading ? (
+                <div className='w-40 h-40 bg-transparent border-[1px] rounded-full relative overflow-hidden flex items-center justify-center'>
+                  <Loader size='w-10 text-lg' message={'Uploading profile'} />
+                </div>
+              ) : !profileURL ? (
                 <label className='w-40 h-40 bg-transparent border-[1px] rounded-full relative'>
                   <span className='w-full h-full inline-flex items-center text-4xl font-bold backdrop-blur-lg dark:text-gray-400 rainbow rounded-full justify-center'>
                     RE

@@ -21,7 +21,7 @@ const AudioPlayer = (props: Props) => {
 
   const [metadata, setMetadata] = React.useState<Metadata | undefined>(); // Stores the metadata of the audio
 
-  console.log('Metadata', metadata); // Log the metadata object to the console
+  // console.log('Metadata', metadata); // Log the metadata object to the console
 
   // Fetch audio data and update the metadata when the 'view' prop changes
   React.useEffect(() => {
@@ -158,9 +158,9 @@ const AudioPlayer = (props: Props) => {
     }
   };
 
-  console.log('currentTime', currentTime); // Log the current time to the console
-  console.log('duration', duration); // Log the duration to the console
-  console.log('isPlaying', isPlaying); // Log the isPlaying state to the console
+  // console.log('currentTime', currentTime); // Log the current time to the console
+  // console.log('duration', duration); // Log the duration to the console
+  // console.log('isPlaying', isPlaying); // Log the isPlaying state to the console
 
   // Styles for the audio player container with a background image
   const styles = {
@@ -173,8 +173,8 @@ const AudioPlayer = (props: Props) => {
   };
 
   const startAudio = calculateAudioDuration(currentTime); // Calculate the formatted start audio duration string
-  console.log('startAudio,', startAudio); // Log the start audio duration to the console
-  console.log('currentTime,', currentTime); // Log the current time to the console
+  // console.log('startAudio,', startAudio); // Log the start audio duration to the console
+  // console.log('currentTime,', currentTime); // Log the current time to the console
 
   return (
     <div className='w-full h-[30rem] bg-[rgba(255,255,255,0.5)]' style={styles}>

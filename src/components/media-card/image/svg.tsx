@@ -14,7 +14,7 @@ const SvgCard = (props: Props) => {
   const [svgContent, setSvgContent] = React.useState('');
   const [clicked, setClicked] = React.useState(false);
 
-  console.log('SVGCard', props);
+  // console.log('SVGCard', props);
 
   const title =
     props?.documentData && props?.documentData?.filename?.length > 12

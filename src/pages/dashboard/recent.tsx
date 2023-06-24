@@ -57,7 +57,7 @@ const DashboardRecentDocuments = () => {
     return {}; // If there is no user document data, return an empty object
   }, [timeInterval, userDocumentData]);
 
-  console.log('entries', Object.entries(groupedFiles)); // Log the entries (key-value pairs) of the groupedFiles object
+  // console.log('entries', Object.entries(groupedFiles)); // Log the entries (key-value pairs) of the groupedFiles object
 
   return (
     <Layout>

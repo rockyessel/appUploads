@@ -21,7 +21,7 @@ const FileSearchUsers = () => {
       event.preventDefault();
       const data = await getDocumentByFilename(userInputValue);
       if (data && data.length !== 0) {
-        console.log('search data', data);
+        // console.log('search data', data);
         const updatedDocuments: UserDocumentProps[] | [] = [
           ...(storeToLocalStorage || []),
           ...data,
@@ -47,7 +47,7 @@ const FileSearchUsers = () => {
     }
   }, [setStoreToLocalStorage]);
 
-  console.log('storeToLocalStorage', storeToLocalStorage);
+  // console.log('storeToLocalStorage', storeToLocalStorage);
 
   // Handle change event of the search input
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -232,7 +232,7 @@ export const AppWriteContextProvider = (props: {
       );
       setDocumentsData((previousDoc) => [...previousDoc, createdDocument]);
     }
-    console.log('documentsData', documentsData);
+    // console.log('documentsData', documentsData);
     return documentsData as UserDocumentProps[];
   };
 
@@ -269,7 +269,7 @@ export const AppWriteContextProvider = (props: {
         [Query.search('filename', filename)]
       )
     ).documents as unknown as UserDocumentProps[];
-    console.log('data', data);
+    // console.log('data', data);
     return data;
   };
 

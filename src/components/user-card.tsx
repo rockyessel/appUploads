@@ -16,8 +16,8 @@ const UserCard = () => {
     setLoading(false);
   }, [getUser]);
 
-  console.log('user', user);
-  console.log('loading', loading);
+  // console.log('user', user);
+  // console.log('loading', loading);
 
   React.useEffect(() => {
     getUserInfo();

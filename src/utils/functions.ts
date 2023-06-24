@@ -155,7 +155,7 @@ export const filteredData = (data: UserDocumentProps[], types: string[]): UserDo
   });
 
   // Logging the filtered data for debugging purposes
-  console.log('filtered data', filtered);
+  // console.log('filtered data', filtered);
 
   return filtered;
 }

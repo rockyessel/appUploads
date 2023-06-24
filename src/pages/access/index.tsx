@@ -18,7 +18,7 @@ const AccessPage = () => {
       if (inputValue) {
         // Check if the input value exists
         const data = await getPublicDocumentById(inputValue); // Retrieve the public document data using the input value (ID)
-        console.log('inputValue data', data);
+        // console.log('inputValue data', data);
         setAccessDocumentData(data); // Update the state with the accessed document data
       }
     } catch (error) {

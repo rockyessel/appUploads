@@ -17,7 +17,7 @@ const AccessDocumentPage = () => {
   const router = useParams(); // Accessing the URL parameters using React Router
 
   const _$id = router.id; // Extracting the "id" parameter from the URL
-  console.log('_$id', _$id);
+//   console.log('_$id', _$id);
   const { getDocumentById } = useAppwriteContext(); // Custom hook to retrieve document by ID
 
   React.useEffect(() => {
@@ -38,8 +38,8 @@ const AccessDocumentPage = () => {
     image: 'image',
     video: 'video',
   };
-  console.log('detailed page', documentData);
-  console.log('lock', lock);
+//   console.log('detailed page', documentData);
+//   console.log('lock', lock);
 
   const handleChecker = () => {
     // Function to handle access code validation

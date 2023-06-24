@@ -28,7 +28,7 @@ const LoginScreen = () => {
   const handleSubmission = async (event: React.SyntheticEvent) => {
     try {
       event.preventDefault();
-      console.log('form', form);
+      // console.log('form', form);
       setLoading(true);
       await login(form);
       const user = await  getUser()
@@ -37,12 +37,12 @@ const LoginScreen = () => {
       
       toast.success('Login successfully');
       setLoading(false);
-      console.log('Done');
+      // console.log('Done');
     } catch (error) {
       console.log('error', error);
       setLoading(false);
     } finally {
-      console.log('Finally Done');
+      // console.log('Finally Done');
       setForm({ email: '', password: '' });
     }
   };

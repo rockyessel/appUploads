@@ -25,7 +25,7 @@ const DashboardContentDisplay = (props: Props) => {
     if (userId) {
       setLoading(true); // Set loading state to true
       const allCurrentUserDocuments = await getCurrentUserDocuments(userId); // Fetch all user documents using the getCurrentUserDocuments function
-      console.log('allCurrentUserDocuments', allCurrentUserDocuments); // Log the fetched user documents for debugging purposes
+      // console.log('allCurrentUserDocuments', allCurrentUserDocuments); // Log the fetched user documents for debugging purposes
       setDocumentData(
         filteredData(allCurrentUserDocuments?.documents, props.allowedDocumentTypes)
       ); // Filter and store the user's document data based on selected MIME types
